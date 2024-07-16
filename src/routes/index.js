@@ -6,5 +6,5 @@ var router = express.Router();
 //   res.render("index", { title: "Express" });
 // });
 
-router.use("/product", require("./item"));
+router.use("/item", require("./item_router"));
 module.exports = router;
