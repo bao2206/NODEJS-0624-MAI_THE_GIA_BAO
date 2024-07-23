@@ -6,19 +6,23 @@ var cookieParser = require("cookie-parser");
 
 var indexRouter = require("./src/routes");
 // var usersRouter = require("./routes/users");
-
+var expressLayouts = require("express-ejs-layouts");
 var app = express();
+const mongoose = require("mongoose");
+const ConnectDB = require("./src/apps/init_main_db");
 
 // view engine setup
 app.set("views", path.join(__dirname, "./src/views"));
 app.set("view engine", "ejs");
 
+app.use(expressLayouts);
+app.set("layout", "admin");
 //app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
+ConnectDB.connection();
 app.use("/", indexRouter);
 // app.use("/users", usersRouter);
 // loc:3000/item/user/demo

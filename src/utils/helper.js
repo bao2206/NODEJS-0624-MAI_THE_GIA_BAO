@@ -12,6 +12,7 @@ const readFile = async () => {
 const writeFile = async (data) => {
   console.log(data);
   try {
+    //không cần phải await các giá trị không cần trả về liền
     await fs.writeFile("data.txt", JSON.stringify(data, null, 2), "utf-8");
     console.log("Thanh cong");
   } catch (error) {
