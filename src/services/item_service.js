@@ -66,8 +66,8 @@ class ItemService {
       status,
     });
   };
-  getAllItems = async () => {
-    return await ItemModel.find();
+  getAllItems = async (objStatus) => {
+    return await ItemModel.find(objStatus);
   };
   deleteItemById = async (id) => {
     return await ItemModel.findByIdAndDelete(id);
@@ -78,6 +78,23 @@ class ItemService {
     });
     console.log("item_service", item);
     return item;
+  };
+  countStatus = async (name = "") => {
+    //
+    let status = {};
+    if (name != "") status = { status: name };
+    return await ItemModel.countDocuments(status);
+  };
+  findItem = async (searchTerm) => {
+    const searchSpecialChar = searchTerm.replace(
+      /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?: [A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$/,
+      ""
+    );
+
+    const searchItem = await ItemModel.find({
+      $or: [{ name: { $regex: new RegExp(searchSpecialChar, "i") } }],
+    });
+    return searchItem;
   };
 }
 module.exports = new ItemService();

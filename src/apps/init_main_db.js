@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 class MainDB {
   async connection() {
     try {
-      await mongoose.connect("mongodb://127.0.0.1:27017/test");
+      await mongoose.connect(
+        "mongodb+srv://baopro2206:22062002giabao@cluster0.kkoleaf.mongodb.net/"
+      );
       console.log("Successfully connected");
     } catch (err) {
       console.log(err);

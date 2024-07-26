@@ -13,7 +13,7 @@ const itemSchema = new Schema(
       max: 100,
     },
   },
-  { collection: ConnectionDocument }
+  { collection: ConnectionDocument, timestamps: true }
 );
 
 module.exports = mongoose.model(ModelDocument, itemSchema);
