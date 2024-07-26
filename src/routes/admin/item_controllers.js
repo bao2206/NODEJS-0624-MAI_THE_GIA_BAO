@@ -12,7 +12,7 @@ class ItemController {
         {
           name: "All",
           countStatus: await ItemService.countStatus(""),
-          link: "all",
+          link: "",
           class: status === "all" ? "btn-success" : "btn-default",
         },
         {
@@ -90,7 +90,7 @@ class ItemController {
         {
           name: "All",
           countStatus: await ItemService.countStatus(""),
-          link: "all",
+          link: "",
           class: "btn-default",
         },
         {

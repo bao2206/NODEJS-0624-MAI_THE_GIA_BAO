@@ -2,7 +2,7 @@
 <% const isEditing = item && item.id; %>
 <div class="card card-info card-outline">
   <form
-    action="/admin/item/<%= isEditing ? 'edit/' + item.id : 'add' %>"
+    action="/admin/item/<%= isEditing ? 'edit/' + item.id : 'form' %>"
     method="POST"
     class="mb-0"
   >
