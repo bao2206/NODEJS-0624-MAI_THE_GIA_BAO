@@ -1,18 +1,11 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const ItemController = require("./item_controllers");
-router.post("/form", ItemController.saveForm);
-router.get("/form", ItemController.getForm);
-//cập nhật item
-router.post("/edit/:id", ItemController.updateItem);
-router.get("/edit/:id", ItemController.getFormUpdateItem);
+const upload = require("../../middleware/upload");
 
-//xóa item
+router.post("/form", upload.single("image"), ItemController.saveForm);
+router.get("/form/:id?", ItemController.getForm);
 router.get("/delete/:id", ItemController.deleteItem);
-//tìm kiếm
-router.get("/search", ItemController.searchItem);
-
-router.get("/:status?", ItemController.getAll);
-//chuyển db lên sever chia component
+router.get("/", ItemController.getAll);
 
 module.exports = router;

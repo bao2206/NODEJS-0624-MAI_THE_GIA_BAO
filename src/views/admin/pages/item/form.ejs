@@ -1,59 +1,55 @@
-<% const collection="category" ; const linkPrefix='' ; const linkThumb='' ; %>
-<% const isEditing = item && item.id; %>
+<% const collection="category"; const linkPrefix=''; const linkThumb=''; %>
+<% const isEditing = item && item._id; %>
 <div class="card card-info card-outline">
-  <form
-    action="/admin/item/<%= isEditing ? 'edit/' + item.id : 'form' %>"
-    method="POST"
-    class="mb-0"
-  >
+  <form action="/admin/item/form" method="POST" enctype="multipart/form-data" class="mb-0">
+    <input type="hidden" name="id" value="<%= item ? item._id : '' %>" />
     <div class="card-body">
       <h1><%= isEditing ? 'Edit' : 'Add' %> - Form</h1>
+
+    
+
       <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label text-sm-right required"
-          >Name</label
-        >
+        <label for="name" class="col-sm-2 col-form-label text-sm-right required">Name</label>
         <div class="col-xs-12 col-sm-8">
-          <input
-            type="text"
-            id="name-input-form"
-            name="name"
-            class="form-control form-control-sm"
-            value="<%= item ? item.name : '' %>"
-          />
+          <input type="text" id="name-input-form" name="name" class="form-control form-control-sm" value="<%= item ? item.name : '' %>" />
         </div>
       </div>
+
       <div class="form-group row">
-        <label for="name" class="col-sm-2 col-form-label text-sm-right required"
-          >Ordering</label
-        >
+        <label for="ordering" class="col-sm-2 col-form-label text-sm-right required">Ordering</label>
         <div class="col-xs-12 col-sm-8">
-          <input type="text" name="ordering" class="form-control
-          form-control-sm" value="<%= item ? item.ordering : '' %>" />
+          <input type="text" name="ordering" class="form-control form-control-sm" value="<%= item ? item.ordering : '' %>" />
         </div>
       </div>
+
       <div class="form-group row">
-        <label for="status" class="col-sm-2 col-form-label text-sm-right"
-          >Status</label
-        >
+        <label for="status" class="col-sm-2 col-form-label text-sm-right">Status</label>
         <div class="col-xs-12 col-sm-8">
-          <select
-            id="status"
-            name="status"
-            class="custom-select custom-select-sm"
-          >
+          <select id="status" name="status" class="custom-select custom-select-sm">
             <option value="novalue">Choose Status</option>
             <option value="active" <%= item && item.status === "active" ? "selected" : '' %>>Active</option>
             <option value="inactive" <%= item && item.status === "inactive" ? "selected" : '' %>>Inactive</option>
           </select>
         </div>
       </div>
+
+      <div class="form-group row">
+        <label for="image" class="col-sm-2 col-form-label text-sm-right">Image</label>
+        <div class="col-xs-12 col-sm-8">
+          <input type="file" name="image" class="form-control form-control-sm" />
+          <% if (item && item.imageUrl) { %>
+            <div>
+              <img src="<%= item.imageUrl %>" alt="Item Image" style="max-width: 100px; max-height: 100px;"/>
+              <a href="/admin/item/delete-image/<%= item._id %>" class="btn btn-sm btn-danger">Delete Image</a>
+            </div>
+          <% } %>
+        </div>
+      </div>
     </div>
     <div class="card-footer">
       <div class="col-12 col-sm-8 offset-sm-2">
-        <button type="submit" class="btn btn-sm btn-success mr-1">
-          <%= isEditing ? "Update" : "Add" %>
-        </button>
-        <a href="/admin/item" class="btn btn-sm btn-danger mr-1"> Cancel</a>
+        <button type="submit" class="btn btn-sm btn-success mr-1"><%= isEditing ? "Update" : "Add" %></button>
+        <a href="/admin/item" class="btn btn-sm btn-danger mr-1">Cancel</a>
       </div>
     </div>
   </form>

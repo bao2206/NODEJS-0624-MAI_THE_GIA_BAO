@@ -1,23 +1,15 @@
-const fs = require("node:fs/promises");
+// const {check} = require('express-validator');
+// let validateItem = () => {
+//   return [
+//     check('item.name', 'item more than 3 degits').isLength({ min: 3 }),
+//     check('item.status', 'Invalid email').isEmail(),
+//     check('item.ordering', 'item more than 0').isLength({ min: 0 }, {max: 100}),
+//   ];
+// }
 
-const readFile = async () => {
-  try {
-    const data = await fs.readFile("data.txt", "utf-8");
-    // console.log("show", JSON.parse(data));
-    return JSON.parse(data || "[]");
-  } catch (err) {
-    return [];
-  }
-};
-const writeFile = async (data) => {
-  console.log(data);
-  try {
-    //không cần phải await các giá trị không cần trả về liền
-    await fs.writeFile("data.txt", JSON.stringify(data, null, 2), "utf-8");
-    console.log("Thanh cong");
-  } catch (error) {
-    console.log("That bai");
-  }
-};
+// let validate = {
+//   validateItem: validateItem,
+//   // validateLogin: validateLogin
+// };
 
-module.exports = { writeFile, readFile };
+// module.exports = {validate};

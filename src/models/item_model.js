@@ -12,6 +12,7 @@ const itemSchema = new Schema(
       min: 0,
       max: 100,
     },
+    imageUrl: String,
   },
   { collection: ConnectionDocument, timestamps: true }
 );
