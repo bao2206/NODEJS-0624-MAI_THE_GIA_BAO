@@ -56,7 +56,7 @@ class ItemController {
       console.log(err);
     }
   };
-
+  // truyền errors rỗng vào đây
   getForm = async (req, res, next) => {
     try {
       const { id } = req.params;
