@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 // chỉnh lại đường dẫn upload pathImage trong app
-const uploadDir = path.join(__dirname, "../../uploads");
+const uploadDir = path.join(__dirname, "../../public/uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }

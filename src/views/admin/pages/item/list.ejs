@@ -166,9 +166,14 @@
             </td>
             <td class="text-center"><span><%= item.name %></span></td>
             <td class="text-center position-relative">
-              <a href="#" class="rounded-circle btn btn-sm btn-success">
+              <a
+                href="#"
+                class="rounded-circle btn btn-sm btn-success update-status-btn"
+                data-id="<%= item._id %>"
+              >
                 <i
                   class="fas <%= item.status === 'active' ? 'fa-check' : 'fa-times' %>"
+                  data-status="<%= item.status %>"
                 ></i>
               </a>
             </td>
@@ -185,11 +190,12 @@
               <img
                 src="<%= item.imageUrl %>"
                 alt="Item Image"
+                class="item-image"
                 style="max-width: 100px; max-height: 100px"
               />
               <% } %>
             </td>
-            <!-- Display the image here -->
+
             <td class="text-center">
               <a
                 href="/admin/item/form/<%= item._id %>"
@@ -199,8 +205,9 @@
                 <i class="fas fa-pencil-alt"></i>
               </a>
               <a
-                href="/admin/item/delete/<%= item._id %>"
-                class="rounded-circle btn btn-sm btn-danger"
+                href="#"
+                class="rounded-circle btn btn-sm btn-danger deleteBtn"
+                data-id="<%= item._id %>"
               >
                 <i class="fas fa-trash-alt"></i>
               </a>
@@ -233,6 +240,40 @@
     </div>
   </div>
 </form>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm delete</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Bạn có chắc chắn muốn xóa mục này không?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Hủy
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          Xóa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -244,6 +285,59 @@
       const isChecked = btnCheckAll.prop("checked");
       btnCheck.prop("checked", isChecked);
       disableSubmit();
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Lưu trữ ID của mục cần xóa
+    let itemIdToDelete;
+
+    // Khi nút xóa được nhấp
+    document.querySelectorAll(".deleteBtn").forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        itemIdToDelete = this.getAttribute("data-id");
+        $("#deleteModal").modal("show");
+      });
+    });
+
+    // Khi nút xác nhận xóa trong modal được nhấp
+    document
+      .getElementById("confirmDeleteBtn")
+      .addEventListener("click", function () {
+        if (itemIdToDelete) {
+          window.location.href = `/admin/item/delete/${itemIdToDelete}`;
+        }
+      });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".update-status-btn").forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        const itemId = this.getAttribute("data-id");
+        fetch(`/admin/item/update-status/${itemId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              const icon = this.querySelector("i");
+              icon.classList.toggle("fa-check", data.status === "active");
+              icon.classList.toggle("fa-times", data.status === "inactive");
+            } else {
+              alert("Error updating status");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
     });
   });
 </script>

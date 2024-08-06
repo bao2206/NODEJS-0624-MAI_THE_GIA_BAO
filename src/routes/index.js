@@ -7,4 +7,5 @@ var router = express.Router();
 // });
 
 router.use("/admin", require("./admin"));
+router.use("/", require("./frontend"));
 module.exports = router;
