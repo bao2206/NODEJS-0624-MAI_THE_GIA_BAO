@@ -1,29 +1,9 @@
-<% 
-
-  let menu = [
-    {
-      "name" : 'Dashboard',
-      "icon" : "fas fa-th",
-      "link" : '/admin',
-      "child" : []
-    },
-    {
-      "name" : 'Items',
-      "icon" : "fas fa-tachometer-alt",
-      "link" : '#',
-      "child" : [
-        {
-          "name" : 'Danh muc',
-          "icon" : "fas fa-th",
-          "link" : '/admin/item',
-        }
-      ]
-    }
-  ]
-
-
-%>
-
+<% let menu = [ { "name" : 'Dashboard', "icon" : "fas fa-th", "link" : '/admin',
+"child" : [] }, { "name" : 'Items', "icon" : "fas fa-tachometer-alt", "link" :
+'#', "child" : [ { "name" : 'List item', "icon" : "fas fa-th", "link" :
+'/admin/item', } ] }, { "name" : 'Category', "icon" : "fas fa-tachometer-alt",
+"link" : '#', "child" : [ { "name" : "Product item", "icon" : "fas fa-th",
+"link" : '/admin/product', } ] } ] %>
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
@@ -81,40 +61,35 @@
         <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
 
-          <% menu.forEach(e => {%>
-          <% if(e.child.length == 0) {%>
-
-           <li class="nav-item">
-            <a href="<%= e.link %>" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                <%= e.name %>
-              </p>
-            </a>
-          </li>
-          <% }else { %>
-           <li class="nav-item ">
-            <a href="<%= e.link %>" class="nav-link ">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                <%=  e.name %>
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <% e.child.forEach(e => { %>
-                <a href="<%= e.link %>" class="nav-link ">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>List item</p>
-                </a>
-              <% }) %>
-            </li>
+        <% menu.forEach(e => {%> <% if(e.child.length == 0) {%>
+        <li class="nav-item">
+          <a href="<%= e.link %>" class="nav-link">
+            <i class="nav-icon <%= e.icon %>"></i>
+            <p><%= e.name %></p>
+          </a>
         </li>
-
-        
+        <% }else { %>
+        <li class="nav-item">
+          <a href="<%= e.link %>" class="nav-link">
+            <i class="nav-icon <%= e.icon %>"></i>
+            <p>
+              <%= e.name %>
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <% e.child.forEach(child => { %>
+            <li class="nav-item">
+              <a href="<%= child.link %>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p><%= child.name %></p>
+              </a>
+            </li>
+            <% }) %>
+          </ul>
+        </li>
+        <% } %> <% }) %>
       </ul>
-      <%} })   %>
     </nav>
     <!-- /.sidebar-menu -->
   </div>

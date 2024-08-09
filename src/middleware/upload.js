@@ -2,30 +2,32 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 // chỉnh lại đường dẫn upload pathImage trong app
-const uploadDir = path.join(__dirname, "../../public/uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const uploadImage = (type) => {
+  return multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, cb) {
+        const uploadDir = path.join(__dirname, `../../public/uploads/${type}`);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
+        // Create the directory if it doesn't exist
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-});
+        cb(null, uploadDir);
+      },
+      filename: function (req, file, cb) {
+        cb(
+          null,
+          file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+        );
+      },
+    }),
+    limits: { fileSize: 1000000 }, // Limit file size to 1MB
+    fileFilter: function (req, file, cb) {
+      checkFileType(file, cb);
+    },
+  }).single("image"); // Adjust the fieldname to your form field name
+};
 
 function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png|gif/;
@@ -39,4 +41,4 @@ function checkFileType(file, cb) {
   }
 }
 
-module.exports = upload;
+module.exports = uploadImage;

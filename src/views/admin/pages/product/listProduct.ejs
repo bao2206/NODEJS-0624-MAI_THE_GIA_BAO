@@ -1,0 +1,245 @@
+<% linkPrefix = 'admin' %>
+
+<div class="row mb-2">
+  <div class="col-sm-6">
+    <h1 class="m-0">Danh mục sản phẩm</h1>
+  </div>
+</div>
+<div class="card card-info card-outline">
+  <div class="card-header">
+    <h6 class="card-title">Search & Filter</h6>
+    <div class="card-tools">
+      <button
+        type="button"
+        class="btn btn-tool"
+        data-card-widget="collapse"
+        data-toggle="tooltip"
+        title="Collapse"
+      >
+        <i class="fas fa-minus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-between">
+      <div class="mb-1">
+        <div class="btn-search">
+          <a href="#">
+            <button type="button" class="btn btn-info">
+              All (<span><%= products.length %></span>)
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="mb-1">
+        <form action="#" method="get">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              name="keyword"
+              value=""
+              placeholder="Search for..."
+              style="min-width: 300px"
+            />
+            <div class="input-group-append">
+              <a type="button" class="btn btn-sm btn-danger" href="#">Clear</a>
+              <button type="submit" class="btn btn-sm btn-info" id="btn-search">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Content -->
+
+<form
+  action="/admin/category/multipleAction"
+  method="post"
+  name="multipleForm"
+  id="multiForm"
+>
+  <div class="card card-info card-outline">
+    <div class="card-header">
+      <h4 class="card-title">List</h4>
+      <div class="card-tools">
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-info"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Change Status
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <button
+              type="button"
+              class="dropdown-item"
+              data-toggle="modal"
+              data-target="#modal-success"
+            >
+              Change to Active
+            </button>
+            <div class="dropdown-divider"></div>
+            <button
+              type="button"
+              class="dropdown-item"
+              data-toggle="modal"
+              data-target="#modal-danger"
+            >
+              Change to Inactive
+            </button>
+          </div>
+        </div>
+        <a
+          href="/admin/product/form"
+          class="btn btn-warning"
+          style="background-color: #f0ad4e; color: white; font-weight: 500"
+          >Add New</a
+        >
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-toggle="modal"
+          data-target="#modal-danger"
+        >
+          <i class="fas fa-trash-alt"></i>Delete Multi
+        </button>
+      </div>
+      <input type="hidden" name="action" id="inputHiddenAll" value="" />
+    </div>
+    <div class="card-body">
+      <table
+        class="table table-bordered table-hover text-nowrap btn-table mb-0"
+      >
+        <% if (products && products.length) { %>
+        <thead>
+          <tr>
+            <th class="text-center">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input cbAll"
+                  type="checkbox"
+                  id="check-all"
+                />
+                <label for="check-all" class="custom-control-label"></label>
+              </div>
+            </th>
+            <th class="text-center">#</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Brand</th>
+            <th class="text-center">Category</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Ordering</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach((product, index) => { %>
+          <tr>
+            <td class="text-center">
+              <div class="custom-control custom-checkbox">
+                <input
+                  class="custom-control-input"
+                  type="checkbox"
+                  name="cid"
+                  id="check<%= index %>"
+                  value="<%= product._id %>"
+                />
+                <label
+                  for="check<%= index %>"
+                  class="custom-control-label"
+                ></label>
+              </div>
+            </td>
+            <td class="text-center"><%= index + 1 %></td>
+            <td class="text-center"><span><%= product.name %></span></td>
+            <td class="text-center">
+              <span
+                ><%= product.brand_id ? product.brand_id.name : 'N/A' %></span
+              >
+            </td>
+            <td class="text-center">
+              <span
+                ><%= product.category_id ? product.category_id.name : 'N/A'
+                %></span
+              >
+            </td>
+            <td class="text-center"><span><%= product.price %></span></td>
+            <td class="text-center position-relative">
+              <a href="#" class="rounded-circle btn btn-sm btn-success"
+                ><i class="fas fa-check"></i
+              ></a>
+            </td>
+            <td class="text-center position-relative">
+              <input
+                type="number"
+                name="items-ordering"
+                value="<%= product.ordering %>"
+                class="text-center ordering"
+              />
+            </td>
+            <td class="text-center">
+              <a
+                href="#"
+                class="rounded-circle btn btn-sm btn-info"
+                title="Edit"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+              <a href="#" class="rounded-circle btn btn-sm btn-danger">
+                <i class="fas fa-trash-alt"></i>
+              </a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer clearfix">
+      <ul class="pagination pagination-sm m-0 float-right">
+        <li class="page-item"><a class="page-link" href="#">«</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul>
+    </div>
+  </div>
+</form>
+<% } else { %>
+<h1 class="text-center text-secondary mt-5">
+  No products found in the database
+</h1>
+<% } %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let deletedID;
+    let btnDeleted = document.getElementById("buttonDeleted");
+    let deleteForm = document.forms["deletedForm"];
+    let submitAllForm = document.forms["multipleForm"];
+    let btnCheckAll = $("#checkAll");
+    let btnCheck = $('input[name="checkItem"]');
+    let btnSubmitAll = $("#buttonSubmitAll");
+    let isChecked;
+
+    // button check all has been checked
+    btnCheckAll.change(function () {
+      isChecked = btnCheckAll.prop("checked");
+      if (isChecked === false) {
+        $('input[class="ordering"]').removeAttr("name");
+      } else {
+        $('input[class="ordering"]').attr("name", "ordering");
+      }
+      btnCheck.prop("checked", isChecked);
+      disableSubmit();
+    });
+  });
+</script>
