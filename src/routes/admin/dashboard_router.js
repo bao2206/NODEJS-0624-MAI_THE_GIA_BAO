@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const DashboardController = require("../../controllers/dashboard_controllers");
+const MainController = require("../../controllers/dashboard_controllers");
 
-router.get("/", DashboardController.getAll);
+router.get("/", MainController.getAll);
 module.exports = router;

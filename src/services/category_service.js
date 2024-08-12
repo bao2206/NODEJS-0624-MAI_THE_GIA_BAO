@@ -1,16 +1,15 @@
-const MainModel = require("../models/item_model");
+const MainModel = require("../models/category_model");
 
-class ItemService {
+class CategoryService {
   getEleById = async (id) => {
     return await MainModel.findById(id);
   };
-  saveItem = async (name, status, ordering, imageUrl) => {
-    console.log(name, status, ordering, imageUrl);
+  saveItem = async (name, status, ordering) => {
+    console.log(name, status, ordering);
     await MainModel.create({
       name,
       ordering,
       status,
-      imageUrl,
     });
   };
   getAllItems = async (filter) => {
@@ -40,4 +39,4 @@ class ItemService {
     return test;
   };
 }
-module.exports = new ItemService();
+module.exports = new CategoryService();

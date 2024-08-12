@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
-
+var slugify = require("slugify");
 const ConnectionDocument = "categories";
 const ModelDocument = "Category";
 const categorySchema = new Schema(
@@ -13,7 +13,7 @@ const categorySchema = new Schema(
       min: 0,
       max: 100,
     },
-    icons: String,
+    // icons: String,
     slug: { type: String, unique: true },
   },
   { collection: ConnectionDocument }

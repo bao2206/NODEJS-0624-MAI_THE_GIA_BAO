@@ -1,11 +1,11 @@
-const MainService = require("../services/item_service");
+const MainService = require("../services/category_service");
 const fs = require("fs");
+const upload = require("../middleware/upload");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
-const upload = require("../middleware/upload");
-const { log } = require("console");
-const nameRoute = "item";
-class ItemController {
+
+const nameRoute = "category";
+class MainController {
   getAll = async (req, res, next) => {
     try {
       let status = req.query.status || "all";
@@ -74,6 +74,7 @@ class ItemController {
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }
   };
+
   saveForm = [
     upload("item"),
     body("name")
@@ -118,7 +119,7 @@ class ItemController {
             "/uploads/default-image/default-image.jpg";
 
         if (id) {
-          const updatedData = { name, status, ordering, imageUrl };
+          const updatedData = { name, status, ordering };
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
             return res.redirect(
@@ -130,7 +131,7 @@ class ItemController {
             );
           }
         } else {
-          await MainService.saveItem(name, status, ordering, imageUrl);
+          await MainService.saveItem(name, status, ordering);
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
           );
@@ -147,20 +148,6 @@ class ItemController {
   deleteItem = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const item = await MainService.getEleById(id);
-
-      if (item && item.imageUrl) {
-        const imagePath = path.join(
-          __dirname,
-          `../../public/uploads/${nameRoute}`,
-          item.imageUrl.split("/").pop()
-        );
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error("Error deleting image:", err);
-          }
-        });
-      }
       await MainService.deleteItemById(id);
       res.redirect(
         `/admin/${nameRoute}?successMessage=Item deleted successfully`
@@ -220,4 +207,4 @@ class ItemController {
   };
 }
 
-module.exports = new ItemController();
+module.exports = new MainController();

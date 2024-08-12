@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const MainController = require("../../controllers/item_controllers");
+const MainController = require("../../controllers/category_controllers");
 // const upload = require("../../middleware/upload");
 router.post("/update-ordering/:id", MainController.updateOrdering);
 router.post("/update-status/:id", MainController.updateStatus);

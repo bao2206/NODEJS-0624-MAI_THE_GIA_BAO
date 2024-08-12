@@ -1,33 +1,8 @@
-<% const entityName = 'item'; %> <% const entity = entityName || {}; %> <% const
-entityId = entityName._id || ''; %> <% const linkPrefix = 'admin'; %> <% const
-formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
-`/${linkPrefix}/${entityName}`; %>
+<% const entityName = 'product'; %> <% const entityId = entityName ?
+entityName._id : ''; %> <% const linkPrefix = 'admin'; %> <% const formAction
+=`/${linkPrefix}/${entityName}/form`; %> <% const listAction
+=`/${linkPrefix}/${entityName}`; %>
 
-<style>
-  .flash-message {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    padding: 15px;
-    z-index: 1000;
-    display: none;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    font-size: 14px;
-    max-width: 300px;
-    word-wrap: break-word;
-  }
-
-  .flash-message.success {
-    background-color: #4caf50;
-    color: white;
-  }
-
-  .flash-message.error {
-    background-color: #f44336;
-    color: white;
-  }
-</style>
 <div class="row mb-2">
   <div class="col-sm-6">
     <h1 class="m-0">Danh mục <%= entityName %></h1>
@@ -170,9 +145,12 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
             </th>
             <th class="text-center">#</th>
             <th class="text-center">Name</th>
+            <th class="text-center">Price</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Category</th>
             <th class="text-center">Status</th>
             <th class="text-center">Ordering</th>
-            <th class="text-center">Image</th>
+            <th class="text-center">Slug</th>
             <th class="text-center">Action</th>
           </tr>
         </thead>
@@ -187,7 +165,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
                   type="checkbox"
                   name="cid"
                   id="check1"
-                  value="1"
+                  value="<%= item._id %>"
                 />
                 <label for="check1" class="custom-control-label"></label>
               </div>
@@ -196,6 +174,13 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
               <%= (currentPage - 1) * 10 + index + 1 %>
             </td>
             <td class="text-center"><span><%= item.name %></span></td>
+            <td class="text-center">
+              <span>$<%= item.price.toFixed(2) %></span>
+            </td>
+            <td class="text-center"><span><%= item.quantity %></span></td>
+            <td class="text-center">
+              <span><%= item.category_id.name %></span>
+            </td>
             <td class="text-center position-relative">
               <a
                 href="#"
@@ -219,14 +204,14 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
               />
             </td>
             <td class="text-center">
-              <% if (item.imageUrl) { %>
-              <img
-                src="<%= item.imageUrl %>"
-                alt="Item Image"
-                class="item-image"
-                style="max-width: 80px; max-height: 50px"
+              <input
+                type="text"
+                id="slug"
+                name="slug"
+                class="form-control form-control-sm text-center"
+                value="<%= item.slug || '' %>"
+                readonly
               />
-              <% } %>
             </td>
             <td class="text-center">
               <a
@@ -247,7 +232,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
           </tr>
           <% }); %> <% } else { %>
           <tr>
-            <td colspan="7">
+            <td colspan="10">
               <h1 class="text-center text-secondary mt-5">
                 No items found in the database
               </h1>
@@ -359,7 +344,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
         .getElementById("confirmDeleteBtn")
         .addEventListener("click", function () {
           if (itemIdToDelete) {
-            window.location.href = `/admin/item/delete/${itemIdToDelete}`;
+            window.location.href = `/admin/product/delete/${itemIdToDelete}`;
           }
         });
     });
@@ -369,7 +354,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
         event.preventDefault();
         const itemId = this.getAttribute("data-id");
 
-        handleFetch(`/admin/item/update-status/${itemId}`, {
+        handleFetch(`/admin/product/update-status/${itemId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -1,6 +1,6 @@
-<% const entityName = 'item'; %> <% const entity = entityName || {}; %> <% const
-entityId = entityName._id || ''; %> <% const linkPrefix = 'admin'; %> <% const
-formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
+<% const entityName = 'category'; %> <% const entity = entityName || {}; %> <%
+const entityId = entityName._id || ''; %> <% const linkPrefix = 'admin'; %> <%
+const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
 `/${linkPrefix}/${entityName}`; %>
 
 <style>
@@ -172,7 +172,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
             <th class="text-center">Name</th>
             <th class="text-center">Status</th>
             <th class="text-center">Ordering</th>
-            <th class="text-center">Image</th>
+            <th class="text-center">Slug</th>
             <th class="text-center">Action</th>
           </tr>
         </thead>
@@ -219,14 +219,14 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
               />
             </td>
             <td class="text-center">
-              <% if (item.imageUrl) { %>
-              <img
-                src="<%= item.imageUrl %>"
-                alt="Item Image"
-                class="item-image"
-                style="max-width: 80px; max-height: 50px"
+              <input
+                type="text"
+                id="slug"
+                name="slug"
+                class="form-control form-control-sm text-center"
+                value="<%= item.slug || '' %>"
+                readonly
               />
-              <% } %>
             </td>
             <td class="text-center">
               <a
@@ -359,7 +359,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
         .getElementById("confirmDeleteBtn")
         .addEventListener("click", function () {
           if (itemIdToDelete) {
-            window.location.href = `/admin/item/delete/${itemIdToDelete}`;
+            window.location.href = `/admin/category/delete/${itemIdToDelete}`;
           }
         });
     });
@@ -369,7 +369,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
         event.preventDefault();
         const itemId = this.getAttribute("data-id");
 
-        handleFetch(`/admin/item/update-status/${itemId}`, {
+        handleFetch(`/admin/category/update-status/${itemId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

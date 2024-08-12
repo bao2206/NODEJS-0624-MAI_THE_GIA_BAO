@@ -1,9 +1,12 @@
-var express = require("express");
-var router = express.Router();
-const ProductControllers = require("../../controllers/product_controllers");
-router.post("/update-status/:id", ProductControllers.updateStatus);
-router.post("/form", ProductControllers.saveForm);
-router.get("/form/:id?", ProductControllers.getForm);
-router.get("/delete/:id", ProductControllers.deleteProduct);
-router.get("/", ProductControllers.getAll);
+const express = require("express");
+const router = express.Router();
+const MainController = require("../../controllers/product_controllers");
+// const upload = require("../../middleware/upload");
+router.post("/update-ordering/:id", MainController.updateOrdering);
+router.post("/update-status/:id", MainController.updateStatus);
+router.post("/form", MainController.saveForm);
+router.get("/form/:id?", MainController.getForm);
+router.get("/delete/:id", MainController.deleteItem);
+router.get("/", MainController.getAll);
+
 module.exports = router;
