@@ -33,5 +33,11 @@ class MainService {
     // console.log(searchTerm, filter, test);
     return test;
   };
+  getProductsByCategoryId = async (categoryId) => {
+    return await MainModel.find({
+      category_id: categoryId,
+      status: "active",
+    });
+  };
 }
 module.exports = new MainService();

@@ -31,15 +31,16 @@ app.use((req, res, next) => {
   next();
 });
 app.use(expressLayouts);
-app.use((req, res, next) => {
-  if (req.url.startsWith("/admin")) {
-    app.set("layout", "admin");
-  } else {
-    app.set("layout", "frontend");
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (req.url.startsWith("/admin")) {
+//      app.set("layout", "admin");
+//   } else {
+//     app.set("layout", "frontend");
+//   }
+//   next();
+// });
 //app.use(logger('dev'));
+app.set("layout", "admin");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

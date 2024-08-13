@@ -1,11 +1,12 @@
 const MainService = require("../services/product_service");
-const CategoryModel = require("../models/category_model");
+const CategoryService = require("../services/category_service");
 const MainModel = require("../models/product_model");
 const fs = require("fs");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
 const upload = require("../middleware/upload");
 const nameRoute = "product";
+const slugify = require("slugify");
 class ItemController {
   getAll = async (req, res, next) => {
     try {
@@ -70,16 +71,20 @@ class ItemController {
     try {
       const { id } = req.params;
       let item = {};
-      const categories = await CategoryModel.find(); // Fetch all categories
       if (id) {
-        item = await MainService.getEleById(id).populate("category_id"); // Populate the category
+        item = await MainService.getEleById(id);
       }
+
+      // Retrieve the list of active categories
+      const categories = await CategoryService.getAllCategories();
+
       res.render(`admin/pages/${nameRoute}/form`, {
         item,
+        categories, // Pass categories to the view
         errors: [],
-        categories,
       });
     } catch (err) {
+      console.log(err);
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }
   };
@@ -107,7 +112,10 @@ class ItemController {
     body("quantity")
       .isInt({ min: 0 })
       .withMessage("Quantity must be greater than or equal to 0"),
-    (req, res, next) => {
+    body("category_id") // Validating category_id
+      .notEmpty()
+      .withMessage("Category must be selected"),
+    async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         const { id, ...formData } = req.body;
@@ -119,8 +127,10 @@ class ItemController {
             : req.body.existingImageUrl ||
               "/uploads/default-image/default-image.jpg",
         };
+        const categories = await CategoryService.getAllCategories();
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
+          categories, // Ensure this is correctly populated
           errors: errors.array(),
           successMessage: "",
           errorMessage: "Please correct the errors below.",
@@ -130,13 +140,15 @@ class ItemController {
     },
     async (req, res, next) => {
       try {
-        const { id, ...formData } = req.body;
+        const { id, name, ...formData } = req.body;
         const imageUrl = req.file
           ? `/uploads/${nameRoute}/${req.file.filename}`
           : req.body.existingImageUrl ||
             "/uploads/default-image/default-image.jpg";
 
-        const updatedData = { ...formData, imageUrl };
+        const slug = slugify(name, { lower: true, strict: true });
+
+        const updatedData = { name, slugify, ...formData, imageUrl };
 
         if (id) {
           const item = await MainService.updateItemById(id, updatedData);

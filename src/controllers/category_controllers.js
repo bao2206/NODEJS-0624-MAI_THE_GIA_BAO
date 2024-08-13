@@ -3,7 +3,7 @@ const fs = require("fs");
 const upload = require("../middleware/upload");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
-
+const slugify = require("slugify");
 const nameRoute = "category";
 class MainController {
   getAll = async (req, res, next) => {
@@ -78,6 +78,8 @@ class MainController {
   saveForm = [
     upload("item"),
     body("name")
+      .notEmpty()
+      .withMessage("Name is required.")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
     body("ordering")
@@ -86,7 +88,7 @@ class MainController {
     body("status")
       .isIn(["active", "inactive"])
       .withMessage("Status must be either 'active' or 'inactive'"),
-    (req, res, next) => {
+    async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         const { id, name, status, ordering } = req.body;
@@ -100,7 +102,7 @@ class MainController {
             : req.body.existingImageUrl ||
               "/uploads/default-image/default-image.jpg",
         };
-        // req.flash("errorMessage", "Please correct the errors below.");
+        // Nếu có lỗi, render lại form với các lỗi đó
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
           errors: errors.array(),
@@ -113,13 +115,10 @@ class MainController {
     async (req, res, next) => {
       try {
         const { id, name, status, ordering } = req.body;
-        const imageUrl = req.file
-          ? `/uploads/${nameRoute}/${req.file.filename}`
-          : req.body.existingImageUrl ||
-            "/uploads/default-image/default-image.jpg";
+        const slug = slugify(name, { lower: true, strict: true });
 
         if (id) {
-          const updatedData = { name, status, ordering };
+          const updatedData = { name, status, ordering, slug };
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
             return res.redirect(

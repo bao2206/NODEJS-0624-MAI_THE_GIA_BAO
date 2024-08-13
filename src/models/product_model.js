@@ -23,6 +23,12 @@ const productSchema = new Schema(
     },
     isSpecial: { type: Boolean, default: false },
     slug: { type: String, unique: true },
+    status: { type: String, enum: ["active", "inactive"], default: "inactive" },
+    ordering: {
+      type: Number,
+      min: 0,
+      max: 100,
+    },
   },
   { collection: ConnectionDocument, timestamps: true }
 );

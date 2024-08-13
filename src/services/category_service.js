@@ -5,13 +5,13 @@ class CategoryService {
     return await MainModel.findById(id);
   };
   saveItem = async (name, status, ordering) => {
-    console.log(name, status, ordering);
     await MainModel.create({
       name,
-      ordering,
       status,
+      ordering,
     });
   };
+
   getAllItems = async (filter) => {
     return await MainModel.find(filter);
   };
@@ -37,6 +37,14 @@ class CategoryService {
     });
     // console.log(searchTerm, filter, test);
     return test;
+  };
+  getAllCategories = async () => {
+    return await MainModel.find({ status: "active" });
+  };
+  getAllCategoriesOrdered = async () => {
+    return await MainModel.find({ status: "active" }).sort({
+      ordering: -1,
+    });
   };
 }
 module.exports = new CategoryService();

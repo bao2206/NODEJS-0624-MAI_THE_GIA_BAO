@@ -2,6 +2,31 @@
 entityName._id : ''; %> <% const linkPrefix = 'admin'; %> <% const formAction
 =`/${linkPrefix}/${entityName}/form`; %> <% const listAction
 =`/${linkPrefix}/${entityName}`; %>
+<style>
+  .flash-message {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 15px;
+    z-index: 1000;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    max-width: 300px;
+    word-wrap: break-word;
+  }
+
+  .flash-message.success {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .flash-message.error {
+    background-color: #f44336;
+    color: white;
+  }
+</style>
 
 <div class="row mb-2">
   <div class="col-sm-6">
