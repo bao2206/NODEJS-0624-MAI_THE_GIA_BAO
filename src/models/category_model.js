@@ -13,6 +13,11 @@ const categorySchema = new Schema(
       min: 0,
       max: 100,
     },
+    menu_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Menu",
+      required: false,
+    },
     // icons: String,
     slug: { type: String, unique: true },
   },

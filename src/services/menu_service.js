@@ -1,17 +1,10 @@
-const MainModel = require("../models/category_model");
-
-class CategoryService {
+const MainModel = require("../models/menu_model");
+class MainService {
   getEleById = async (id) => {
     return await MainModel.findById(id);
   };
-  saveItem = async ({ name, slug, status, ordering, menu_id }) => {
-    await MainModel.create({
-      name: String(name),
-      slug,
-      status,
-      ordering,
-      menu_id: menu_id || null,
-    });
+  saveItem = async (data) => {
+    await MainModel.create(data);
   };
 
   getAllItems = async (filter) => {
@@ -21,7 +14,6 @@ class CategoryService {
     return await MainModel.findByIdAndDelete(id);
   };
   updateItemById = async (id, updatedData) => {
-    // updatedData.name = String(updatedData.name);
     const item = await MainModel.findByIdAndUpdate(id, updatedData, {
       new: true,
     });
@@ -38,22 +30,15 @@ class CategoryService {
       ...filter,
       $or: [{ name: { $regex: new RegExp(searchTerm, "ig") } }],
     });
-    // console.log(searchTerm, filter, test);
     return test;
   };
-  getAllCategories = async () => {
+  getAllMenu = async () => {
     return await MainModel.find({ status: "active" });
   };
-  getAllCategoriesOrdered = async () => {
+  getAllMenuOrdered = async () => {
     return await MainModel.find({ status: "active" }).sort({
       ordering: -1,
     });
   };
-  getCategoryByMenuId = async (menuId) => {
-    return await MainModel.find({
-      menu_id: menuId,
-      status: "active",
-    });
-  };
 }
-module.exports = new CategoryService();
+module.exports = new MainService();

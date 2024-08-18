@@ -38,13 +38,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
   <div class="card-header">
     <h6 class="card-title">Search & Filter</h6>
     <div class="card-tools">
-      <button
-        type="button"
-        class="btn btn-tool"
-        data-card-widget="collapse"
-        data-toggle="tooltip"
-        title="Collapse"
-      >
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
         <i class="fas fa-minus"></i>
       </button>
     </div>
@@ -65,22 +59,10 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
       <div class="mb-1">
         <form action="<%= listAction %>" method="get">
           <div class="input-group">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              name="keyword"
-              value="<%= searchTerm %>"
-              placeholder="Search for..."
-              style="min-width: 300px"
-            />
+            <input type="text" class="form-control form-control-sm" name="keyword" value="<%= searchTerm %>" placeholder="Search for..." style="min-width: 300px" />
             <input type="hidden" name="status" value="<%= status %>" />
             <div class="input-group-append">
-              <a
-                type="button"
-                class="btn btn-sm btn-danger"
-                href="<%= listAction %>"
-                >Clear</a
-              >
+              <a type="button" class="btn btn-sm btn-danger" href="<%= listAction %>">Clear</a>
               <button type="submit" class="btn btn-sm btn-info" id="btn-search">
                 Search
               </button>
@@ -93,78 +75,39 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
 </div>
 
 <!-- Content -->
-<form
-  action="<%= `${listAction}/multipleAction` %>"
-  method="post"
-  name="multipleForm"
-  id="multiForm"
->
+<form action="<%= `${listAction}/multipleAction` %>" method="post" name="multipleForm" id="multiForm">
   <div class="card card-info card-outline">
     <div class="card-header">
       <h4 class="card-title">List</h4>
       <div class="card-tools">
         <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-info"
-            data-toggle="dropdown"
-            aria-expanded="false"
-          >
+          <button type="button" class="btn btn-info" data-toggle="dropdown" aria-expanded="false">
             Change Status
           </button>
           <div class="dropdown-menu" role="menu">
-            <button
-              type="button"
-              onClick=""
-              class="dropdown-item"
-              data-toggle="modal"
-              data-target="#modal-success"
-            >
+            <button type="button" onClick="" class="dropdown-item" data-toggle="modal" data-target="#modal-success">
               Change to Active
             </button>
             <div class="dropdown-divider"></div>
-            <button
-              type="button"
-              onClick=""
-              class="dropdown-item"
-              data-toggle="modal"
-              data-target="#modal-danger"
-            >
+            <button type="button" onClick="" class="dropdown-item" data-toggle="modal" data-target="#modal-danger">
               Change to Inactive
             </button>
           </div>
         </div>
-        <a
-          href="<%= formAction %>"
-          class="btn btn-warning"
-          style="background-color: #f0ad4e; color: white; font-weight: 500"
-          >Add New</a
-        >
-        <button
-          type="button"
-          class="btn btn-danger"
-          onClick=""
-          data-toggle="modal"
-          data-target="#modal-danger"
-        >
+        <a href="<%= formAction %>" class="btn btn-warning" style="background-color: #f0ad4e; color: white; font-weight: 500">Add New</a>
+        <button type="button" class="btn btn-danger" onClick="" data-toggle="modal" data-target="#modal-danger">
           <i class="fas fa-trash-alt"></i>Delete Multi
         </button>
       </div>
       <input type="hidden" name="action" id="inputHiddenAll" value="" />
     </div>
     <div class="card-body">
-      <table
-        class="table table-bordered table-hover text-nowrap btn-table mb-0"
-      >
+      <table class="table table-bordered table-hover text-nowrap btn-table mb-0">
         <thead>
           <tr>
             <th class="text-center">
               <div class="custom-control custom-checkbox">
-                <input
-                  class="custom-control-input cbAll"
-                  type="checkbox"
-                  id="check-all"
-                />
+                <input class="custom-control-input cbAll" type="checkbox" id="check-all" />
                 <label for="check-all" class="custom-control-label"></label>
               </div>
             </th>
@@ -172,7 +115,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
             <th class="text-center">Name</th>
             <th class="text-center">Status</th>
             <th class="text-center">Ordering</th>
-            <th class="text-center">Slug</th>
+            <th class="text-center">Menu</th>
             <th class="text-center">Action</th>
           </tr>
         </thead>
@@ -182,13 +125,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
           <tr>
             <td class="text-center">
               <div class="custom-control custom-checkbox">
-                <input
-                  class="custom-control-input"
-                  type="checkbox"
-                  name="cid"
-                  id="check1"
-                  value="1"
-                />
+                <input class="custom-control-input" type="checkbox" name="cid" id="check1" value="1" />
                 <label for="check1" class="custom-control-label"></label>
               </div>
             </td>
@@ -197,50 +134,25 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
             </td>
             <td class="text-center"><span><%= item.name %></span></td>
             <td class="text-center position-relative">
-              <a
-                href="#"
-                class="rounded-circle btn btn-sm btn-success update-status-btn"
-                data-id="<%= item._id %>"
-              >
-                <i
-                  class="fas <%= item.status === 'active' ? 'fa-check' : 'fa-times' %>"
-                  data-status="<%= item.status %>"
-                ></i>
+              <a href="#" class="rounded-circle btn btn-sm btn-success update-status-btn" data-id="<%= item._id %>">
+                <i class="fas <%= item.status === 'active' ? 'fa-check' : 'fa-times' %>" data-status="<%= item.status %>"></i>
               </a>
             </td>
             <td class="text-center position-relative">
-              <input
-                type="number"
-                name="items-ordering"
-                value="<%= item.ordering %>"
-                class="text-center ordering"
-                min="1"
-                max="100"
-              />
+              <input type="number" name="items-ordering" value="<%= item.ordering %>" class="text-center ordering" min="1" max="100" data-id="<%= item._id %>" />
             </td>
             <td class="text-center">
-              <input
-                type="text"
-                id="slug"
-                name="slug"
-                class="form-control form-control-sm text-center"
-                value="<%= item.slug || '' %>"
-                readonly
-              />
+              <% if (item.menu_id && item.menu_id.name) { %>
+              <span><%= item.menu_id.name %></span>
+              <% } else { %>
+              <span>No Menu</span>
+              <% } %>
             </td>
             <td class="text-center">
-              <a
-                href="<%= `${formAction}/${item._id}` %>"
-                class="rounded-circle btn btn-sm btn-info"
-                title="Edit"
-              >
+              <a href="<%= `${formAction}/${item._id}` %>" class="rounded-circle btn btn-sm btn-info" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
               </a>
-              <a
-                href="#"
-                class="rounded-circle btn btn-sm btn-danger deleteBtn"
-                data-id="<%= item._id %>"
-              >
+              <a href="#" class="rounded-circle btn btn-sm btn-danger deleteBtn" data-id="<%= item._id %>">
                 <i class="fas fa-trash-alt"></i>
               </a>
             </td>
@@ -261,11 +173,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
       <ul class="pagination pagination-sm m-0 float-right">
         <% for (let i = 1; i <= totalPages; i++) { %>
         <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-          <a
-            class="page-link"
-            href="<%= `${listAction}?page=${i}&status=${status}&keyword=${searchTerm}` %>"
-            ><%= i %></a
-          >
+          <a class="page-link" href="<%= `${listAction}?page=${i}&status=${status}&keyword=${searchTerm}` %>"><%= i %></a>
         </li>
         <% } %>
       </ul>
@@ -273,24 +181,12 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
   </div>
 </form>
 
-<div
-  class="modal fade"
-  id="deleteModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="deleteModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteModalLabel">Confirm delete</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -313,35 +209,18 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
 <div class="flash-message error"><%= errorMessage %></div>
 <% } %>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function() {
     function showStatusMessage(type, message) {
       const statusMessage = document.getElementById("statusMessage");
       statusMessage.className = `flash-message ${type}`;
       statusMessage.textContent = message;
       statusMessage.style.display = "block";
-      setTimeout(function () {
+      setTimeout(function() {
         statusMessage.style.display = "none";
       }, 5000);
     }
 
-    function handleFetch(url, options) {
-      return fetch(url, options)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data.success) {
-            return data;
-          } else {
-            throw new Error(data.message || "Error processing request");
-          }
-        });
-    }
-
-    $("#checkAll").change(function () {
+    $("#checkAll").change(function() {
       const isChecked = $(this).prop("checked");
       $('input[name="checkItem"]').prop("checked", isChecked);
       disableSubmit();
@@ -349,7 +228,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
 
     document.querySelectorAll(".deleteBtn").forEach((button) => {
       let itemIdToDelete;
-      button.addEventListener("click", function (event) {
+      button.addEventListener("click", function(event) {
         event.preventDefault();
         itemIdToDelete = this.getAttribute("data-id");
         $("#deleteModal").modal("show");
@@ -357,7 +236,7 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
 
       document
         .getElementById("confirmDeleteBtn")
-        .addEventListener("click", function () {
+        .addEventListener("click", function() {
           if (itemIdToDelete) {
             window.location.href = `/admin/category/delete/${itemIdToDelete}`;
           }
@@ -365,16 +244,16 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
     });
 
     document.querySelectorAll(".update-status-btn").forEach((button) => {
-      button.addEventListener("click", function (event) {
+      button.addEventListener("click", function(event) {
         event.preventDefault();
         const itemId = this.getAttribute("data-id");
 
         handleFetch(`/admin/category/update-status/${itemId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
           .then((data) => {
             const icon = this.querySelector("i");
             icon.classList.toggle("fa-check", data.status === "active");
@@ -395,4 +274,72 @@ const formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
       }, 5000);
     });
   });
+  let debounceTimer;
+  document.querySelectorAll("input[name='items-ordering']").forEach((input) => {
+    input.addEventListener("input", function() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        updateOrdering(this);
+      }, 300);
+    });
+
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        clearTimeout(debounceTimer);
+        updateOrdering(this);
+      }
+    });
+  });
+
+  function updateOrdering(inputElement) {
+    inputElement.disabled = true;
+
+    const itemId = inputElement.getAttribute("data-id");
+    const newOrdering = inputElement.value;
+
+    handleFetch(`/admin/category/update-ordering/${itemId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ordering: newOrdering
+        }),
+      })
+      .then((data) => {
+        if (data.success) {
+          showStatusMessage("success", "Ordering updated successfully.");
+        } else {
+          showStatusMessage(
+            "error",
+            data.message || "Error updating ordering."
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        showStatusMessage("error", "Error updating ordering.");
+      })
+      .finally(() => {
+        inputElement.disabled = false;
+      });
+  }
+
+  function handleFetch(url, options) {
+    return fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          return data;
+        } else {
+          throw new Error(data.message || "Error processing request");
+        }
+      });
+  }
 </script>

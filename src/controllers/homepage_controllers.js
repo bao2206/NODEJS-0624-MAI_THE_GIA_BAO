@@ -1,20 +1,15 @@
 const CategoryService = require("../services/category_service");
-const ProductService = require("../services/product_service");
-
+const MenuService = require("../services/menu_service");
 class HomepageController {
   getHomepage = async (req, res, next) => {
     try {
-      // Get active categories ordered by 'ordering' field in descending order
-      const categories = await CategoryService.getAllCategoriesOrdered();
+      const menus = await MenuService.getAllMenuOrdered();
 
-      // For each category, get the associated products
-      for (let category of categories) {
-        category.products = await ProductService.getProductsByCategoryId(
-          category._id
-        );
+      for (let menu of menus) {
+        menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
       }
 
-      res.render("frontend/pages/homepage", { layout: "frontend", categories });
+      res.render("frontend/pages/homepage", { layout: "frontend", menus });
     } catch (error) {
       console.log(error);
       res.redirect("/error");

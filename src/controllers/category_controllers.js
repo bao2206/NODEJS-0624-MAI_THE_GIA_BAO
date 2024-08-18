@@ -1,4 +1,6 @@
 const MainService = require("../services/category_service");
+const MenuService = require("../services/menu_service");
+const MainModel = require("../models/category_model");
 const fs = require("fs");
 const upload = require("../middleware/upload");
 const path = require("path");
@@ -6,6 +8,7 @@ const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 const nameRoute = "category";
 class MainController {
+  // Method to handle GET request to list all categories
   getAll = async (req, res, next) => {
     try {
       let status = req.query.status || "all";
@@ -16,6 +19,9 @@ class MainController {
       let items = searchTerm
         ? await MainService.findItem(searchTerm, filter)
         : await MainService.getAllItems(filter);
+
+      // Populate category details
+      items = await MainModel.find(filter).populate("menu_id");
 
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
@@ -47,6 +53,16 @@ class MainController {
       ];
       let successMessage = req.query.successMessage || "";
       let errorMessage = req.query.errorMessage || "";
+      // console.log(
+      //   paginatedItems,
+      //   countStatus,
+      //   // currentPage,
+      //   totalPages,
+      //   searchTerm,
+      //   status,
+      //   successMessage,
+      //   errorMessage
+      // );
       res.render(`admin/pages/${nameRoute}/list`, {
         items: paginatedItems,
         countStatus,
@@ -69,8 +85,17 @@ class MainController {
       if (id) {
         item = await MainService.getEleById(id);
       }
-      res.render(`admin/pages/${nameRoute}/form`, { item, errors: [] });
+
+      // Retrieve the list of active categories
+      const menus = await MenuService.getAllMenu();
+
+      res.render(`admin/pages/${nameRoute}/form`, {
+        item,
+        menus, // Pass categories to the view
+        errors: [],
+      });
     } catch (err) {
+      console.log(err);
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }
   };
@@ -78,8 +103,8 @@ class MainController {
   saveForm = [
     upload("item"),
     body("name")
-      .notEmpty()
-      .withMessage("Name is required.")
+      .isString()
+      .withMessage("Name must be a valid string")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
     body("ordering")
@@ -88,23 +113,26 @@ class MainController {
     body("status")
       .isIn(["active", "inactive"])
       .withMessage("Status must be either 'active' or 'inactive'"),
+    body("menu_id")
+      .optional() // Menu ID is optional
+      .isString()
+      .withMessage("Menu ID must be a valid string"),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const { id, name, status, ordering } = req.body;
+        const { id, name, ordering, status, menu_id } = req.body;
         const item = {
           _id: id,
           name,
-          status,
           ordering,
-          imageUrl: req.file
-            ? `/uploads/item/${req.file.filename}`
-            : req.body.existingImageUrl ||
-              "/uploads/default-image/default-image.jpg",
+          status,
+          menu_id,
         };
-        // Nếu có lỗi, render lại form với các lỗi đó
+        console.log("Tach item", item);
+        const menus = await MenuService.getAllMenu();
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
+          menus, // Ensure this is correctly populated
           errors: errors.array(),
           successMessage: "",
           errorMessage: "Please correct the errors below.",
@@ -114,11 +142,24 @@ class MainController {
     },
     async (req, res, next) => {
       try {
-        const { id, name, status, ordering } = req.body;
-        const slug = slugify(name, { lower: true, strict: true });
+        const { id, name, status, ordering, menu_id } = req.body;
 
+        // Ensure the name is treated as a string
+        const validName = String(name);
+
+        // Generate slug
+        const slug = slugify(validName, { lower: true, strict: true });
+        const newMenu = menu_id || null;
+        const updatedData = {
+          name: validName,
+          slug,
+          status,
+          ordering,
+          menu_id: menu_id || null, // Ensure menu_id is either a valid string or null
+        };
+        console.log("Updated data", updatedData);
         if (id) {
-          const updatedData = { name, status, ordering, slug };
+          // Update existing item
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
             return res.redirect(
@@ -130,7 +171,8 @@ class MainController {
             );
           }
         } else {
-          await MainService.saveItem(name, status, ordering);
+          // Create new item
+          await MainService.saveItem(updatedData);
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
           );
@@ -147,6 +189,7 @@ class MainController {
   deleteItem = async (req, res, next) => {
     try {
       const { id } = req.params;
+
       await MainService.deleteItemById(id);
       res.redirect(
         `/admin/${nameRoute}?successMessage=Item deleted successfully`

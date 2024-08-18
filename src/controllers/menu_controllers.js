@@ -1,13 +1,11 @@
-const MainService = require("../services/product_service");
+const MainService = require("../services/menu_service");
 const CategoryService = require("../services/category_service");
-const MainModel = require("../models/product_model");
 const fs = require("fs");
-const path = require("path");
-const { body, validationResult } = require("express-validator");
 const upload = require("../middleware/upload");
-const nameRoute = "product";
+const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
-class ItemController {
+const nameRoute = "menu";
+class MainController {
   getAll = async (req, res, next) => {
     try {
       let status = req.query.status || "all";
@@ -18,10 +16,6 @@ class ItemController {
       let items = searchTerm
         ? await MainService.findItem(searchTerm, filter)
         : await MainService.getAllItems(filter);
-
-      // Populate category details
-      items = await MainModel.find(filter).populate("category_id");
-
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
       const totalItems = items.length;
@@ -75,23 +69,20 @@ class ItemController {
         item = await MainService.getEleById(id);
       }
 
-      // Retrieve the list of active categories
-      const categories = await CategoryService.getAllCategories();
-
       res.render(`admin/pages/${nameRoute}/form`, {
         item,
-        categories, // Pass categories to the view
         errors: [],
       });
     } catch (err) {
-      console.log(err);
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }
   };
 
   saveForm = [
-    upload("product"),
+    upload("item"),
     body("name")
+      .notEmpty()
+      .withMessage("Name is required.")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
     body("ordering")
@@ -100,31 +91,21 @@ class ItemController {
     body("status")
       .isIn(["active", "inactive"])
       .withMessage("Status must be either 'active' or 'inactive'"),
-    body("price")
-      .isFloat({ min: 0 })
-      .withMessage("Price must be greater than or equal to 0"),
-    body("discount")
-      .isInt({ min: 0, max: 100 })
-      .withMessage("Discount must be between 0 and 100"),
-    body("category_id") // Validating category_id
-      .notEmpty()
-      .withMessage("Category must be selected"),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const { id, ...formData } = req.body;
+        const { id, name, status, ordering } = req.body;
         const item = {
           _id: id,
-          ...formData,
-          image: req.file
-            ? `/uploads/item/${req.file.filename}`
-            : req.body.existingImageUrl ||
-              "/uploads/default-image/default-image.jpg",
+          name: String(name),
+          status,
+          ordering,
+          // category_id: category_id || null, // Ensure category_id is either a valid ID or null
         };
         const categories = await CategoryService.getAllCategories();
+        // If there are validation errors, re-render the form with the errors and current data
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
-          categories, // Ensure this is correctly populated
           errors: errors.array(),
           successMessage: "",
           errorMessage: "Please correct the errors below.",
@@ -134,17 +115,18 @@ class ItemController {
     },
     async (req, res, next) => {
       try {
-        const { id, name, ...formData } = req.body;
-        const image = req.file
-          ? `/uploads/${nameRoute}/${req.file.filename}`
-          : req.body.existingImageUrl ||
-            "/uploads/default-image/default-image.jpg";
-
+        const { id, name, status, ordering } = req.body;
         const slug = slugify(name, { lower: true, strict: true });
 
-        const updatedData = { name, slug, ...formData, image };
+        const updatedData = {
+          name: String(name), // Ensure name is a string
+          status,
+          ordering,
+          slug, // Ensure category_id is either a valid ID or null
+        };
 
         if (id) {
+          // Update existing item
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
             return res.redirect(
@@ -156,6 +138,7 @@ class ItemController {
             );
           }
         } else {
+          // Create new item
           await MainService.saveItem(updatedData);
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
@@ -173,20 +156,6 @@ class ItemController {
   deleteItem = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const item = await MainService.getEleById(id);
-
-      if (item && item.imageUrl) {
-        const imagePath = path.join(
-          __dirname,
-          `../../public/uploads/${nameRoute}`,
-          item.imageUrl.split("/").pop()
-        );
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error("Error deleting image:", err);
-          }
-        });
-      }
       await MainService.deleteItemById(id);
       res.redirect(
         `/admin/${nameRoute}?successMessage=Item deleted successfully`
@@ -246,4 +215,4 @@ class ItemController {
   };
 }
 
-module.exports = new ItemController();
+module.exports = new MainController();

@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
 const upload = require("../middleware/upload");
-const { log } = require("console");
 const nameRoute = "item";
 class ItemController {
   getAll = async (req, res, next) => {
@@ -196,26 +195,38 @@ class ItemController {
       const { id } = req.params;
       const { ordering } = req.body;
 
+      console.log(
+        `Received ordering update for item ID: ${id} with new ordering: ${ordering}`
+      );
+
       if (
-        !Number.isInteger(Number(ordering) || ordering < 1 || ordering > 100)
+        !Number.isInteger(Number(ordering)) ||
+        ordering < 1 ||
+        ordering > 100
       ) {
         return res.status(400).json({
           success: false,
           message: "Ordering must be an integer between 1 and 100.",
         });
       }
+
       const item = await MainService.getEleById(id);
       if (item) {
         await MainService.updateItemById(id, { ordering });
-        console.log("success");
-        res.json({ success: true, message: "Ordering updated successfully" });
+        return res.json({
+          success: true,
+          message: "Ordering updated successfully",
+        });
       } else {
-        console.log("404");
-        res.status(404).json({ success: false, message: "Item not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "Item not found" });
       }
     } catch (err) {
-      console.log("500");
-      res.status(500).json({ success: false, message: "An error occurred" });
+      console.error("Error:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "An error occurred" });
     }
   };
 }
