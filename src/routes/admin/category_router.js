@@ -7,6 +7,9 @@ router.post("/update-status/:id", MainController.updateStatus);
 router.post("/form", MainController.saveForm);
 router.get("/form/:id?", MainController.getForm);
 router.get("/delete/:id", MainController.deleteItem);
+
+//frontend
+router.get("/:slug", MainController.getCategoryBySlug);
 router.get("/", MainController.getAll);
 
 module.exports = router;

@@ -4,9 +4,10 @@ const MainModel = require("../models/product_model");
 const fs = require("fs");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
-const upload = require("../middleware/upload");
+const { uploadProductImages } = require("../middleware/upload");
 const nameRoute = "product";
 const slugify = require("slugify");
+const mongoose = require("mongoose");
 class ItemController {
   getAll = async (req, res, next) => {
     try {
@@ -19,8 +20,9 @@ class ItemController {
         ? await MainService.findItem(searchTerm, filter)
         : await MainService.getAllItems(filter);
 
-      // Populate category details
-      items = await MainModel.find(filter).populate("category_id");
+      let populatedItems = await MainModel.populate(items, {
+        path: "category_id",
+      });
 
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
@@ -28,7 +30,7 @@ class ItemController {
       const totalPages = Math.ceil(totalItems / itemsPerPage);
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-      const paginatedItems = items.slice(startIndex, endIndex);
+      const paginatedItems = populatedItems.slice(startIndex, endIndex);
 
       let countStatus = [
         {
@@ -75,12 +77,11 @@ class ItemController {
         item = await MainService.getEleById(id);
       }
 
-      // Retrieve the list of active categories
       const categories = await CategoryService.getAllCategories();
 
       res.render(`admin/pages/${nameRoute}/form`, {
         item,
-        categories, // Pass categories to the view
+        categories,
         errors: [],
       });
     } catch (err) {
@@ -90,7 +91,7 @@ class ItemController {
   };
 
   saveForm = [
-    upload("product"),
+    uploadProductImages("product"),
     body("name")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
@@ -116,15 +117,21 @@ class ItemController {
         const item = {
           _id: id,
           ...formData,
-          image: req.file
-            ? `/uploads/item/${req.file.filename}`
+          image: req.files.image
+            ? `/uploads/${nameRoute}/${req.files.image[0].filename}`
             : req.body.existingImageUrl ||
+              "/uploads/default-image/default-image.jpg",
+          images: req.files.images
+            ? req.files.images.map(
+                (file) => `/uploads/${nameRoute}/${file.filename}`
+              )
+            : req.body.existingImages ||
               "/uploads/default-image/default-image.jpg",
         };
         const categories = await CategoryService.getAllCategories();
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
-          categories, // Ensure this is correctly populated
+          categories,
           errors: errors.array(),
           successMessage: "",
           errorMessage: "Please correct the errors below.",
@@ -135,18 +142,27 @@ class ItemController {
     async (req, res, next) => {
       try {
         const { id, name, ...formData } = req.body;
-        const image = req.file
-          ? `/uploads/${nameRoute}/${req.file.filename}`
+
+        const image = req.files.image
+          ? `/uploads/${nameRoute}/${req.files.image[0].filename}`
           : req.body.existingImageUrl ||
             "/uploads/default-image/default-image.jpg";
 
+        const images = req.files.images
+          ? req.files.images.map(
+              (file) => `/uploads/${nameRoute}/${file.filename}`
+            )
+          : req.body.existingImages ||
+            "/uploads/default-image/default-image.jpg";
+        console.log("Image variable", image, images);
         const slug = slugify(name, { lower: true, strict: true });
 
-        const updatedData = { name, slug, ...formData, image };
+        const updatedData = { name, slug, ...formData, image, images };
 
         if (id) {
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
+            console.log(image, images);
             return res.redirect(
               `/admin/${nameRoute}?successMessage=Item updated successfully`
             );

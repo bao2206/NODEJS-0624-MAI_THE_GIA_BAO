@@ -1,5 +1,5 @@
 const MainModel = require("../models/category_model");
-
+const ProductModel = require("../models/product_model");
 class CategoryService {
   getEleById = async (id) => {
     return await MainModel.findById(id);
@@ -54,6 +54,10 @@ class CategoryService {
       menu_id: menuId,
       status: "active",
     });
+  };
+  getProductsByCategoryId = async (categoryId) => {
+    const products = await ProductModel.find({ category_id: categoryId });
+    return products;
   };
 }
 module.exports = new CategoryService();

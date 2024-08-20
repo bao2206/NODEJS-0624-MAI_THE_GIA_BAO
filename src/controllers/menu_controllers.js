@@ -1,7 +1,7 @@
 const MainService = require("../services/menu_service");
 const CategoryService = require("../services/category_service");
 const fs = require("fs");
-const upload = require("../middleware/upload");
+const { uploadImage } = require("../middleware/upload");
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
 const nameRoute = "menu";
@@ -79,7 +79,7 @@ class MainController {
   };
 
   saveForm = [
-    upload("item"),
+    uploadImage("item"),
     body("name")
       .notEmpty()
       .withMessage("Name is required.")

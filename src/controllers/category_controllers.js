@@ -1,8 +1,9 @@
 const MainService = require("../services/category_service");
 const MenuService = require("../services/menu_service");
+const ProductService = require("../services/product_service");
 const MainModel = require("../models/category_model");
 const fs = require("fs");
-const upload = require("../middleware/upload");
+const { uploadImage } = require("../middleware/upload");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
@@ -21,7 +22,7 @@ class MainController {
         : await MainService.getAllItems(filter);
 
       // Populate category details
-      items = await MainModel.find(filter).populate("menu_id");
+      let populatedItems = await MainModel.populate(items, { path: "menu_id" });
 
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
@@ -29,7 +30,7 @@ class MainController {
       const totalPages = Math.ceil(totalItems / itemsPerPage);
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-      const paginatedItems = items.slice(startIndex, endIndex);
+      const paginatedItems = populatedItems.slice(startIndex, endIndex);
 
       let countStatus = [
         {
@@ -101,7 +102,7 @@ class MainController {
   };
 
   saveForm = [
-    upload("item"),
+    uploadImage("item"),
     body("name")
       .isString()
       .withMessage("Name must be a valid string")
@@ -245,6 +246,31 @@ class MainController {
     } catch (err) {
       console.log("500");
       res.status(500).json({ success: false, message: "An error occurred" });
+    }
+  };
+  getCategoryBySlug = async (req, res, next) => {
+    try {
+      const { slug } = req.params;
+      // Fetch the category by slug
+      const category = await MainService.getCategoryBySlug(slug);
+      if (!category) {
+        return res.status(404).render("404"); // Render a 404 page if the category is not found
+      }
+
+      // Fetch products belonging to this category
+      const products = await ProductService.getProductsByCategoryId(
+        category._id
+      );
+
+      // Render the category page with the products
+      res.render(`frontend/pages/product/index`, {
+        // category,
+        // products,
+        layout: "frontend",
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
     }
   };
 }

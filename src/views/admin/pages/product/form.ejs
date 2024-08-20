@@ -63,7 +63,7 @@
         <label for="category_id" class="col-sm-2 col-form-label text-sm-right required">Category</label>
         <div class="col-xs-12 col-sm-8">
           <select id="category_id" name="category_id" class="custom-select custom-select-sm">
-            <option value="novalue">Choose Category</option>
+            <option value="">Choose Category</option>
             <% categories.forEach(category => { %>
             <option value="<%= category._id %>" <%= item.category_id && item.category_id.toString() === category._id.toString() ? "selected" : '' %>><%= category.name %></option>
             <% }) %>
@@ -74,7 +74,7 @@
         <label for="status" class="col-sm-2 col-form-label text-sm-right">Status</label>
         <div class="col-xs-12 col-sm-8">
           <select id="status" name="status" class="custom-select custom-select-sm">
-            <option value="novalue">Choose Status</option>
+            <option value="">Choose Status</option>
             <option value="active" <%= item.status === "active" ? "selected" : '' %>>Active</option>
             <option value="inactive" <%= item.status === "inactive" ? "selected" : '' %>>Inactive</option>
           </select>
@@ -94,80 +94,79 @@
         </div>
       </div>
 
-      <!-- Image Upload Field -->
+      <!-- Image Upload Field for Main Image -->
       <div class="form-group row">
-        <label for="image" class="col-sm-2 col-form-label text-sm-right">Image</label>
+        <label for="image" class="col-sm-2 col-form-label text-sm-right">Main Image</label>
         <div class="col-xs-12 col-sm-8">
           <input type="file" name="image" class="form-control form-control-sm" id="image-input" />
-          <input type="hidden" name="existingImageUrl" value="<%= item.image || '' %>" />
           <% if (item.image) { %>
-          <div id="imageContainer">
-            <img id="imageElement" src="<%= item.image %>" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
-            <button id="deleteButton" class="btn btn-sm btn-danger">Delete Image</button>
+          <div id="mainImageContainer">
+            <img id="main-image-preview" src="<%= item.image %>" alt="Product Main Image" style="max-width: 100px; max-height: 100px;" />
+            <button id="deleteMainImageButton" class="btn btn-sm btn-danger" type="button">Delete Image</button>
           </div>
           <% } else { %>
-          <div id="image-preview"></div>
+          <div id="main-image-preview"></div>
           <% } %>
         </div>
       </div>
-    </div>
 
-    <!-- Submit and Cancel Buttons -->
-    <div class="card-footer">
-      <div class="col-12 col-sm-8 offset-sm-2">
-        <button type="submit" class="btn btn-sm btn-success mr-1"><%= isEditing ? "Update" : "Add" %></button>
-        <a href="/admin/<%= collection %>" class="btn btn-sm btn-danger mr-1">Cancel</a>
+      <!-- Image Upload Field for Detail Images -->
+      <div class="form-group row">
+        <label for="images" class="col-sm-2 col-form-label text-sm-right">Detail Images</label>
+        <div class="col-xs-12 col-sm-8">
+          <input type="file" name="images" class="form-control form-control-sm" id="images-input" multiple />
+          <div id="imageContainer">
+            <% if (item.images && item.images.length > 0) { %>
+            <% item.images.forEach((image, index) => { %>
+            <div class="image-preview">
+              <img src="<%= image %>" alt="Product Detail Image <%= index + 1 %>" style="max-width: 100px; max-height: 100px;" />
+              <button type="button" class="btn btn-sm btn-danger deleteButton" data-index="<%= index %>">Delete</button>
+            </div>
+            <% }); %>
+            <% } %>
+          </div>
+        </div>
       </div>
-    </div>
+      <!-- Submit and Cancel Buttons -->
+      <div class="card-footer">
+        <div class="col-12 col-sm-8 offset-sm-2">
+          <button type="submit" class="btn btn-sm btn-success mr-1"><%= isEditing ? "Update" : "Add" %></button>
+          <a href="/admin/<%= collection %>" class="btn btn-sm btn-danger mr-1">Cancel</a>
+        </div>
+      </div>
   </form>
 </div>
-
 <script>
-  document.getElementById('image-input').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
+  document.getElementById('images-input').addEventListener('change', function(event) {
+    const files = event.target.files;
+    const imageContainer = document.getElementById('imageContainer');
+    imageContainer.innerHTML = ''; // Xóa các preview trước đó
+
+    Array.from(files).forEach((file, index) => {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const imageContainer = document.getElementById('imageContainer');
-        let imageElement = document.getElementById('imageElement');
-        const imagePreview = document.getElementById('image-preview');
+        const imageWrapper = document.createElement('div');
+        imageWrapper.className = 'image-preview';
 
-        if (imageElement) {
-          imageElement.src = e.target.result;
-        } else {
-          imagePreview.innerHTML = '<img id="imageElement" src="' + e.target.result + '" alt="Image Preview" style="max-width: 100px; max-height: 100px;" />';
-          imageContainer.appendChild(imagePreview);
-        }
+        const imgElement = document.createElement('img');
+        imgElement.src = e.target.result;
+        imgElement.style.maxWidth = '100px';
+        imgElement.style.maxHeight = '100px';
 
-        let deleteButton = document.getElementById('deleteButton');
-        if (!deleteButton) {
-          deleteButton = document.createElement('button');
-          deleteButton.id = 'deleteButton';
-          deleteButton.className = 'btn btn-sm btn-danger';
-          deleteButton.innerText = 'Delete Image';
-          deleteButton.type = 'button';
-          imageContainer.appendChild(deleteButton);
-          deleteButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            imageElement.remove();
-            deleteButton.remove();
-          });
-        }
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-sm btn-danger deleteButton';
+        deleteButton.textContent = 'Delete';
+        deleteButton.type = 'button';
+
+        deleteButton.addEventListener('click', function() {
+          imageWrapper.remove();
+        });
+
+        imageWrapper.appendChild(imgElement);
+        imageWrapper.appendChild(deleteButton);
+        imageContainer.appendChild(imageWrapper);
       };
       reader.readAsDataURL(file);
-    }
-  });
-
-  const deleteButton = document.getElementById('deleteButton');
-  if (deleteButton) {
-    deleteButton.addEventListener('click', function(event) {
-      event.preventDefault();
-
-      const imageElement = document.getElementById('imageElement');
-      if (imageElement) {
-        imageElement.remove();
-      }
-      deleteButton.remove();
     });
-  }
+  });
 </script>

@@ -2,7 +2,7 @@ const MainService = require("../services/item_service");
 const fs = require("fs");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
-const upload = require("../middleware/upload");
+const { uploadImage } = require("../middleware/upload");
 const nameRoute = "item";
 class ItemController {
   getAll = async (req, res, next) => {
@@ -74,7 +74,7 @@ class ItemController {
     }
   };
   saveForm = [
-    upload("item"),
+    uploadImage("item"),
     body("name")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
@@ -94,7 +94,7 @@ class ItemController {
           status,
           ordering,
           imageUrl: req.file
-            ? `/uploads/item/${req.file.filename}`
+            ? `/uploads/${nameRoute}/${req.file.filename}`
             : req.body.existingImageUrl ||
               "/uploads/default-image/default-image.jpg",
         };
