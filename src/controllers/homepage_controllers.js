@@ -9,30 +9,24 @@ class HomepageController {
       for (let menu of menus) {
         menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
       }
+      let link = 'frontend/pages/homepage'
       switch (slug) {
         case "contact":
-          res.render("frontend/pages/contact/index", {
-            layout: "frontend/pages/contact/index",
-          });
+           link = 'frontend/pages/contact'
           break;
         case "about-us":
-          res.render("frontend/pages/about/index", {
-            layout: "frontend/pages/about/index",
-            menus,
-          });
+          link = 'frontend/pages/about'
           break;
         case "blog":
-          res.render("frontend/pages/blog/index", {
-            layout: "frontend/pages/blog/index",
-          });
-          break;
-        default:
-          res.render("frontend", {
-            layout: "frontend",
-            menus,
-          });
+           link = 'frontend/pages/blog'
           break;
       }
+
+      res.render(link, {
+        layout: "frontend",
+        menus,
+      });
+      
     } catch (error) {
       console.log(error);
       res.redirect("/error");
