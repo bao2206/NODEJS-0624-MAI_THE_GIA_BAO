@@ -39,5 +39,11 @@ class MainService {
       status: "active",
     });
   };
+  findBySlug = async ({ slug }) => {
+    return await MainModel.findOne({ slug });
+  };
+  findByParam = async (params) => {
+    return await MainModel.find(params);
+  };
 }
 module.exports = new MainService();

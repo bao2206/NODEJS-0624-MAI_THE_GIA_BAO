@@ -248,31 +248,6 @@ class MainController {
       res.status(500).json({ success: false, message: "An error occurred" });
     }
   };
-  getCategoryBySlug = async (req, res, next) => {
-    try {
-      const { slug } = req.params;
-      // Fetch the category by slug
-      const category = await MainService.getCategoryBySlug(slug);
-      if (!category) {
-        return res.status(404).render("404"); // Render a 404 page if the category is not found
-      }
-
-      // Fetch products belonging to this category
-      const products = await ProductService.getProductsByCategoryId(
-        category._id
-      );
-
-      // Render the category page with the products
-      res.render(`frontend/pages/product/index`, {
-        // category,
-        // products,
-        layout: "frontend",
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Server Error");
-    }
-  };
 }
 
 module.exports = new MainController();

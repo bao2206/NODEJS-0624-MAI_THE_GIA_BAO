@@ -1,31 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta http-equiv="x-ua-compatible" content="IE=edge" />
-  <meta name="author" content="SemiColonWeb" />
-  <meta name="description" content="Get Canvas to build powerful websites easily with the Highly Customizable &amp; Best Selling Bootstrap Template, today." />
-
-  <!-- Font Imports -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet" />
-
-  <!-- Core Style -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Font Icons -->
-  <link rel="stylesheet" href="css/font-icons.css" />
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="css/custom.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Document Title
-	============================================= -->
-  <title>Shop - Layout 2 | Canvas</title>
-</head>
+<%- include('../../element/header.ejs') %>
 
 <body class="stretched">
   <!-- Document Wrapper
@@ -106,29 +82,7 @@
 
             <!-- Primary Navigation
 						============================================= -->
-            <nav class="primary-menu">
-              <ul class="menu-container">
-                <% menus.forEach(menu => { %>
-                <li class="menu-item">
-                  <a class="menu-link" href="#">
-                    <div><%= menu.name %></div>
-                  </a>
-                  <% if (menu.categories.length > 0) { %>
-                  <ul class="sub-menu-container">
-                    <% menu.categories.forEach(category => { %>
-                    <li class="menu-item">
-                      <a class="menu-link" href="/category/<%= category.slug %>">
-                        <div><%= category.name %></div>
-                      </a>
-                    </li>
-                    <% }) %>
-                  </ul>
-                  <% } %>
-                </li>
-                <% }) %>
-              </ul>
-            </nav>
-
+            <%- include('../../element/navbar.ejs',{menus: menus}) %>
             <!-- #primary-menu end -->
 
             <form class="top-search-form" action="search.html" method="get">

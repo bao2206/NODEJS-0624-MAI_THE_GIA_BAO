@@ -91,7 +91,7 @@ class ItemController {
   };
 
   saveForm = [
-    uploadProductImages("product"),
+    uploadProductImages(),
     body("name")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
@@ -107,26 +107,25 @@ class ItemController {
     body("discount")
       .isInt({ min: 0, max: 100 })
       .withMessage("Discount must be between 0 and 100"),
-    body("category_id") // Validating category_id
-      .notEmpty()
-      .withMessage("Category must be selected"),
+    body("category_id").notEmpty().withMessage("Category must be selected"),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         const { id, ...formData } = req.body;
+
+        // Tạo đối tượng item từ dữ liệu cũ hoặc mới
+        const oldItem = id ? await MainService.getEleById(id) : {};
         const item = {
           _id: id,
           ...formData,
           image: req.files.image
-            ? `/uploads/${nameRoute}/${req.files.image[0].filename}`
-            : req.body.existingImageUrl ||
-              "/uploads/default-image/default-image.jpg",
+            ? `/uploads/product/${id || "temp"}/${req.files.image[0].filename}`
+            : oldItem.image || "/uploads/default-image/default-image.jpg",
           images: req.files.images
             ? req.files.images.map(
-                (file) => `/uploads/${nameRoute}/${file.filename}`
+                (file) => `/uploads/product/${id || "temp"}/${file.filename}`
               )
-            : req.body.existingImages ||
-              "/uploads/default-image/default-image.jpg",
+            : oldItem.images || ["/uploads/default-image/default-image.jpg"],
         };
         const categories = await CategoryService.getAllCategories();
         return res.render(`admin/pages/${nameRoute}/form`, {
@@ -142,23 +141,26 @@ class ItemController {
     async (req, res, next) => {
       try {
         const { id, name, ...formData } = req.body;
+        let productId = id || new mongoose.Types.ObjectId(); // Tạo ID mới nếu không có ID
+        console.log(req.body.id);
+        // Lấy thông tin sản phẩm cũ từ DB nếu có ID
+        const oldItem = id ? await MainService.getEleById(id) : {};
 
         const image = req.files.image
-          ? `/uploads/${nameRoute}/${req.files.image[0].filename}`
-          : req.body.existingImageUrl ||
-            "/uploads/default-image/default-image.jpg";
+          ? `/uploads/product/${productId}/${req.files.image[0].filename}`
+          : oldItem.image || "/uploads/default-image/default-image.jpg";
 
         const images = req.files.images
           ? req.files.images.map(
-              (file) => `/uploads/${nameRoute}/${file.filename}`
+              (file) => `/uploads/product/${productId}/${file.filename}`
             )
-          : req.body.existingImages ||
-            "/uploads/default-image/default-image.jpg";
+          : oldItem.images || ["/uploads/default-image/default-image.jpg"];
+
         console.log("Image variable", image, images);
         const slug = slugify(name, { lower: true, strict: true });
 
         const updatedData = { name, slug, ...formData, image, images };
-
+        console.log(updatedData);
         if (id) {
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
@@ -172,7 +174,23 @@ class ItemController {
             );
           }
         } else {
-          await MainService.saveItem(updatedData);
+          // Lưu sản phẩm mới
+          const newItem = await MainService.saveItem(updatedData);
+
+          // Đổi tên thư mục từ "temp" thành productId thực sự
+          const oldDir = path.join(
+            __dirname,
+            `../../public/uploads/product/temp`
+          );
+          const newDir = path.join(
+            __dirname,
+            `../../public/uploads/product/${newItem._id}`
+          );
+
+          if (fs.existsSync(oldDir)) {
+            fs.renameSync(oldDir, newDir);
+          }
+
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
           );
@@ -185,24 +203,22 @@ class ItemController {
       }
     },
   ];
-
   deleteItem = async (req, res, next) => {
     try {
       const { id } = req.params;
       const item = await MainService.getEleById(id);
 
-      if (item && item.imageUrl) {
-        const imagePath = path.join(
+      if (item) {
+        const dirPath = path.join(
           __dirname,
-          `../../public/uploads/${nameRoute}`,
-          item.imageUrl.split("/").pop()
+          `../../public/uploads/product/${id}`
         );
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error("Error deleting image:", err);
-          }
-        });
+
+        if (fs.existsSync(dirPath)) {
+          fs.rmSync(dirPath, { recursive: true, force: true });
+        }
       }
+
       await MainService.deleteItemById(id);
       res.redirect(
         `/admin/${nameRoute}?successMessage=Item deleted successfully`

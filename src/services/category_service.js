@@ -59,5 +59,8 @@ class CategoryService {
     const products = await ProductModel.find({ category_id: categoryId });
     return products;
   };
+  findBySlug = async ({ slug }) => {
+    return await MainModel.findOne({ slug });
+  };
 }
 module.exports = new CategoryService();

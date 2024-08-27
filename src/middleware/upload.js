@@ -1,7 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-
+const mongoose = require("mongoose");
 function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png|gif/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -40,11 +40,19 @@ const uploadImage = (type) => {
   }).single("image"); // Adjust the fieldname to your form field name
 };
 
-const uploadProductImages = (type) => {
+const uploadProductImages = () => {
   return multer({
     storage: multer.diskStorage({
       destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname, `../../public/uploads/${type}`);
+        let productId = req.body.id || new mongoose.Types.ObjectId().toString();
+
+        // Update the productId in the request body if not exists (for new products)
+        req.body.id = productId;
+
+        const uploadDir = path.join(
+          __dirname,
+          `../../public/uploads/product/${productId}`
+        );
         if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
         }
