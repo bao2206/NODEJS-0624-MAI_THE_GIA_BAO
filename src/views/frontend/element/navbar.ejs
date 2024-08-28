@@ -1,22 +1,107 @@
-<nav class="primary-menu primary-menu-init">
-  <ul class="menu-container">
-    <% menus.forEach(menu => { %>
-    <li class="menu-item">
-      <a class="menu-link" href="<%=menu.slug %>">
-        <div><%= menu.name %></div>
-      </a>
-      <% if (menu.categories.length > 0) { %>
-      <ul class="sub-menu-container">
-        <% menu.categories.forEach(category => { %>
-        <li class="menu-item">
-          <a class="menu-link" href="/category/<%= category.slug %>">
-            <div><%= category.name %></div>
+<header id="header" class="header-size-md dark transparent-header" data-sticky-shrink="false" data-sticky-class="not-dark">
+  <div id="header-wrap">
+    <div class="container-fluid">
+      <div class="header-row justify-content-lg-between">
+
+        <!-- Logo
+        ============================================= -->
+        <div id="logo" class="me-lg-auto me-0 order-lg-2 col-lg-auto">
+          <a href="demo-shop-2.html">
+            <img class="logo-default" srcset="/frontend/dist/images/logo.png, /frontend/dist/images/logo@2x.png 2x" src="/frontend/dist/images/logo@2x.png" alt="Canvas Logo">
+            <img class="logo-dark" srcset="/frontend/dist/images/logo-dark.png, /frontend/dist/images/logo-dark@2x.png 2x" src="/frontend/dist/images/logo-dark@2x.png" alt="Canvas Logo">
           </a>
-        </li>
-        <% }) %>
-      </ul>
-      <% } %>
-    </li>
-    <% }) %>
-  </ul>
-</nav>
+        </div><!-- #logo end -->
+
+        <!-- Primary Navigation
+        ============================================= -->
+
+
+        <div class="header-misc col-lg-auto order-lg-4 ms-auto ms-lg-0 justify-content-lg-end ">
+
+          <!-- Top Login
+          ============================================= -->
+          <div id="top-account" class="header-misc-icon px-3">
+            <a href="#"><i class="bi-people"></i></a>
+          </div><!-- #top-search end -->
+
+          <!-- Top Cart
+          ============================================= -->
+          <div id="top-cart" class="header-misc-icon">
+            <a href="#" id="top-cart-trigger"><i class="uil uil-shopping-bag"></i></a>
+            <div class="top-cart-content">
+              <div class="top-cart-title">
+                <h4 class="text-dark">Shopping Cart</h4>
+              </div>
+              <div class="top-cart-items">
+                <div class="top-cart-item">
+                  <div class="top-cart-item-image">
+                    <a href="#"><img src="/frontend/dist/images/cart-thumb-1.jpg" alt="Black Monk Table Jar"></a>
+                  </div>
+                  <div class="top-cart-item-desc">
+                    <div class="top-cart-item-desc-title">
+                      <a href="#" class="fw-normal">Black Monk Table Jar</a>
+                      <span class="top-cart-item-price d-block">$129.00</span>
+                    </div>
+                    <div class="top-cart-item-quantity fw-semibold">x 1</div>
+                  </div>
+                </div>
+                <div class="top-cart-item">
+                  <div class="top-cart-item-image">
+                    <a href="#" class="fw-normal"><img src="/frontend/dist/images/cart-thumb-2.jpg" alt="White Big Showcase Jar"></a>
+                  </div>
+                  <div class="top-cart-item-desc">
+                    <div class="top-cart-item-desc-title">
+                      <a href="#" class="fw-normal">White Big Showcase Jar</a>
+                      <span class="top-cart-item-price d-block">$299.99</span>
+                    </div>
+                    <div class="top-cart-item-quantity fw-semibold">x 1</div>
+                  </div>
+                </div>
+              </div>
+              <div class="top-cart-action">
+                <span class="top-checkout-price fw-semibold text-dark">$429.98</span>
+                <button class="button button-mini rounded-pill button-border text-dark h-text-color m-0">View Cart</button>
+              </div>
+            </div>
+          </div><!-- #top-cart end -->
+        </div>
+
+        <div class="primary-menu-trigger">
+          <button class="cnvs-hamburger" type="button" title="Open Mobile Menu">
+            <span class="cnvs-hamburger-box"><span class="cnvs-hamburger-inner"></span></span>
+          </button>
+        </div>
+
+        <!-- Primary Navigation
+        ============================================= -->
+        <nav class="primary-menu">
+          <ul class="menu-container">
+            <% menus.forEach(menu => { %>
+            <li class="menu-item">
+              <a class="menu-link" href="<%= menu.link %>">
+                <div><%= menu.name %></div>
+              </a>
+              <% if (menu.categories && menu.categories.length > 0) { %>
+              <ul class="sub-menu-container">
+                <% menu.categories.forEach(category => { %>
+                <li class="menu-item">
+                  <a class="menu-link" href="<%= category.link %>">
+                    <div><%= category.name %></div>
+                  </a>
+                </li>
+                <% }); %>
+              </ul>
+              <% } %>
+            </li>
+            <% }); %>
+          </ul>
+        </nav>
+
+      </div>
+
+    </div>
+
+  </div>
+  <div class="header-wrap-clone"></div>
+
+</header><!-- #header end -->

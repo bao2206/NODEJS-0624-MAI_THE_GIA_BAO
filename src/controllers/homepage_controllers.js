@@ -9,16 +9,16 @@ class HomepageController {
       for (let menu of menus) {
         menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
       }
-      let link = 'frontend/pages/homepage'
+      let link = "frontend/pages/homepage";
       switch (slug) {
         case "contact":
-           link = 'frontend/pages/contact'
+          link = "frontend/pages/contact";
           break;
         case "about-us":
-          link = 'frontend/pages/about'
+          link = "frontend/pages/about";
           break;
         case "blog":
-           link = 'frontend/pages/blog'
+          link = "frontend/pages/blog";
           break;
       }
 
@@ -26,7 +26,6 @@ class HomepageController {
         layout: "frontend",
         menus,
       });
-      
     } catch (error) {
       console.log(error);
       res.redirect("/error");
