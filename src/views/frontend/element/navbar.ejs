@@ -10,11 +10,25 @@
             <img class="logo-default" srcset="/frontend/dist/images/logo.png, /frontend/dist/images/logo@2x.png 2x" src="/frontend/dist/images/logo@2x.png" alt="Canvas Logo">
             <img class="logo-dark" srcset="/frontend/dist/images/logo-dark.png, /frontend/dist/images/logo-dark@2x.png 2x" src="/frontend/dist/images/logo-dark@2x.png" alt="Canvas Logo">
           </a>
-        </div><!-- #logo end -->
-
+        </div>
         <!-- Primary Navigation
         ============================================= -->
+        <nav class="primary-menu me-lg-0 order-lg-3 order-5">
 
+          <!-- Menu Left -->
+          <ul class="menu-container">
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>FAQs</div>
+              </a></li>
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>Journal</div>
+              </a></li><!-- .mega-menu end -->
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>Contact</div>
+              </a></li>
+          </ul>
+
+        </nav><!-- #primary-menu end -->
 
         <div class="header-misc col-lg-auto order-lg-4 ms-auto ms-lg-0 justify-content-lg-end ">
 
@@ -74,34 +88,27 @@
 
         <!-- Primary Navigation
         ============================================= -->
-        <nav class="primary-menu">
+        <nav class="primary-menu with-arrows col-lg-auto me-lg-auto order-lg-1">
+
+          <!-- Menu Left -->
           <ul class="menu-container">
-            <% menus.forEach(menu => { %>
-            <li class="menu-item">
-              <a class="menu-link" href="<%= menu.link %>">
-                <div><%= menu.name %></div>
-              </a>
-              <% if (menu.categories && menu.categories.length > 0) { %>
-              <ul class="sub-menu-container">
-                <% menu.categories.forEach(category => { %>
-                <li class="menu-item">
-                  <a class="menu-link" href="<%= category.link %>">
-                    <div><%= category.name %></div>
-                  </a>
-                </li>
-                <% }); %>
-              </ul>
-              <% } %>
-            </li>
-            <% }); %>
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>Home</div>
+              </a></li>
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>Products</div>
+              </a></li>
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>New Arrivals</div>
+              </a></li>
+            <li class="menu-item"><a class="menu-link" href="#">
+                <div>Offers</div>
+              </a></li>
           </ul>
-        </nav>
 
+        </nav><!-- #primary-menu end -->
       </div>
-
     </div>
-
   </div>
   <div class="header-wrap-clone"></div>
-
 </header><!-- #header end -->
