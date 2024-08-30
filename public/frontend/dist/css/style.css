@@ -17421,6 +17421,7 @@ body:not(.is-expanded-menu) #header:not([data-mobile-sticky=true]) .header-wrap-
 .is-expanded-menu #header.transparent-header {
   --cnvs-header-bg: transparent;
   border-bottom: 0;
+
 }
 .is-expanded-menu #header.transparent-header:not(.sticky-header) #header-wrap {
   border-bottom: 1px solid transparent;

@@ -1,34 +1,76 @@
 var express = require("express");
 var router = express.Router();
-const HomepageController = require("../../controllers/homepage_controllers");
+// const HomepageController = require("../../controllers/homepage_controllers");
 const CategoryService = require("../../services/category_service");
+const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
+const populateCategoriesForMenu = async (menus) => {
+  try {
+    await Promise.all(
+      menus.map(async (menu) => {
+        menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
+      })
+    );
+    return menus;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 router.get("/:slug", async (req, res, next) => {
   const { slug } = req.params;
-  //for category
+  const menus = await MenuService.getAllMenuOrdered();
+  await populateCategoriesForMenu(menus);
   const categoriesWithSlug = await CategoryService.findBySlug(slug);
+
   if (categoriesWithSlug) {
     const products = await ProductService.findByParam({
-      idCategory: categoriesWithSlug._id,
+      category_id: categoriesWithSlug._id,
     });
+    console.log("Check");
     return res.render("frontend/pages/product", {
       category: categoriesWithSlug,
       products,
       layout: "frontend",
+      menus,
     });
   }
-
-  //for product detail
   const productWithSlug = await ProductService.findBySlug(slug);
   if (productWithSlug) {
-    return res.render("frontend/pages/detail", {
+    return res.render("frontend/pages/detailproduct", {
       products: productWithSlug,
       layout: "frontend",
+      menus,
     });
   }
   next();
 });
-router.get("/:slug?", HomepageController.getHomepage);
-// slug switch case
+router.get("/:slug?", async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    const menus = await MenuService.getAllMenuOrdered();
+    await populateCategoriesForMenu(menus);
+    let link = "frontend/pages/homepage";
+    switch (slug) {
+      case "contact":
+        link = "frontend/pages/contact";
+        break;
+      case "about-us":
+        link = "frontend/pages/about";
+        break;
+      case "blog":
+        link = "frontend/pages/blog";
+        break;
+    }
+
+    res.render(link, {
+      layout: "frontend",
+      menus,
+    });
+  } catch (error) {
+    console.log(error);
+    res.redirect("/error");
+  }
+});
+
 module.exports = router;

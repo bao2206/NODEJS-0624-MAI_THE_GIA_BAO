@@ -23,9 +23,7 @@
             <li class="menu-item"><a class="menu-link" href="#">
                 <div>Journal</div>
               </a></li><!-- .mega-menu end -->
-            <li class="menu-item"><a class="menu-link" href="#">
-                <div>Contact</div>
-              </a></li>
+
           </ul>
 
         </nav><!-- #primary-menu end -->
@@ -92,18 +90,24 @@
 
           <!-- Menu Left -->
           <ul class="menu-container">
-            <li class="menu-item"><a class="menu-link" href="#">
-                <div>Home</div>
-              </a></li>
-            <li class="menu-item"><a class="menu-link" href="#">
-                <div>Products</div>
-              </a></li>
-            <li class="menu-item"><a class="menu-link" href="#">
-                <div>New Arrivals</div>
-              </a></li>
-            <li class="menu-item"><a class="menu-link" href="#">
-                <div>Offers</div>
-              </a></li>
+            <% menus.forEach(menu => { %>
+            <li class="menu-item">
+              <a class="menu-link" href="<%= menu.slug %>">
+                <div><%= menu.name %></div>
+              </a>
+              <% if (menu.categories && menu.categories.length > 0) { %>
+              <ul class="sub-menu-container">
+                <% menu.categories.forEach(category => { %>
+                <li class="menu-item">
+                  <a class="menu-link" href="<%= category.slug %>">
+                    <div><%= category.name %></div>
+                  </a>
+                </li>
+                <% }); %>
+              </ul>
+              <% } %>
+            </li>
+            <% }); %>
           </ul>
 
         </nav><!-- #primary-menu end -->
