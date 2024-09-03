@@ -5,7 +5,7 @@ class MainService {
     return await MainModel.findById(id);
   };
   saveItem = async (productData) => {
-    await MainModel.create(productData);
+    return await MainModel.create(productData);
   };
   getAllItems = async (filter) => {
     return await MainModel.find(filter);
@@ -44,6 +44,12 @@ class MainService {
   };
   findByParam = async (params) => {
     return await MainModel.find(params);
+  };
+  // lấy tất cả sản phẩm đặc biệt render
+  getProductIsSpecial = async () => {
+    return await MainModel.find({
+      isSpecial: true,
+    });
   };
 }
 module.exports = new MainService();

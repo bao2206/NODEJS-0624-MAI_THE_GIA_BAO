@@ -146,20 +146,30 @@ class ItemController {
         // Lấy thông tin sản phẩm cũ từ DB nếu có ID
         const oldItem = id ? await MainService.getEleById(id) : {};
 
-        const image = req.files.image
-          ? `/uploads/product/${productId}/${req.files.image[0].filename}`
-          : oldItem.image || "/uploads/default-image/default-image.jpg";
+        const image =
+          req.files && req.files.image
+            ? `/uploads/product/${productId}/${req.files.image[0].filename}`
+            : oldItem.image || "/uploads/default-image/default-image.jpg";
 
-        const images = req.files.images
-          ? req.files.images.map(
-              (file) => `/uploads/product/${productId}/${file.filename}`
-            )
-          : oldItem.images || ["/uploads/default-image/default-image.jpg"];
+        const images =
+          req.files && req.files.images
+            ? req.files.images.map(
+                (file) => `/uploads/product/${productId}/${file.filename}`
+              )
+            : oldItem.images || ["/uploads/default-image/default-image.jpg"];
 
-        console.log("Image variable", image, images);
+        // console.log("Image variable", image, images);
         const slug = slugify(name, { lower: true, strict: true });
 
-        const updatedData = { name, slug, ...formData, image, images };
+        const isSpecial = req.body.isSpecial === "on";
+        const updatedData = {
+          name,
+          slug,
+          isSpecial,
+          ...formData,
+          image,
+          images,
+        };
         console.log(updatedData);
         if (id) {
           const item = await MainService.updateItemById(id, updatedData);
@@ -174,23 +184,10 @@ class ItemController {
             );
           }
         } else {
+          // console.log("Save product");
+          // console.log(updatedData);
           // Lưu sản phẩm mới
-          const newItem = await MainService.saveItem(updatedData);
-
-          // Đổi tên thư mục từ "temp" thành productId thực sự
-          const oldDir = path.join(
-            __dirname,
-            `../../public/uploads/product/temp`
-          );
-          const newDir = path.join(
-            __dirname,
-            `../../public/uploads/product/${newItem._id}`
-          );
-
-          if (fs.existsSync(oldDir)) {
-            fs.renameSync(oldDir, newDir);
-          }
-
+          await MainService.saveItem(updatedData);
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
           );

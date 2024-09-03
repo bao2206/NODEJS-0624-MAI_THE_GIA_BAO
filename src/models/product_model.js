@@ -21,7 +21,11 @@ const productSchema = new Schema(
       ref: "Category",
       required: true,
     },
-    isSpecial: { type: Boolean, default: false },
+    isSpecial: {
+      type: Boolean,
+      default: false,
+      set: (value) => value === "on" || value === true,
+    },
     slug: { type: String, unique: true },
     status: { type: String, enum: ["active", "inactive"], default: "inactive" },
     ordering: {

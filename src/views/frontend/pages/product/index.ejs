@@ -1,1 +1,161 @@
-<h1>Test</h1>
+<section class="page-title page-title-parallax parallax scroll-detect dark page-title-center include-header bg-overlay-mask" style="padding: 170px 0 100px;">
+  <img src="/frontend/dist/images/men/page-title.jpg" class="parallax-bg">
+  <div class="container">
+    <div class="page-title-row">
+
+      <div class="page-title-content">
+        <h1 class="text-uppercase">Men's Collections</h1>
+        <span>A Fresh Collections Of Men</span>
+      </div>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Men</li>
+        </ol>
+      </nav>
+
+    </div>
+  </div>
+</section><!-- .page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+  <div class="content-wrap pb-0">
+
+    <!-- Login/Register Modal -->
+    <div class="modal-register mfp-hide" id="modal-register">
+      <div class="card mx-auto" style="max-width: 540px;">
+        <div class="card-header py-3 bg-transparent text-center">
+          <h3 class="mb-0 fw-normal">Hello, Welcome Back</h3>
+        </div>
+        <div class="card-body mx-auto py-5" style="max-width: 70%;">
+
+          <a href="#" class="button button-large w-100 bg-facebook text-transform-none fw-normal ls-0 text-center m-0"><i class="fa-brands fa-facebook-f"></i> Log in with Facebook</a>
+
+          <div class="divider divider-center"><span class="position-relative" style="top: -2px">OR</span></div>
+
+          <form id="login-form" name="login-form" class="mb-0 row" action="#" method="post">
+
+            <div class="col-12">
+              <input type="text" id="login-form-username" name="login-form-username" value="" class="form-control not-dark" placeholder="Username">
+            </div>
+
+            <div class="col-12 mt-4">
+              <input type="password" id="login-form-password" name="login-form-password" value="" class="form-control not-dark" placeholder="Password">
+            </div>
+
+            <div class="col-12 text-end">
+              <a href="#" class="text-dark fw-light mt-2">Forgot Password?</a>
+            </div>
+
+            <div class="col-12 mt-4">
+              <button class="button w-100 m-0" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer py-4 text-center">
+          <p class="mb-0">Don't have an account? <a href="#"><u>Sign up</u></a></p>
+        </div>
+      </div>
+    </div><!-- Login/Register Modal End -->
+
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div class="col-md-2 sticky-sidebar-wrap">
+          <ul class="list-unstyled items-nav sticky-sidebar shop-filter" data-container="#shop">
+            <li><a href="#" class="text-dark fw-semibold" data-filter="*">All Collections</a></li>
+            <li class="no-divider"><a href="#" class="text-dark fw-semibold" data-filter=".sf-new">New Arrivals</a></li>
+            <li>
+              <hr>
+            </li>
+            <li><a href="#" data-filter=".sf-jeans">Jeans</a></li>
+            <li><a href="#" data-filter=".sf-t-shirts">T-Shirts</a></li>
+            <li><a href="#" data-filter=".sf-watches">Watches</a></li>
+            <li><a href="#" data-filter=".sf-shoes">Shoes</a></li>
+            <li><a href="#" data-filter=".sf-sportswear">Sportswear</a></li>
+            <li><a href="#" data-filter=".sf-shorts">Shorts</a></li>
+            <li><a href="#" data-filter=".sf-trousers">Trousers</a></li>
+            <li><a href="#" data-filter=".sf-jackets">Jackets</a></li>
+            <li><a href="#" data-filter=".sf-sweaters">Sweaters</a></li>
+          </ul>
+
+          <hr>
+
+          <div>
+            <h5 class="ls-0 text-muted">Select Price:</h5>
+            <input class="range_23">
+          </div>
+
+        </div>
+
+        <div class="col-md-10">
+          <div id="shop" class="row shop grid-container" data-layout="fitRows">
+
+            <!-- Shop Item 1
+                        ============================================= -->
+            <% products.forEach(product => { %>
+            <div class="col-lg-4 col-md-6 mb-4 sf-shoes sf-sportswear sf-new">
+              <div class="product">
+                <div class="product-image position-relative">
+                  <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
+                    <div class="flexslider">
+                      <div class="slider-wrap">
+                        <% if (product.image && product.image.length > 0) { %>
+                        <div class="slide">
+                          <a href="<%= product.slug %>">
+                            <img width="100px" height="100px" src="<%= product.image %>" alt="<%= product.name %>">
+                          </a>
+                        </div>
+                        <% } else { %>
+                        <div class="slide">
+                          <a href="demo-store-product-single.html">
+                            <img src="/frontend/dist/images/product/default.jpg" alt="<%= product.name %>">
+                          </a>
+                        </div>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                </div>
+                <div class="product-desc">
+                  <div class="product-title">
+                    <h3><a href="demo-store-product-single.html"><%= product.name %></a></h3>
+                    <!-- Assuming you have brand information in your product schema -->
+                    <% if (product.brand) { %>
+                    <span><a href="#"><%= product.brand %></a></span>
+                    <% } %>
+                  </div>
+                  <div class="product-price">
+                    <ins>$<%= product.price.toFixed(2) %></ins>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section mb-0 py-6">
+      <div class="container-fluid">
+        <div class="row justify-content-center m-auto" style="max-width: 1000px;">
+          <div class="col-md-7">
+            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated opportunities. Distinctively <a href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.</p>
+          </div>
+          <div class="col-md-5 mt-3 mt-md-0">
+            <h2 class="h1 fw-bold ls--1 color"><a href="tel:09876543211">(+0) 9876 543210</a></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- #content end -->

@@ -1,46 +1,54 @@
-<section id="slider" class="slider-element swiper_wrapper min-vh-md-100 min-vh-50 include-header include-topbar slider-parallax" data-loop="true" data-dots="true" data-speed="500" data-autolay="5000">
+<section id="slider" class="slider-element swiper_wrapper min-vh-100 include-header" data-loop="true" data-speed="1000" data-autoplay="5000">
   <div class="slider-inner">
 
     <div class="swiper swiper-parent">
       <div class="swiper-wrapper">
         <div class="swiper-slide dark">
-          <div class="container-fluid h-100 p-5 p-lg-6">
-            <div class="slider-caption justify-content-end">
-              <h2 data-animate="fadeInUp">Brown Clay <br> table Jar</h2>
-              <p class="my-4 text-smaller" data-animate="fadeInUp" data-delay="100">A New Collection of Summer 2022.</p>
+          <div class="container">
+            <div class="slider-caption">
+              <h2 data-animate="fadeInUp">Premium Classic Shoe</h2>
+              <p class="mb-4" data-animate="fadeInUp" data-delay="100">A New Collection of Summer 2019.</p>
               <div>
-                <a href="#" data-animate="fadeInUp" data-delay="200" class="button bg-color text-dark rounded-pill fw-normal">Shop Now</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Men</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Women</a>
               </div>
             </div>
           </div>
-          <div class="swiper-slide-bg" style="background-image: url('/frontend/dist/images/slider/1.jpg'); background-position: 50% 10%;"></div>
+          <div class="swiper-slide-bg" style="background-image: url('/frontend/dist/images/slider/1.jpg');"></div>
         </div>
         <div class="swiper-slide dark">
-          <div class="container-fluid h-100 p-5 p-lg-6">
-            <div class="slider-caption justify-content-end">
-              <h2 data-animate="fadeInUp">Brown Clay table Jar</h2>
-              <p class="my-4 text-smaller" data-animate="fadeInUp" data-delay="100">Featured Collection of 2022.</p>
+          <div class="container">
+            <div class="slider-caption">
+              <h2 data-animate="fadeInUp">New Sports Collection</h2>
+              <p class="mb-4" data-animate="fadeInUp" data-delay="100">Black &amp; White Collections</p>
               <div>
-                <a href="#" data-animate="fadeInUp" data-delay="200" class="button bg-color text-dark rounded-pill fw-normal">Shop Now</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Men</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Women</a>
               </div>
             </div>
           </div>
-          <div class="swiper-slide-bg" style="background-image: url('/frontend/dist/images/slider/2.jpg'); background-position: 50% 10%;"></div>
+          <div class="swiper-slide-bg" style="background-image: linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.6)), url('/frontend/dist/images/slider/2.jpg');"></div>
         </div>
         <div class="swiper-slide dark">
-          <div class="container-fluid h-100 p-5 p-lg-6">
-            <div class="slider-caption justify-content-end">
-              <h2 data-animate="fadeInUp">Brown Clay table Jar</h2>
-              <p class="my-4 text-smaller" data-animate="fadeInUp" data-delay="100">Latest Collection of 2022.</p>
+          <div class="container">
+            <div class="slider-caption">
+              <h2 data-animate="fadeInUp">Latest Sweatshirts</h2>
+              <p class="mb-4" data-animate="fadeInUp" data-delay="100">Collections for Summer Clothes</p>
               <div>
-                <a href="#" data-animate="fadeInUp" data-delay="200" class="button bg-color text-dark rounded-pill fw-normal">Shop Now</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Men</a>
+                <a href="demo-store-products.html" data-animate="fadeInUp" data-delay="200" class="button button-large button-white button-light">Shop Women</a>
               </div>
             </div>
           </div>
-          <div class="swiper-slide-bg" style="background-image: url('/frontend/dist/images/slider/3.jpg'); background-position: 50% 10%;"></div>
+          <div class="swiper-slide-bg" style="background-image: linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.3)), url('/frontend/dist/images/slider/3.jpg');"></div>
         </div>
       </div>
-      <div class="swiper-pagination"></div>
+      <div class="slider-arrow-left"><i class="uil uil-angle-left-b"></i></div>
+      <div class="slider-arrow-right"><i class="uil uil-angle-right-b"></i></div>
+      <div class="slide-number">
+        <div class="slide-number-current"></div><span>/</span>
+        <div class="slide-number-total"></div>
+      </div>
     </div>
 
     <div class="social-icons">
@@ -64,46 +72,84 @@
 <!-- Content
 ============================================= -->
 <section id="content">
-  <div class="content-wrap">
+  <div class="content-wrap pb-0">
 
-    <div class="container mw-md mt-lg-6">
-
-      <div class="row gx-5">
-        <div class="col-md-4 text-center">
-          <img src="/frontend/dist/images/icons/1.svg" alt=".." height="70">
-          <h3 class="my-3">Quality</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit hdanon magnam</p>
+    <!-- Login/Register Modal -->
+    <div class="modal-register mfp-hide" id="modal-register">
+      <div class="card mx-auto" style="max-width: 540px;">
+        <div class="card-header py-3 bg-transparent text-center">
+          <h3 class="mb-0 fw-normal">Hello, Welcome Back</h3>
         </div>
+        <div class="card-body mx-auto py-5" style="max-width: 70%;">
 
-        <div class="col-md-4 text-center">
-          <img src="/frontend/dist/images/icons/2.svg" alt=".." height="70">
-          <h3 class="my-3">Solid</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit hdanon magnam</p>
+          <a href="#" class="button button-large w-100 bg-facebook text-transform-none fw-normal ls-0 text-center m-0"><i class="fa-brands fa-facebook-f"></i> Log in with Facebook</a>
+
+          <div class="divider divider-center"><span class="position-relative" style="top: -2px">OR</span></div>
+
+          <form id="login-form" name="login-form" class="mb-0 row" action="#" method="post">
+
+            <div class="col-12">
+              <input type="text" id="login-form-username" name="login-form-username" value="" class="form-control not-dark" placeholder="Username">
+            </div>
+
+            <div class="col-12 mt-4">
+              <input type="password" id="login-form-password" name="login-form-password" value="" class="form-control not-dark" placeholder="Password">
+            </div>
+
+            <div class="col-12 text-end">
+              <a href="#" class="text-dark fw-light mt-2">Forgot Password?</a>
+            </div>
+
+            <div class="col-12 mt-4">
+              <button class="button w-100 m-0" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+            </div>
+          </form>
         </div>
-
-        <div class="col-md-4 text-center">
-          <img src="/frontend/dist/images/icons/3.svg" alt=".." height="70">
-          <h3 class="my-3">Premium</h3>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit hdanon magnam</p>
+        <div class="card-footer py-4 text-center">
+          <p class="mb-0">Don't have an account? <a href="#"><u>Sign up</u></a></p>
         </div>
       </div>
-
     </div>
 
-    <div class="clear mt-lg-6"></div>
+    <div class="container-fluid">
+      <div class="mx-auto text-center mb-5" style="max-width: 700px">
+        <h2>Fresh Collection of 2019</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto aspernatur repudiandae nobis earum voluptate id adipisci nostrum mollitia, ipsam, asperiores, soluta dolorem facere exercitationem laborum. Magni mollitia laudantium vel tempore.</p>
+      </div>
+    </div>
 
-    <div class="section py-lg-0 pt-0">
-      <div class="row g-5 align-items-center">
-        <div class="col-md-6">
-          <img src="/frontend/dist/images/section/2.jpg" alt="..">
+    <div class="container-fluid">
+      <div class="row mt-2">
+        <div class="col-md-4 mb-5">
+          <div class="card cat-card rounded-0 border-0 dark">
+            <img src="/frontend/dist/images/cat/outerwear.jpg" class="card-img rounded-0" alt="...">
+            <div class="d-flex align-items-start flex-column card-img-overlay p-4">
+              <h3 class="h3 text-white ls--1 fw-bold mt-2 mb-auto">50% Off</h3>
+              <h3 class="h2 text-white ls--1 fw-bold mb-4">Outerwear</h3>
+              <p>This is a wider card as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <a href="demo-store-products.html" class="button button button-white button-light ms-0">Shop Now</a>
+            </div>
+          </div>
         </div>
-
-        <div class="col-md-6 px-5">
-          <div class="mw-xs mx-auto">
-            <h2 class="font-secondary">Please join us at the table, and support the old culture</h2>
-            <p class="lead">Monotonectally reintermediate standardized leadership skills whereas resource sucking convergence. Monotonectally incubate principle-centered internal or "organic" sources for bricks-and-clicks expertise.</p>
-            <div>
-              <a href="#" class="button bg-white text-dark h-bg-dark h-text-light px-4 rounded-pill mx-0">Join Now</a>
+        <div class="col-md-4 mb-5">
+          <div class="card cat-card rounded-0 border-0 dark">
+            <img src="/frontend/dist/images/cat/footwear.jpg" class="card-img rounded-0" alt="...">
+            <div class="d-flex align-items-start flex-column card-img-overlay bg p-4">
+              <h3 class="h3 text-white ls--1 fw-bold mt-2 mb-auto">50% Off</h3>
+              <h3 class="h2 text-white ls--1 fw-bold mb-4">Footwear</h3>
+              <p>This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+              <a href="demo-store-products.html" class="button button button-white button-light ms-0">Shop Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-5">
+          <div class="card cat-card rounded-0 border-0 dark">
+            <img src="/frontend/dist/images/cat/workout.jpg" class="card-img rounded-0" alt="...">
+            <div class="d-flex align-items-start flex-column card-img-overlay bg p-4">
+              <h3 class="h3 text-white ls--1 fw-bold mt-2 mb-auto">30% Off</h3>
+              <h3 class="h2 text-white ls--1 fw-bold mb-4">Sportswear</h3>
+              <p>This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+              <a href="demo-store-products.html" class="button button button-white button-light ms-0">Shop Now</a>
             </div>
           </div>
         </div>
@@ -112,90 +158,184 @@
 
     <div class="clear"></div>
 
-    <div class="section bg-transparent my-0 my-lg-5 pt-0 pt-lg-5">
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div class="col-md-2 sticky-sidebar-wrap">
+          <ul class="list-unstyled items-nav sticky-sidebar">
+            <li><a href="#" class="text-dark fw-semibold">All Collections</a></li>
+            <li class="no-divider"><a href="#" class="text-dark fw-semibold">New Arrivals</a></li>
+            <li>
+              <hr>
+            </li>
+            <li><a href="#">Jeans</a></li>
+            <li><a href="#">T-Shirts</a></li>
+            <li><a href="#">Tops</a></li>
+            <li><a href="#">Dresses</a></li>
+            <li><a href="#">Skirts</a></li>
+            <li><a href="#">Sportswear</a></li>
+            <li><a href="#">Shorts</a></li>
+            <li><a href="#">Trousers</a></li>
+            <li><a href="#">Sweat-shirts</a></li>
+            <li><a href="#">Sweaters</a></li>
+            <li><a href="#">Flats</a></li>
+            <li><a href="#">Sandals</a></li>
+            <li><a href="#">Loafers & Oxfords</a></li>
+            <li><a href="#">Heels</a></li>
+          </ul>
+        </div>
 
-      <div class="container-fluid">
+        <div class="col-md-10">
+          <div class="row">
+            <% if (products && products.length > 0) { %>
+            <% products.forEach(function(product) { %>
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="product">
+                <div class="product-image position-relative">
+                  <!-- Sử dụng image và images từ product -->
+                  <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
+                    <div class="flexslider">
+                      <div class="slider-wrap">
+                        <!-- Hiển thị ảnh chính -->
+                        <% if (product.image) { %>
+                        <div class="slide">
+                          <a href="<%= product.slug %>"><img src="<%= product.image %>" alt="<%= product.name %>"></a>
+                        </div>
+                        <% } %>
+                        <!-- Hiển thị ảnh phụ nếu có -->
 
-        <div class="row g-5">
-          <div class="col-md-7 parallax scroll-detect min-vh-lg-90 min-vh-50">
-            <img src="/frontend/dist/images/section/1.jpg" class="parallax-bg">
-          </div>
-
-          <div class="col-md-5 d-md-flex flex-column align-items-center justify-content-center">
-            <div>
-              <p class="mb-3 op-06">Featured Collection</p>
-              <h2 class="display-5 mb-5">Brown Clay <br>Table Jar</h2>
-              <h4 class="mb-3"><del><small class="op-06 me-2">&euro; 199.99</small></del> &euro;129.99 <span class="text-black-50 text-smaller"> Onwards</span></h4>
-              <a href="#" class="button button-dark h-text-dark rounded-pill fw-normal">Shop Now</a>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                </div>
+                <div class="product-desc">
+                  <div class="product-title">
+                    <h3><a href="demo-store-product-single.html"><%= product.name %></a></h3>
+                    <!-- Hiển thị thêm các thông tin khác như tên thương hiệu (nếu có) -->
+                    <span><a href="#"><%= product.category_id.name || 'Unknown Brand' %></a></span>
+                  </div>
+                  <!-- Hiển thị giá sản phẩm -->
+                  <div class="product-price">
+                    <% if (product.discount > 0) { %>
+                    <del>$<%= product.price.toFixed(2) %></del>
+                    <ins>$<%= (product.price * (1 - product.discount / 100)).toFixed(2) %></ins>
+                    <% } else { %>
+                    <ins>$<%= product.price.toFixed(2) %></ins>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
             </div>
+            <% }); %>
+            <% } else { %>
+            <p>No special products available.</p>
+            <% } %>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
 
-    <div class="section my-0 pt-0 pt-lg-5 my-lg-5 bg-transparent">
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div class="col-md-6 mb-5">
+          <img src="/frontend/dist/images/others/travel.jpg" alt="image" class="mb-4">
+          <h4 class="mb-2"><a href="#">Want to travel? Great Stuffs for Travel</a></h4>
+          <p class="mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo doloremque eveniet dolorem, porro earum. Eius, corrupti provident iusto modi sunt.</p>
+          <a href="#" class="stretched-link btn p-0 fw-semibold"><u>View Details</u> <i class="bi-arrow-right position-relative ms-1" style="top: 2px"></i></a>
+        </div>
 
+        <div class="col-md-6 mb-5">
+          <img src="/frontend/dist/images/others/store.jpg" alt="image" class="mb-4">
+          <h4 class="mb-2">Our Melbourne Store</h4>
+          <p class="mb-2">Authoritatively deliver 2.0 niches vis-a-vis backward-compatible infomediaries. Authoritatively actualize empowered e-tailers with just in time.</p>
+          <p class="mb-3"><i class="bi-geo-alt-fill"></i> <strong>Headquarters: </strong><a href="#" class="text-black-50 under btn-link"> 795 Folsom Ave, Suite 600 San Francisco, CA 94107</a></p>
+          <a href="#" class="btn p-0 fw-semibold"><u>Visit Our Store</u> <i class="bi-arrow-right position-relative ms-1" style="top: 2px"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section m-0 border-0" style="padding: 120px 0;">
+      <div class="video-wrap no-placeholder" style="z-index: 0">
+        <video poster="one-page/images/page/portrait/video-poster.jpg" preload="auto" loop autoplay muted playsinline>
+          <source src='one-page/images/page/portrait/video.mp4' type='video/mp4'>
+        </video>
+        <div class="video-overlay" style="background: rgba(0,0,0,0.2)"></div>
+      </div>
+      <div class="emphasis-title widget subscribe-widget mx-auto text-center px-4" data-loader="button" style="max-width: 650px">
+        <h2 class="fw-bold text-white">Subscribe Now</h2>
+        <p class="mb-5 text-white-50 lead" data-delay="100">Subscribe to Our Newsletter to get Important News, Amazing Offers & Inside Scoops:</p>
+        <div class="widget-subscribe-form-result"></div>
+        <form id="widget-subscribe-form-2" action="include/subscribe.php" method="post" class="mt-1 input-group input-group-lg mb-0">
+          <input type="email" id="widget-subscribe-form-2-email" name="widget-subscribe-form-email" class="form-control required email rounded-0 border-0" placeholder="Enter your Email Address">
+
+          <button class="btn btn-dark bg-color rounded-0 text-uppercase fw-bold" type="submit" style="font-size: 16px">Subscribe Now</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="section mt-0 mb-0" style="padding: 80px 0">
       <div class="container-fluid">
-
-        <div class="row g-5 flex-md-row-reverse">
-          <div class="col-md-7 parallax scroll-detect min-vh-lg-90 min-vh-50">
-            <img src="/frontend/dist/images/section/3.jpg" class="parallax-bg">
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <h4 class="text-uppercase">Shipping Worldwide</h4>
+            <p>Minimum $999 for free Shipping. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio sequi natus eveniet, dicta magni! Modi nihil quis quos at mollitia.</p>
           </div>
+          <div class="col-md-3 col-sm-6">
+            <h4 class="text-uppercase">Free Returns</h4>
+            <p class="h6 fw-bold">Within 30 days Guarantee</p>
+            <p>Synergistically repurpose ethical value and backend paradigms. Holisticly architect effective expertise for installed base e-markets.</p>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <h4 class="text-uppercase">Customer Service</h4>
+            <p>Odio sequi natus eveniet, dicta magni! Modi nihil quis quos at mollitia.</p>
+            <abbr title="Phone Number"><strong>Phone:</strong></abbr> (+0) 9876 543211<br>
+            <abbr title="Fax"><strong>Fax:</strong></abbr> (+0) 11 2222 3333<br>
+            <abbr title="Email Address"><strong>Email:</strong></abbr> noreply@canvas.com<br>
 
-          <div class="col-md-5 d-flex flex-column align-items-center justify-content-center">
-            <div>
-              <p class="mb-3 op-06">Latest Collection</p>
-              <h2 class="display-5 mb-5">Light Brown<br>Goat Jar</h2>
-              <h4 class="mb-3"><del><small class="op-06 me-2">&euro; 249.99</small></del> &euro;199.99 <span class="text-black-50 text-smaller"> Onwards</span></h4>
-              <a href="#" class="button button-dark h-text-dark rounded-pill fw-normal">Shop Now</a>
-            </div>
+            <a href="#" class="social-icon si-small bg-light h-bg-facebook mt-4 me-2">
+              <i class="fa-brands fa-facebook-f"></i>
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon si-small bg-light h-bg-instagram mt-4 me-2">
+              <i class="bi-instagram"></i>
+              <i class="bi-instagram"></i>
+            </a>
+            <a href="#" class="social-icon si-small bg-light h-bg-youtube mt-4 me-2">
+              <i class="fa-brands fa-youtube"></i>
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <h4 class="text-uppercase">Our Stores</h4>
+            <address>
+              <strong>Melbourne Store:</strong><br>
+              795 Folsom Ave, Suite 600<br>
+              San Francisco, CA 94107<br>
+            </address>
+
+            <address class="mb-3">
+              <strong>Sydney Store:</strong><br>
+              795 Folsom Ave, Suite 600<br>
+              San Francisco, CA 94107<br>
+            </address>
+            <abbr title="Time"><strong>Timing:</strong></abbr> Every day: 10am – 7pm<br>
           </div>
         </div>
-
       </div>
     </div>
 
-    <div class="section bg-transparent my-0 my-lg-6">
-
+    <div class="section bg-transparent py-3">
       <div class="container-fluid">
-
-        <div class="d-flex align-items-center justify-content-between mb-4">
-          <h3 class="m-0">Explore the New Collection</h3>
-          <a href="#" class="link-dark text-smaller text-uppercase ls-1 fw-medium op-09"><u>Recent Arrivals</u></a>
-        </div>
-
-        <div class="row gutter-custom" style="--custom-gutter: 100px">
-          <div class="col-md-4 text-center">
-            <a href="#"><img src="/frontend/dist/images/products/1.jpg" alt=".." class="mb-4"></a>
-            <h4 class="mb-2"><a href="#" class="text-dark"><small class="bg-color px-2 mb-2 py-1 text-smaller rounded-pill">New</small> Light Cup Sets</a></h4>
-            <p class="mb-3 small">&euro;79.99</p>
+        <div class="row justify-content-center m-auto" style="max-width: 1000px;">
+          <div class="col-md-7">
+            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated opportunities. Distinctively <a href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.</p>
           </div>
-
-          <div class="col-md-4 text-center">
-            <a href="#"><img src="/frontend/dist/images/products/2.jpg" alt=".." class="mb-4"></a>
-            <h4 class="mb-2"><a href="#" class="text-dark">Black Monk Table Jar</a></h4>
-            <p class="mb-3 small">&euro;129.99</p>
+          <div class="col-md-5 mt-3 mt-md-0">
+            <h2 class="h1 fw-bold ls--1 color"><a href="tel:09876543211">(+0) 9876 543210</a></h2>
           </div>
-
-          <div class="col-md-4 text-center">
-            <a href="#"><img src="/frontend/dist/images/products/3.jpg" alt=".." class="mb-4"></a>
-            <h4 class="mb-2"><a href="#" class="text-dark"><small class="bg-color px-2 mb-2 py-1 text-smaller rounded-pill">Sale</small> White Big Showcase Jar</a></h4>
-            <p class="mb-3 small"><del><small class="op-06 me-2">&euro; 199.99</small></del>&euro;299.99</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="section pb-0 bg-transparent border-top my-0 mt-lg-5">
-      <div class="container pt-5 pb-4">
-        <div class="text-center">
-          <h3 class="mb-0">Follow us on</h3>
-          <a href="https://instagram.com/semicolonweb" target="_blank" class="link-dark small"><u>@semicolonweb</u></a>
         </div>
       </div>
-      <div id="instagram-photos-carousel" class="instagram-photos customjs owl-carousel image-carousel carousel-widget mt-5" data-title="false" data-lightbox="gallery" data-count="10" data-user="blog.canvastemplate" data-nav="true" data-pagi="false" data-items-xs="2" data-items-sm="3" data-items-lg="4" data-margin="0" data-autoplay="4000"></div>
     </div>
 
   </div>

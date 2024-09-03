@@ -21,13 +21,13 @@ router.get("/:slug", async (req, res, next) => {
   const { slug } = req.params;
   const menus = await MenuService.getAllMenuOrdered();
   await populateCategoriesForMenu(menus);
-  const categoriesWithSlug = await CategoryService.findBySlug(slug);
-
+  const categoriesWithSlug = await CategoryService.findBySlug({ slug });
+  // console.log(categoriesWithSlug);
   if (categoriesWithSlug) {
     const products = await ProductService.findByParam({
       category_id: categoriesWithSlug._id,
     });
-    console.log("Check");
+    products.sort((a, b) => a.ordering - b.ordering);
     return res.render("frontend/pages/product", {
       category: categoriesWithSlug,
       products,
@@ -35,7 +35,7 @@ router.get("/:slug", async (req, res, next) => {
       menus,
     });
   }
-  const productWithSlug = await ProductService.findBySlug(slug);
+  const productWithSlug = await ProductService.findBySlug({ slug });
   if (productWithSlug) {
     return res.render("frontend/pages/detailproduct", {
       products: productWithSlug,
@@ -50,6 +50,8 @@ router.get("/:slug?", async (req, res, next) => {
     const { slug } = req.params;
     const menus = await MenuService.getAllMenuOrdered();
     await populateCategoriesForMenu(menus);
+    const products = await ProductService.getProductIsSpecial();
+    products.sort((a, b) => a.ordering - b.ordering);
     let link = "frontend/pages/homepage";
     switch (slug) {
       case "contact":
@@ -65,6 +67,7 @@ router.get("/:slug?", async (req, res, next) => {
 
     res.render(link, {
       layout: "frontend",
+      products,
       menus,
     });
   } catch (error) {
