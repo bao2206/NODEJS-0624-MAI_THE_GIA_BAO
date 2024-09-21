@@ -1,6 +1,11 @@
+const ProductService = require("../services/product_service");
+
 class DashboardController {
   getAll = (req, res, next) => {
-    res.render("admin/pages/dashboard/index.ejs");
+    const totalProducts = ProductService.countTotalProducts();
+    res.render("admin/pages/dashboard/index.ejs", {
+      totalProducts,
+    });
   };
 }
 

@@ -1,13 +1,11 @@
-const MainService = require("../services/product_service");
+const MainService = require("../services/slider_service");
 const CategoryService = require("../services/category_service");
-const MainModel = require("../models/product_model");
+const MainModel = require("../models/slider_model");
 const fs = require("fs");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
-const { uploadProductImages } = require("../middleware/upload");
-const nameRoute = "product";
-const slugify = require("slugify");
-const mongoose = require("mongoose");
+const { uploadImage } = require("../middleware/upload");
+const nameRoute = "slider";
 class ItemController {
   getAll = async (req, res, next) => {
     try {
@@ -19,11 +17,9 @@ class ItemController {
       let items = searchTerm
         ? await MainService.findItem(searchTerm, filter)
         : await MainService.getAllItems(filter);
-
       let populatedItems = await MainModel.populate(items, {
         path: "category_id",
       });
-
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
       const totalItems = items.length;
@@ -54,7 +50,7 @@ class ItemController {
       ];
       let successMessage = req.query.successMessage || "";
       let errorMessage = req.query.errorMessage || "";
-      // console.log(paginatedItems);
+      console.log(paginatedItems);
       res.render(`admin/pages/${nameRoute}/list`, {
         items: paginatedItems,
         countStatus,
@@ -77,22 +73,18 @@ class ItemController {
       if (id) {
         item = await MainService.getEleById(id);
       }
-
       const categories = await CategoryService.getAllCategories();
-
       res.render(`admin/pages/${nameRoute}/form`, {
         item,
         categories,
         errors: [],
       });
     } catch (err) {
-      console.log(err);
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }
   };
-
   saveForm = [
-    uploadProductImages(),
+    uploadImage("slider"),
     body("name")
       .isLength({ min: 3 })
       .withMessage("Name must be at least 3 characters long"),
@@ -102,33 +94,24 @@ class ItemController {
     body("status")
       .isIn(["active", "inactive"])
       .withMessage("Status must be either 'active' or 'inactive'"),
-    body("price")
-      .isFloat({ min: 0 })
-      .withMessage("Price must be greater than or equal to 0"),
-    body("discount")
-      .isInt({ min: 0, max: 100 })
-      .withMessage("Discount must be between 0 and 100"),
     body("category_id").notEmpty().withMessage("Category must be selected"),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const { id, ...formData } = req.body;
-
-        // Tạo đối tượng item từ dữ liệu cũ hoặc mới
-        const oldItem = id ? await MainService.getEleById(id) : {};
+        const { id, name, ordering, status, category_id } = req.body;
         const item = {
           _id: id,
-          ...formData,
-          image: req.files.image
-            ? `/uploads/product/${id || "temp"}/${req.files.image[0].filename}`
-            : oldItem.image || "/uploads/default-image/default-image.jpg",
-          images: req.files.images
-            ? req.files.images.map(
-                (file) => `/uploads/product/${id || "temp"}/${file.filename}`
-              )
-            : oldItem.images || ["/uploads/default-image/default-image.jpg"],
+          name,
+          ordering,
+          status,
+          category_id,
+          imageUrl: req.file
+            ? `/uploads/${nameRoute}/${req.file.filename}`
+            : req.body.existingImageUrl ||
+              "/uploads/default-image/default-image.jpg",
         };
         const categories = await CategoryService.getAllCategories();
+        // req.flash("errorMessage", "Please correct the errors below.");
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
           categories,
@@ -141,41 +124,22 @@ class ItemController {
     },
     async (req, res, next) => {
       try {
-        const { id, name, ...formData } = req.body;
-        let productId = id || new mongoose.Types.ObjectId(); // Tạo ID mới nếu không có ID
-        console.log(req.body.id);
-        // Lấy thông tin sản phẩm cũ từ DB nếu có ID
-        const oldItem = id ? await MainService.getEleById(id) : {};
+        const { id, name, ordering, status, category_id } = req.body;
+        const imageUrl = req.file
+          ? `/uploads/${nameRoute}/${req.file.filename}`
+          : req.body.existingImageUrl ||
+            "/uploads/default-image/default-image.jpg";
 
-        const image =
-          req.files && req.files.image
-            ? `/uploads/product/${productId}/${req.files.image[0].filename}`
-            : oldItem.image || "/uploads/default-image/default-image.jpg";
-
-        const images =
-          req.files && req.files.images
-            ? req.files.images.map(
-                (file) => `/uploads/product/${productId}/${file.filename}`
-              )
-            : oldItem.images || ["/uploads/default-image/default-image.jpg"];
-
-        // console.log("Image variable", image, images);
-        const slug = slugify(name, { lower: true, strict: true });
-
-        const isSpecial = req.body.isSpecial === "on";
-        const updatedData = {
-          name,
-          slug,
-          isSpecial,
-          ...formData,
-          image,
-          images,
-        };
-        console.log(updatedData);
         if (id) {
+          const updatedData = {
+            name,
+            ordering,
+            status,
+            category_id,
+            imageUrl,
+          };
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
-            console.log(image, images);
             return res.redirect(
               `/admin/${nameRoute}?successMessage=Item updated successfully`
             );
@@ -185,10 +149,14 @@ class ItemController {
             );
           }
         } else {
-          // console.log("Save product");
-          // console.log(updatedData);
-          // Lưu sản phẩm mới
-          await MainService.saveItem(updatedData);
+          // console.log(name, ordering, status, category_id, imageUrl);
+          await MainService.saveItem(
+            name,
+            ordering,
+            status,
+            category_id,
+            imageUrl
+          );
           return res.redirect(
             `/admin/${nameRoute}?successMessage=Item added successfully`
           );
@@ -201,22 +169,24 @@ class ItemController {
       }
     },
   ];
+
   deleteItem = async (req, res, next) => {
     try {
       const { id } = req.params;
       const item = await MainService.getEleById(id);
 
-      if (item) {
-        const dirPath = path.join(
+      if (item && item.imageUrl) {
+        const imagePath = path.join(
           __dirname,
-          `../../public/uploads/product/${id}`
+          `../../public/uploads/${nameRoute}`,
+          item.imageUrl.split("/").pop()
         );
-
-        if (fs.existsSync(dirPath)) {
-          fs.rmSync(dirPath, { recursive: true, force: true });
-        }
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error("Error deleting image:", err);
+          }
+        });
       }
-
       await MainService.deleteItemById(id);
       res.redirect(
         `/admin/${nameRoute}?successMessage=Item deleted successfully`
@@ -252,26 +222,38 @@ class ItemController {
       const { id } = req.params;
       const { ordering } = req.body;
 
+      console.log(
+        `Received ordering update for item ID: ${id} with new ordering: ${ordering}`
+      );
+
       if (
-        !Number.isInteger(Number(ordering) || ordering < 1 || ordering > 100)
+        !Number.isInteger(Number(ordering)) ||
+        ordering < 1 ||
+        ordering > 100
       ) {
         return res.status(400).json({
           success: false,
           message: "Ordering must be an integer between 1 and 100.",
         });
       }
+
       const item = await MainService.getEleById(id);
       if (item) {
         await MainService.updateItemById(id, { ordering });
-        console.log("success");
-        res.json({ success: true, message: "Ordering updated successfully" });
+        return res.json({
+          success: true,
+          message: "Ordering updated successfully",
+        });
       } else {
-        console.log("404");
-        res.status(404).json({ success: false, message: "Item not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "Item not found" });
       }
     } catch (err) {
-      console.log("500");
-      res.status(500).json({ success: false, message: "An error occurred" });
+      console.error("Error:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "An error occurred" });
     }
   };
 }

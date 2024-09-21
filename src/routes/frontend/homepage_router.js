@@ -4,6 +4,7 @@ var router = express.Router();
 const CategoryService = require("../../services/category_service");
 const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
+const SliderService = require("../../services/slider_service");
 const populateCategoriesForMenu = async (menus) => {
   try {
     await Promise.all(
@@ -48,10 +49,13 @@ router.get("/:slug", async (req, res, next) => {
 router.get("/:slug?", async (req, res, next) => {
   try {
     const { slug } = req.params;
-    const menus = await MenuService.getAllMenuOrdered();
+
+    const [menus, products, slider] = await Promise.all([
+      MenuService.getAllMenuOrdered(),
+      ProductService.getProductIsSpecial(),
+      SliderService.getAllSliderOrdered(),
+    ]);
     await populateCategoriesForMenu(menus);
-    const products = await ProductService.getProductIsSpecial();
-    products.sort((a, b) => a.ordering - b.ordering);
     let link = "frontend/pages/homepage";
     switch (slug) {
       case "contact":
@@ -69,6 +73,7 @@ router.get("/:slug?", async (req, res, next) => {
       layout: "frontend",
       products,
       menus,
+      slider,
     });
   } catch (error) {
     console.log(error);

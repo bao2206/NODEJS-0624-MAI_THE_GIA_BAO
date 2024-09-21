@@ -1,11 +1,18 @@
-const MainModel = require("../models/product_model");
+const MainModel = require("../models/slider_model");
 
 class MainService {
   getEleById = async (id) => {
     return await MainModel.findById(id);
   };
-  saveItem = async (productData) => {
-    return await MainModel.create(productData);
+  saveItem = async (name, ordering, status, category_id, imageUrl) => {
+    console.log(name, ordering, status, category_id, imageUrl);
+    await MainModel.create({
+      name,
+      ordering,
+      status,
+      imageUrl,
+      category_id,
+    });
   };
   getAllItems = async (filter) => {
     return await MainModel.find(filter);
@@ -33,27 +40,13 @@ class MainService {
     // console.log(searchTerm, filter, test);
     return test;
   };
-  getProductsByCategoryId = async (categoryId) => {
-    return await MainModel.find({
-      category_id: categoryId,
-      status: "active",
-    });
-  };
-  findBySlug = async ({ slug }) => {
-    return await MainModel.findOne({ slug });
-  };
-  findByParam = async (params) => {
-    return await MainModel.find(params);
-  };
-  // get product is special and sort it
-  getProductIsSpecial = async () => {
-    return await MainModel.find({
-      isSpecial: true,
-    }).sort({ ordering: -1 });
-  };
-  // count total number of products
-  countTotalProducts = async () => {
-    return await MainModel.countDocuments();
+  // render to homepage and sort it
+  getAllSliderOrdered = async () => {
+    return await MainModel.find({ status: "active" })
+      .populate("category_id", "slug")
+      .sort({
+        ordering: -1,
+      });
   };
 }
 module.exports = new MainService();
