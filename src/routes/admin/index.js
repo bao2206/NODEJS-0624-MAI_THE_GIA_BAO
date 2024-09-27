@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+router.use("/settings", require("./settings_router"));
+router.use("/subscribe", require("./subscriber_router"));
 router.use("/slider", require("./slider_router"));
 router.use("/menu", require("./menu_router"));
 router.use("/category", require("./category_router"));
