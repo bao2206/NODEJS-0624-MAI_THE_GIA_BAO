@@ -1,0 +1,193 @@
+<% const collection="Setting" ; const linkThumb='' ; const folderImage = '/settings/' %>
+
+<div class="row mb-2">
+    <div class="col-sm-6">
+        <h1 class="m-0"><%= collection%></h1>
+    </div>
+</div>
+<div class="col-12 col-md-12">
+    <div class="card card-dark card-tabs">
+        <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" id="custom-tabs-one-footer-tab" data-toggle="pill"
+                        href="#custom-tabs-one-footer" role="tab" aria-controls="custom-tabs-one-footer"
+                        aria-selected="true">Footer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-one-header-tab" data-toggle="pill"
+                        href="#custom-tabs-one-header" role="tab" aria-controls="custom-tabs-one-header"
+                        aria-selected="false">Header</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-one-about-tab" data-toggle="pill"
+                        href="#custom-tabs-one-about" role="tab" aria-controls="custom-tabs-one-about"
+                        aria-selected="false">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-one-socials-tab" data-toggle="pill"
+                        href="#custom-tabs-one-socials" role="tab" aria-controls="custom-tabs-one-socials"
+                        aria-selected="false">Socials</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill"
+                        href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings"
+                        aria-selected="false">Settings</a>
+                </li>
+                
+            </ul>
+        </div>
+        <form class="card-body" method="post" action="/admin/setting" enctype="multipart/form-data">
+            <div class="tab-content" id="custom-tabs-one-tabContent">
+                <div class="tab-pane fade active show" id="custom-tabs-one-footer" role="tabpanel"
+                    aria-labelledby="custom-tabs-one-footer-tab">
+
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-2 col-form-label text-sm-right required">Address</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="address" class="form-control form-control-sm"
+                                value="<%= setting.address %>">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label for="phone" class="col-sm-2 col-form-label text-sm-right required">Phone</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="phone" class="form-control form-control-sm"
+                                value="<%= setting.phone %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label text-sm-right required">Email</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="email" class="form-control form-control-sm"
+                                value="<%= setting.email %>">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="work" class="col-sm-2 col-form-label text-sm-right required">Working Days/Hours</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="work" class="form-control form-control-sm"
+                                value="<%= setting.work %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="copyright" class="col-sm-2 col-form-label text-sm-right required">Copyright</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="copyright" class="form-control form-control-sm"
+                                value="<%= setting.copyright %>">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="custom-tabs-one-header" role="tabpanel"
+                    aria-labelledby="custom-tabs-one-header-tab">
+                    
+                    <div class="form-group row">
+                        <label for="hotline" class="col-sm-2 col-form-label text-sm-right required">Hotline</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="hotline" class="form-control form-control-sm"
+                                value="<%= setting.hotline %>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="image" class="col-sm-2 col-form-label text-sm-right">Logo</label>
+                        <div class="col-xs-12 col-sm-8 logo" upload-image>
+                        <input type="file" name="logo" class="form-control-file form-control-sm" accept="image/*" upload-image-input/>
+                            <img src="/uploads<%= folderImage%><%= setting.image %>" alt="" class="img-thumbnail mt-1"  upload-image-preview />
+                            <!-- <input type="hidden" name="old_image" value="<%= setting.image  %>"> -->
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="custom-tabs-one-about" role="tabpanel"
+                    aria-labelledby="custom-tabs-one-about-tab">
+                    <!-- for about -->
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12">
+                          <textarea name="detail" id="edit" class="form-control form-control-sm"><%= setting.detail%></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="tab-pane fade" id="custom-tabs-one-socials" role="tabpanel"
+                    aria-labelledby="custom-tabs-one-socials-tab">
+
+                    <div class="form-group row">
+                        <label for="facebook" class="col-sm-2 col-form-label text-sm-right required">Facebook</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="facebook" class="form-control form-control-sm"
+                                value="<%= setting.facebook%>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="twitter" class="col-sm-2 col-form-label text-sm-right required">Twitter</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="twitter" class="form-control form-control-sm"
+                                value="<%= setting.twitter%>">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="instagram" class="col-sm-2 col-form-label text-sm-right required">Instagram</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" id="name-input-form" name="instagram" class="form-control form-control-sm"
+                                value="<%= setting.instagram%>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel"
+                    aria-labelledby="custom-tabs-one-settings-tab">
+
+                    <div class="form-group row">
+                        
+                        <div class="col-md-4 ">
+                            <label for="service" class="col-form-label text-sm-right">Service</label>
+                            <textarea name="service" id="service" class="form-control form-control-sm"><%= setting.service %></textarea>
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <label for="return" class="col-form-label text-sm-right">Free Returns</label>
+                            <textarea name="return" id="return" class="form-control form-control-sm"><%= setting.return %></textarea>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="shipping" class="col-form-label text-sm-right">International Shipping</label>
+                            <textarea name="shipping" id="shipping" class="form-control form-control-sm"><%= setting.shipping %></textarea>
+                        </div>
+                    </div>
+<!-- 
+                    <div class="form-group row">
+                        <label for="shipping" class="col-sm-2 col-form-label text-sm-right">International Shipping</label>
+                        <div class="col-xs-12 col-sm-8">
+                          <textarea name="shipping" id="shipping" class="form-control form-control-sm"><%= setting.shipping%></textarea>
+                        </div>
+                    </div> -->
+                </div>
+
+            </div>
+            <!-- <input type="submit" value="Submit" class="btn btn-primary"> -->
+
+            <div class="card-footer">
+                <div class="col-12 col-sm-8 offset-sm-2 text-center">
+                    <button type="submit" class="btn btn-sm btn-success mr-1"> Save Infomation (^_^) </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
