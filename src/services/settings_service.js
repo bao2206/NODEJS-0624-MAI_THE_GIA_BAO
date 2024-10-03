@@ -15,7 +15,7 @@ class SettingService {
 
     //frontend
     findIdAndChangeInfo = async () => {
-        let id = ''
+        let id = '66f783b8223c9ab38ff2778d'
         return await MainModel.findById(id)
     }
 

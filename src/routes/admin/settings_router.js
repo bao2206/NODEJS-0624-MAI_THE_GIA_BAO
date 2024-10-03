@@ -5,7 +5,7 @@ const {asyncHandle} = require("../../utils/asyncHandle");
 
     router.get('/', asyncHandle(MainController.getAll))
         
-    router.post('/', asyncHandle(MainController.setting))
+    router.post('/', MainController.setting)
 
     router.get('/form/:id?', asyncHandle(MainController.getForm))
 

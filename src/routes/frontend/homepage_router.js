@@ -5,6 +5,7 @@ const CategoryService = require("../../services/category_service");
 const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
 const SliderService = require("../../services/slider_service");
+const SettingsService = require("../../services/settings_service");
 const populateCategoriesForMenu = async (menus) => {
   try {
     await Promise.all(
@@ -50,10 +51,11 @@ router.get("/:slug?", async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const [menus, products, slider] = await Promise.all([
+    const [menus, products, slider, setting] = await Promise.all([
       MenuService.getAllMenuOrdered(),
       ProductService.getProductIsSpecial(),
       SliderService.getAllSliderOrdered(),
+      SettingsService.getAllSetting()
     ]);
     await populateCategoriesForMenu(menus);
     let link = "frontend/pages/homepage";
@@ -68,11 +70,12 @@ router.get("/:slug?", async (req, res, next) => {
         link = "frontend/pages/blog";
         break;
     }
-
+    // console.log(setting);
     res.render(link, {
       layout: "frontend",
       products,
       menus,
+      setting,
       slider,
     });
   } catch (error) {

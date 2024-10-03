@@ -2,7 +2,7 @@ const MainService = require("../services/settings_service");
 const fs = require("fs");
 const path = require("path");
 const { asyncHandle } = require("../utils/asyncHandle"); // Add async handler if not used yet
-const { uploadImage, uploadProductImages } = require("../middleware/upload");
+const { uploadImage} = require("../middleware/upload");
 
 const nameRoute = "settings";
 
@@ -20,13 +20,13 @@ class MailController {
     asyncHandle(async (req, res, next) => {
     
       req.file ? (req.body.image = req.file.filename) : (req.body.image = req.body.old_image);
-
-      const setting = await MainService.getAllSetting();
+      console.log(req.body.image);
+      const setting = await MainService.getAllSetting();;
       let item = JSON.parse(setting.name);
-
+      console.log(item)
 
       if (req.file && item.image) {
-        const imagePath = path.join(`public/uploads/settings`, item.image.replace(`/uploads`, ""));
+        const imagePath = path.join(`public/uploads/${nameRoute}`, item.image.replace(`/uploads`, ""));
         fs.unlink(imagePath, (err) => {
           if (err) {
             console.error("Error deleting image:", err);
@@ -34,7 +34,7 @@ class MailController {
         });
       }
       await MainService.update(JSON.stringify(req.body));
-      res.redirect('/admin/setting');
+      res.redirect('/admin/settings');
     })
   ];
 }

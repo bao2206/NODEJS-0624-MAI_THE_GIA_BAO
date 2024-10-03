@@ -141,39 +141,40 @@ class ItemController {
     },
     async (req, res, next) => {
       try {
-        const { id, name, ...formData } = req.body;
-        let productId = id || new mongoose.Types.ObjectId(); // Tạo ID mới nếu không có ID
-        console.log(req.body.id);
-        // Lấy thông tin sản phẩm cũ từ DB nếu có ID
+        var { id, name,  type_discount, price_discount, discount,...formData } = req.body;
+        let productId = id || new mongoose.Types.ObjectId(); 
+        // console.log(req.body.id);
+        
         const oldItem = id ? await MainService.getEleById(id) : {};
 
-        const image =
-          req.files && req.files.image
-            ? `/uploads/product/${productId}/${req.files.image[0].filename}`
-            : oldItem.image || "/uploads/default-image/default-image.jpg";
+        const image = req.files.image
+          ? `/uploads/product/${productId}/${req.files.image[0].filename}`
+          : oldItem.image || "/uploads/default-image/default-image.jpg";
 
-        const images =
-          req.files && req.files.images
-            ? req.files.images.map(
-                (file) => `/uploads/product/${productId}/${file.filename}`
-              )
-            : oldItem.images || ["/uploads/default-image/default-image.jpg"];
+        const images = req.files.images
+          ? req.files.images.map(
+              (file) => `/uploads/product/${productId}/${file.filename}`
+            )
+          : oldItem.images || ["/uploads/default-image/default-image.jpg"];
 
         // console.log("Image variable", image, images);
         const slug = slugify(name, { lower: true, strict: true });
 
-        const isSpecial = req.body.isSpecial === "on";
-        const updatedData = {
-          name,
-          slug,
-          isSpecial,
-          ...formData,
-          image,
-          images,
-        };
-        console.log(updatedData);
+        
+        var type_discount = req.body.type_discount;
+        console.log(type_discount);
+        var price_discount = req.body.price_discount;
+        
+        var discount = req.body.discount;
+        if(type_discount === "discout"){
+          // console.log(price_discount, discount);
+          price_discount = 0;
+        } else if(type_discount === "price_discount"){
+          discount = 0;
+        }
+        var updatedData = { name, slug, ...formData, image, images, price_discount, discount };
         if (id) {
-          const item = await MainService.updateItemById(id, updatedData);
+          var item = await MainService.updateItemById(id, updatedData);
           if (item) {
             console.log(image, images);
             return res.redirect(

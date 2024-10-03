@@ -10,7 +10,10 @@ const productSchema = new Schema(
     // brand_id: { type: Schema.Types.ObjectId, ref: "Brand" },
     price: { type: Number, required: true, min: 0 },
     // rating: { type: Number, default: 0, min: 0, max: 5 },
+    type_discount: {type: String, enum:["discount" , "price_discount"]},
     discount: { type: Number, default: 0, min: 0, max: 100 },
+    //giam theo gia
+    price_discount:{type: Number, default: 0},
     details_product: { type: String },
     // quantity: { type: Number, required: true, min: 0 },
     short_description: { type: String },
