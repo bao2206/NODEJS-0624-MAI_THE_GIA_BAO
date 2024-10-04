@@ -3,7 +3,7 @@ const CategoryService = require("../services/category_service");
 const MainModel = require("../models/product_model");
 const fs = require("fs");
 const path = require("path");
-const { body, validationResult } = require("express-validator");
+const { body, check,validationResult } = require("express-validator");
 const { uploadProductImages } = require("../middleware/upload");
 const nameRoute = "product";
 const slugify = require("slugify");
@@ -109,14 +109,19 @@ class ItemController {
       .isInt({ min: 0, max: 100 })
       .withMessage("Discount must be between 0 and 100"),
     body("category_id").notEmpty().withMessage("Category must be selected"),
+    check("price_discount").custom((value, {req}) =>{
+      if(parseFloat(value) > parseFloat(req.body.price)){
+        throw new Error("Price discount cannot be greater than price");
+      } return true;
+    }),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const { id, ...formData } = req.body;
+        var { id, ...formData } = req.body;
 
         // Tạo đối tượng item từ dữ liệu cũ hoặc mới
         const oldItem = id ? await MainService.getEleById(id) : {};
-        const item = {
+        var item = {
           _id: id,
           ...formData,
           image: req.files.image
@@ -162,17 +167,20 @@ class ItemController {
 
         
         var type_discount = req.body.type_discount;
-        console.log(type_discount);
+        // console.log(type_discount)
+        // console.log(type_discount);
         var price_discount = req.body.price_discount;
-        
-        var discount = req.body.discount;
-        if(type_discount === "discout"){
+        var price = req.body.price;
+         var discount = req.body.discount;
+        if(type_discount === "discount"){
           // console.log(price_discount, discount);
-          price_discount = 0;
+          price_discount = (price * discount) / 100;
         } else if(type_discount === "price_discount"){
-          discount = 0;
+          discount = (price_discount / price) * 100;
         }
-        var updatedData = { name, slug, ...formData, image, images, price_discount, discount };
+        var updatedData = { name, slug, ...formData, image, images, type_discount ,price_discount, discount };
+        // console.log(req.body.price_discount)
+        // console.log(updatedData);
         if (id) {
           var item = await MainService.updateItemById(id, updatedData);
           if (item) {

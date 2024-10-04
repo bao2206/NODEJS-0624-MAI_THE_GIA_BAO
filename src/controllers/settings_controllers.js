@@ -20,10 +20,10 @@ class MailController {
     asyncHandle(async (req, res, next) => {
     
       req.file ? (req.body.image = req.file.filename) : (req.body.image = req.body.old_image);
-      console.log(req.body.image);
+      // console.log(req.body.image);
       const setting = await MainService.getAllSetting();;
       let item = JSON.parse(setting.name);
-      console.log(item)
+      // console.log(item)
 
       if (req.file && item.image) {
         const imagePath = path.join(`public/uploads/${nameRoute}`, item.image.replace(`/uploads`, ""));

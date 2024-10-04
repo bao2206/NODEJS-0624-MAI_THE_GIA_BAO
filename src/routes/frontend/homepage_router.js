@@ -6,23 +6,27 @@ const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
 const SliderService = require("../../services/slider_service");
 const SettingsService = require("../../services/settings_service");
-const populateCategoriesForMenu = async (menus) => {
-  try {
-    await Promise.all(
-      menus.map(async (menu) => {
-        menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
-      })
-    );
-    return menus;
-  } catch (err) {
-    console.log(err);
-  }
-};
+const {slider, settings, menus} = require("../../middleware/localMiddleware");
+router.use(slider);
+router.use(settings);
+router.use(menus);
+// const populateCategoriesForMenu = async (menus) => {
+//   try {
+//     await Promise.all(
+//       menus.map(async (menu) => {
+//         menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
+//       })
+//     );
+//     return menus;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 router.get("/:slug", async (req, res, next) => {
   const { slug } = req.params;
-  const menus = await MenuService.getAllMenuOrdered();
-  await populateCategoriesForMenu(menus);
+  // const menus = await MenuService.getAllMenuOrdered();
+  // await populateCategoriesForMenu(menus);
   const categoriesWithSlug = await CategoryService.findBySlug({ slug });
   // console.log(categoriesWithSlug);
   if (categoriesWithSlug) {
@@ -34,7 +38,7 @@ router.get("/:slug", async (req, res, next) => {
       category: categoriesWithSlug,
       products,
       layout: "frontend",
-      menus,
+      // menus,
     });
   }
   const productWithSlug = await ProductService.findBySlug({ slug });
@@ -42,7 +46,7 @@ router.get("/:slug", async (req, res, next) => {
     return res.render("frontend/pages/detailproduct", {
       products: productWithSlug,
       layout: "frontend",
-      menus,
+      // menus,
     });
   }
   next();
@@ -51,14 +55,15 @@ router.get("/:slug?", async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    const [menus, products, slider, setting] = await Promise.all([
-      MenuService.getAllMenuOrdered(),
-      ProductService.getProductIsSpecial(),
-      SliderService.getAllSliderOrdered(),
-      SettingsService.getAllSetting()
-    ]);
-    await populateCategoriesForMenu(menus);
+    // const [menus, products, slider, setting] = await Promise.all([
+    //   MenuService.getAllMenuOrdered(),
+    //   ProductService.getProductIsSpecial(),
+    //   SliderService.getAllSliderOrdered(),
+    //   SettingsService.getAllSetting()
+    // ]);
+    // await populateCategoriesForMenu(menus);
     let link = "frontend/pages/homepage";
+    const products = await ProductService.getProductIsSpecial();
     switch (slug) {
       case "contact":
         link = "frontend/pages/contact";
@@ -74,9 +79,9 @@ router.get("/:slug?", async (req, res, next) => {
     res.render(link, {
       layout: "frontend",
       products,
-      menus,
-      setting,
-      slider,
+      // menus,
+      // setting,
+      // slider,
     });
   } catch (error) {
     console.log(error);
