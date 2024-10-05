@@ -74,6 +74,9 @@ router.get("/:slug?", async (req, res, next) => {
       case "blog":
         link = "frontend/pages/blog";
         break;
+      case "cart":
+        link = "frontend/pages/cart";
+        break;
     }
     // console.log(setting);
     res.render(link, {
