@@ -8,7 +8,7 @@ const { uploadProductImages } = require("../middleware/upload");
 const nameRoute = "product";
 const slugify = require("slugify");
 const mongoose = require("mongoose");
-class ItemController {
+class ProductController {
   getAll = async (req, res, next) => {
     try {
       let status = req.query.status || "all";
@@ -171,7 +171,7 @@ class ItemController {
         // console.log(type_discount);
         var price_discount = req.body.price_discount;
         var price = req.body.price;
-         var discount = req.body.discount;
+        var discount = req.body.discount;
         if(type_discount === "discount"){
           // console.log(price_discount, discount);
           price_discount = (price * discount) / 100;
@@ -285,4 +285,4 @@ class ItemController {
   };
 }
 
-module.exports = new ItemController();
+module.exports = new ProductController();

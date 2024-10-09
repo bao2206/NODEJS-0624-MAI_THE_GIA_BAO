@@ -6,53 +6,82 @@ const discountSchema = new Schema(
   {
     code: {
       type: String,
-      required: [true, 'Discount code is required'],
+      required: true,
       unique: true,
       trim: true
     },
     description: {
       type: String,
-      required: [true, 'Description is required']
+      required: true
     },
     discount_type: {
       type: String,
       enum: ['percentage', 'fixed_amount'],
-      required: [true, 'Discount type is required']
+      required: true
     },
-    amount: {
+    percentage: {
       type: Number,
-      required: [true, 'Discount amount is required']
+      default: 0, min: 0, max: 100
+    },
+    fixed_amount:{
+      type: Number,
+      default: 0, min:0
     },
     start_date: {
       type: Date,
-      required: [true, 'Start date is required']
+      required: true
     },
     end_date: {
       type: Date,
-      required: [true, 'End date is required']
+      required: true
     },
     minimum_order_value: {
       type: Number,
-      default: 0
+      default: 0,
+      required: true
     },
+    maximum_order_value: {
+      type: Number,
+      default: 0,
+      required: true
+    },
+    // số voucher discount
     usage_limit: {
       type: Number,
-      default: null
+      default: 0,
+      required: true,
     },
+    // số voucher đã sử dụng
     used_count: {
       type: Number,
       default: 0
     },
-    is_active: {
-      type: Boolean,
-      default: true
+    // số voucher còn lại 
+    remaining: {
+      type: Number,
+      default: 0
     },
-    applicable_to: {
-      type: [String], 
-      default: []
-    }
+     
+    status: { type: String, enum: ["active", "inactive"], default: "inactive" },
+    // applicable_to: {
+    //   type: [String], 
+    //   default: []
+    // }
   },
-  { collection: ConnectionDocument, timestamps: true }
+  { collection: ConnectionDocument, timestamps: true },
+  
 );
+discountSchema.pre('save',  function(next){
+  // ban đầu số voucher còn lại sẽ bằng tổng số voucher sẽ có
+  this.remaining =  this.usage_limit
+  // nếu voucher đã được sử dụng thì số voucher còn lại sẽ được cập nhật lại
+  if(this.isNew && this.used_count != null){
+    this.remaining = this.usage_limit - this.used_count; 
+    next();
+  }
+  // if(this.isNew && this.fixed_amount != null){
+  //   if(this.fixed_amount > this.)
+  // }
+})
 
 module.exports = mongoose.model(ModelDocument, discountSchema);
