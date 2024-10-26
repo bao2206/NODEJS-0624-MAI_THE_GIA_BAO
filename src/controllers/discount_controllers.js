@@ -203,6 +203,13 @@ class ItemController {
       res.status(500).json({ success: false, message: "An error occurred" });
     }
   };
+  updateDiscount = async(req, res, next) => {
+    try{
+      const discount = req.params.discount
+    } catch(error){
+      
+    }
+  }
  
   //   try {
   //     const { id } = req.params;

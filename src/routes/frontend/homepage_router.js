@@ -6,10 +6,11 @@ const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
 const SliderService = require("../../services/slider_service");
 const SettingsService = require("../../services/settings_service");
-const {slider, settings, menus} = require("../../middleware/localMiddleware");
+const {slider, settings,  categories} = require("../../middleware/localMiddleware");
 router.use(slider);
 router.use(settings);
-router.use(menus);
+
+router.use(categories);
 // const populateCategoriesForMenu = async (menus) => {
 //   try {
 //     await Promise.all(
@@ -41,6 +42,7 @@ router.get("/:slug", async (req, res, next) => {
       // menus,
     });
   }
+  // const productId = a
   const productWithSlug = await ProductService.findBySlug({ slug });
   if (productWithSlug) {
     return res.render("frontend/pages/detailproduct", {

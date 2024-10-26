@@ -82,6 +82,26 @@ discountSchema.pre('save',  function(next){
   // if(this.isNew && this.fixed_amount != null){
   //   if(this.fixed_amount > this.)
   // }
-})
+});
+discountSchema.methods.validateDiscount = function(){
+  const currentDate = new Date();
+  if(this.status !== 'active') return {isValid: false, message: "Discount is inactive"};
+
+  if(this.end_date < currentDate){
+    return {isValid: false, message: "Discount has expired"};
+  }
+  
+  if(this.remaining <= 0) return {isValid: false, message: "No remaining uses for this discount"};
+
+  return {isValid: true};
+}
+
+discountSchema.methods.useDiscount = async function (){
+  if(this.remaining > 0){
+    this.remaining -= 1;
+    this.used_count += 1;
+    await this.save();
+  }
+}
 
 module.exports = mongoose.model(ModelDocument, discountSchema);

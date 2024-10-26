@@ -36,12 +36,28 @@ const productSchema = new Schema(
       min: 0,
       max: 100,
     },
+    total_price_product:{
+      type: Number,
+    }
   },
   { collection: ConnectionDocument, timestamps: true }
 );
 productSchema.pre("save", function (next) {
   if (this.name) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
+    this.slug = slugify(this.name, { lower: true, strict: true });  
+  }
+  // this.price = this.price || 0;
+  // this.discount = this.discount || 0;
+  // this.price_discount = this.price_discount || 0;
+  // don't select type_discount
+  this.total_price_product =  this.price;
+  // type_discount = discount
+  if(this.type_discount === "discount"){
+    this.total_price_product = this.price - ((this.price * this.discount) / 100);
+  }
+  // type_discount = price_discount
+  else if(this.type_discount === "price_discount"){
+    this.total_price_product = this.price - ((this.price_discount / price) * 100);
   }
   next();
 });

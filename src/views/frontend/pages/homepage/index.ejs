@@ -121,77 +121,88 @@
       <div class="row">
         <div class="col-md-2 sticky-sidebar-wrap">
           <ul class="list-unstyled items-nav sticky-sidebar">
+          
             <li><a href="#" class="text-dark fw-semibold">All Collections</a></li>
             <li class="no-divider"><a href="#" class="text-dark fw-semibold">New Arrivals</a></li>
             <li>
               <hr>
             </li>
-            <li><a href="#">Jeans</a></li>
-            <li><a href="#">T-Shirts</a></li>
-            <li><a href="#">Tops</a></li>
-            <li><a href="#">Dresses</a></li>
-            <li><a href="#">Skirts</a></li>
-            <li><a href="#">Sportswear</a></li>
-            <li><a href="#">Shorts</a></li>
-            <li><a href="#">Trousers</a></li>
-            <li><a href="#">Sweat-shirts</a></li>
-            <li><a href="#">Sweaters</a></li>
-            <li><a href="#">Flats</a></li>
-            <li><a href="#">Sandals</a></li>
-            <li><a href="#">Loafers & Oxfords</a></li>
-            <li><a href="#">Heels</a></li>
+            <% categories.forEach(category => { %>
+            <li><a href="<%= category.slug %> "><%= category.name %></a></li>
+            <% }) %>
           </ul>
         </div>
 
         <div class="col-md-10">
           <div class="row">
             <% if (products && products.length > 0) { %>
-            <% products.forEach(function(product) { %>
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="product">
-                <div class="product-image position-relative">
-                  <!-- Sử dụng image và images từ product -->
-                  <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
-                    <div class="flexslider">
-                      <div class="slider-wrap">
-                        <!-- Hiển thị ảnh chính -->
-                        <% if (product.image) { %>
-                        <div class="slide">
-                          <a href="<%= product.slug %>"><img src="<%= product.image %>" alt="<%= product.name %>"></a>
+              <% products.forEach(function(product) { %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                  <div class="product">
+                    <div class="product-image position-relative">
+                      <!-- Sử dụng image và images từ product -->
+                      <div class="fslider" data-pagi="false" data-speed="400" data-pause="200000">
+                        <div class="flexslider">
+                          <div class="slider-wrap">
+                            <!-- Hiển thị ảnh chính -->
+                            <% if (product.image) { %>
+                              <div class="slide">
+                                <a href="<%= product.slug %>">
+                                  <img src="<%= product.image %>" alt="<%= product.name %>">
+                                </a>
+                              </div>
+                            <% } %>
+                            <!-- Hiển thị ảnh phụ nếu có -->
+                            <% if (product.images && product.images.length > 0) { %>
+                              <% product.images.forEach(function(image) { %>
+                                <div class="slide">
+                                  <a href="<%= product.slug %>">
+                                    <img src="<%= image %>" alt="<%= product.name %>">
+                                  </a>
+                                </div>
+                              <% }) %>
+                            <% } %>
+                          </div>
                         </div>
+                      </div>
+                      
+                      <!-- Form thêm sản phẩm vào giỏ hàng -->
+                      <form action="/cart/add/<%= product._id %>" method="post" class="mt-2 add-to-cart-form">
+                        <div class="input-group">
+                          <input type="number" name="quantity" value="1" min="1" class="form-control text-center" style="max-width: 60px;">
+                          <button type="submit" class="cart-btn button button-white button-light">
+                            <i class="uil uil-plus"></i> Add to Cart
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+        
+                    <div class="product-desc">
+                      <div class="product-title">
+                        <h3>
+                          <a href="demo-store-product-single.html"><%= product.name %></a>
+                        </h3>
+                        <span><a href="#"><%= product.category_id.name || 'Unknown Brand' %></a></span>
+                      </div>
+                      <!-- Hiển thị giá sản phẩm -->
+                      <div class="product-price">
+                        <% if (product.discount > 0) { %>
+                          <del>$<%= product.price %></del>
+                          <ins>$<%= product.total_price_product %></ins>
+                        <% } else { %>
+                          <ins>$<%= product.total_price_product %></ins>
                         <% } %>
-                        <!-- Hiển thị ảnh phụ nếu có -->
-
                       </div>
                     </div>
                   </div>
-                  <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
                 </div>
-                <div class="product-desc">
-                  <div class="product-title">
-                    <h3><a href="demo-store-product-single.html"><%= product.name %></a></h3>
-                    <!-- Hiển thị thêm các thông tin khác như tên thương hiệu (nếu có) -->
-                    <span><a href="#"><%= product.category_id.name || 'Unknown Brand' %></a></span>
-                  </div>
-                  <!-- Hiển thị giá sản phẩm -->
-                  <div class="product-price">
-                    <% if (product.discount > 0) { %>
-                    <del>$<%= product.price.toFixed(2) %></del>
-                    <ins>$<%= (product.price * (1 - product.discount / 100)).toFixed(2) %></ins>
-                    <% } else { %>
-                    <ins>$<%= product.price.toFixed(2) %></ins>
-                    <% } %>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <% }); %>
+              <% }); %>
             <% } else { %>
-            <p>No special products available.</p>
+              <p>No special products available.</p>
             <% } %>
           </div>
-
         </div>
+        
       </div>
     </div>
 

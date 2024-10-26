@@ -59,6 +59,15 @@
         </div>
       </div>
 
+      <!-- Total Price Field (read-only) -->
+      <div class="form-group row">
+        <label for="total_price_product" class="col-sm-2 col-form-label text-sm-right">Total Price</label>
+        <div class="col-xs-12 col-sm-8">
+          <input type="text" id="total_price_product" name="total_price_product" class="form-control form-control-sm" value="<%= item.total_price_product || 0 %>" readonly />
+        </div>
+      </div>
+
+
       <!-- Short Description Field -->
       <div class="form-group row">
         <label for="short_description" class="col-sm-2 col-form-label text-sm-right">Short Description</label>
@@ -154,6 +163,45 @@
   </form>
 </div>
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const priceInput = document.querySelector('input[name="price"]');
+    const discountInput = document.querySelector('input[name="discount"]');
+    const priceDiscountInput = document.querySelector('input[name="price_discount"]');
+    const typeDiscountSelect = document.querySelector('select[name="type_discount"]');
+    const totalPriceField = document.getElementById('total_price_product');
+
+    // Hàm tính toán giá tổng sản phẩm
+    function calculateTotalPrice() {
+      let price = parseFloat(priceInput.value) || 0;
+      let discount = parseFloat(discountInput.value) || 0;
+      let priceDiscount = parseFloat(priceDiscountInput.value) || 0;
+      let typeDiscount = typeDiscountSelect.value;
+
+      let totalPrice = price;  // Giá gốc
+
+      // Nếu type_discount là "discount", tính theo % giảm giá
+      if (typeDiscount === "discount") {
+        totalPrice = price - (price * (discount / 100));
+      }
+
+      // Nếu type_discount là "price_discount", tính theo giá giảm trực tiếp
+      if (typeDiscount === "price_discount") {
+        totalPrice = price - priceDiscount;
+      }
+
+      // Cập nhật giá trị vào trường total_price_product
+      totalPriceField.value = totalPrice.toFixed(2);
+    }
+
+    // Thêm sự kiện khi thay đổi các trường liên quan
+    priceInput.addEventListener('input', calculateTotalPrice);
+    discountInput.addEventListener('input', calculateTotalPrice);
+    priceDiscountInput.addEventListener('input', calculateTotalPrice);
+    typeDiscountSelect.addEventListener('change', calculateTotalPrice);
+
+    // Gọi hàm tính toán lần đầu tiên khi trang được tải
+    calculateTotalPrice();
+  });
   document.getElementById('images-input').addEventListener('change', function(event) {
     const files = event.target.files;
     const imageContainer = document.getElementById('imageContainer');

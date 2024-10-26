@@ -5,7 +5,6 @@ class ItemService {
     return await MainModel.findById(id);
   };
   saveItem = async (data) => {
-   
     await MainModel.create(data);
   };
   getAllItems = async (filter) => {
@@ -34,5 +33,9 @@ class ItemService {
     // console.log(searchTerm, filter, test);
     return test;
   };
+  checkCodeDiscount = async(code) => {
+    const discount = await MainModel.findOne({code: code.trim()});
+    return discount !== null;
+  }
 }
 module.exports = new ItemService();

@@ -25,47 +25,40 @@
           <!-- Top Cart
           ============================================= -->
           <div id="top-cart">
-            <a href="#" id="top-cart-trigger" class="position-relative"><i class="bi-bag"></i><span class="top-cart-number">5</span></a>
+            <a href="#" id="top-cart-trigger" class="position-relative">
+              <i class="bi-bag"></i>
+              <span class="top-cart-number"><%= totalQuantity %></span> <!-- Số lượng sản phẩm trong giỏ hàng -->
+            </a>
             <div class="top-cart-content">
               <div class="top-cart-title">
                 <h4>Shopping Cart</h4>
               </div>
               <div class="top-cart-items">
+                <!-- Danh sách các sản phẩm trong giỏ hàng sẽ được cập nhật tại đây -->
+                <% cart.items.forEach(item => { %>
                 <div class="top-cart-item">
                   <div class="top-cart-item-image">
-                    <a href="#"><img src="/frontend/dist/images/items/featured/5.jpg" alt="Blue Shoulder Bag"></a>
+                    <a href="#"><img src="<%= item.productId.image %>" alt="<%= item.productId.name %>"></a>
                   </div>
                   <div class="top-cart-item-desc">
                     <div class="top-cart-item-desc-title">
-                      <a href="#" class="fw-normal">White athletic shoe</a>
-                      <span class="top-cart-item-price d-block">$35.00</span>
+                      <a href="#" class="fw-normal"><%= item.productId.name %></a>
+                      <span class="top-cart-item-price d-block"></span>
                     </div>
-                    <div class="top-cart-item-quantity fw-semibold">x 1</div>
+                    <div class="top-cart-item-quantity fw-semibold">x <%= item.quantity %></div>
                   </div>
                 </div>
-                <div class="top-cart-item">
-                  <div class="top-cart-item-image">
-                    <a href="#" class="fw-normal"><img src="/frontend/dist/images/items/featured/1.jpg" alt="Leather Bag"></a>
-                  </div>
-                  <div class="top-cart-item-desc">
-                    <div class="top-cart-item-desc-title">
-                      <a href="#" class="fw-normal">Round Neck Solid Light Blue Colour T-shirts</a>
-                      <span class="top-cart-item-price d-block">$12.49</span>
-                    </div>
-                    <div class="top-cart-item-quantity fw-semibold">x 2</div>
-                  </div>
-                </div>
+                <% }) %>
               </div>
               <div class="top-cart-action">
-                <span class="top-checkout-price fw-semibold text-dark">$59.98</span>
-                <button class="button button-dark button-small m-0" >
-                  <a href="/cart">
-                    View Cart
-                  </a> 
+                <span class="top-checkout-price fw-semibold text-dark"></span>
+                <button class="button button-dark button-small m-0">
+                  <a href="/cart">View Cart</a>
                 </button>
               </div>
             </div>
-          </div><!-- #top-cart end -->
+          </div>
+          
         </div>
 
         <div class="primary-menu-trigger">
@@ -107,3 +100,36 @@
   <div class="header-wrap-clone"></div>
 
 </header>
+<script>
+  document.querySelectorAll('.add-to-cart-form').forEach(form => {
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const url = this.action;
+      const formData = new FormData(this);
+      const quantity = formData.get('quantity');
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Cập nhật hiển thị giỏ hàng mà không cần tải lại trang
+          document.querySelector('.top-checkout-price').textContent = `$${result.totalPrice.toFixed(2)}`;
+          document.querySelector('.top-cart-items').textContent = result.totalItems;
+
+          alert('Product added to cart successfully!');
+        } else {
+          alert(result.message || 'Failed to add product to cart');
+        }
+      } catch (error) {
+        console.error('Error adding product to cart:', error);
+        alert('There was an error adding the product to the cart.');
+      }
+    });
+  });
+</script>

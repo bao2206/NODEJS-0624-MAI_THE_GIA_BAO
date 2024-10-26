@@ -70,15 +70,9 @@
             <li>
               <hr>
             </li>
-            <li><a href="#" data-filter=".sf-jeans">Jeans</a></li>
-            <li><a href="#" data-filter=".sf-t-shirts">T-Shirts</a></li>
-            <li><a href="#" data-filter=".sf-watches">Watches</a></li>
-            <li><a href="#" data-filter=".sf-shoes">Shoes</a></li>
-            <li><a href="#" data-filter=".sf-sportswear">Sportswear</a></li>
-            <li><a href="#" data-filter=".sf-shorts">Shorts</a></li>
-            <li><a href="#" data-filter=".sf-trousers">Trousers</a></li>
-            <li><a href="#" data-filter=".sf-jackets">Jackets</a></li>
-            <li><a href="#" data-filter=".sf-sweaters">Sweaters</a></li>
+            <% categories.forEach(category => { %>
+              <li><a href="<%= category.slug %> "><%= category.name %></a></li>
+            <% }) %>
           </ul>
 
           <hr>
@@ -118,7 +112,14 @@
                       </div>
                     </div>
                   </div>
-                  <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                  <form action="/cart/add/<%= product._id %>" method="post" class="mt-2 add-to-cart-form">
+                    <div class="input-group">
+                      <input type="number" name="quantity" value="1" min="1" class="form-control text-center" style="max-width: 60px;">
+                      <button type="submit" class="cart-btn button button-white button-light">
+                        <i class="uil uil-plus"></i> Add to Cart
+                      </button>
+                    </div>
+                  </form>
                 </div>
                 <div class="product-desc">
                   <div class="product-title">

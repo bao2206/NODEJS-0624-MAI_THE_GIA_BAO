@@ -14,104 +14,72 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/dress-3.jpg" alt="Pink Printed Dress"></a>
-                        </td>
-
-                        <td class="cart-product-name">
-                            <a href="#">Pink Printed Dress</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">$19.99</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
+                    <% items.forEach(item => { %>
+                        <tr class="cart_item">
+                          <!-- Nút xóa sản phẩm khỏi giỏ hàng -->
+                          <td class="cart-product-remove">
+                            <a href="/cart/delete/<%= item.productId._id %>" class="remove" title="Remove this item">
+                              <i class="fa-solid fa-trash"></i>
+                            </a>
+                          </td>
+                  
+                          <!-- Ảnh sản phẩm -->
+                          <td class="cart-product-thumbnail">
+                            <a href="/product/<%= item.productId._id %>">
+                              <img width="64" height="64" src="<%= item.productId.image %>" alt="<%= item.productId.name %>">
+                            </a>
+                          </td>
+                  
+                          <!-- Tên sản phẩm -->
+                          <td class="cart-product-name">
+                            <a href="<%= item.productId.slug %>">
+                              <%= item.productId.name %>
+                            </a>
+                          </td>
+                  
+                          <!-- Giá sản phẩm -->
+                          <!-- <td class="cart-product-price">
+                            <span class="amount">$</span>
+                          </td> -->
+                  
+                          <!-- Số lượng sản phẩm -->
+                          <td class="cart-product-quantity">
                             <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="2" class="qty">
-                                <input type="button" value="+" class="plus">
+                              <button class="btn btn-sm btn-outline-secondary minus" data-id="<%= item.productId._id %>">-</button>
+                              <input type="text" name="quantity" value="<%= item.quantity %>" class="qty form-control text-center" style="width: 60px;" data-id="<%= item.productId._id %>">
+                              <button class="btn btn-sm btn-outline-secondary plus" data-id="<%= item.productId._id %>">+</button>
                             </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">$39.98</span>
-                        </td>
-                    </tr>
-                    <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/shoes-2.jpg" alt="Checked Canvas Shoes"></a>
-                        </td>
-
-                        <td class="cart-product-name">
-                            <a href="#">Checked Canvas Shoes</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">$24.99</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="1" class="qty">
-                                <input type="button" value="+" class="plus">
-                            </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">$24.99</span>
-                        </td>
-                    </tr>
-                    <tr class="cart_item">
-                        <td class="cart-product-remove">
-                            <a href="#" class="remove" title="Remove this item"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-
-                        <td class="cart-product-thumbnail">
-                            <a href="#"><img width="64" height="64" src="images/shop/thumbs/small/tshirt-2.jpg" alt="Pink Printed Dress"></a>
-                        </td>
-
-                        <td class="cart-product-name">
-                            <a href="#">Blue Men Tshirt</a>
-                        </td>
-
-                        <td class="cart-product-price">
-                            <span class="amount">$13.99</span>
-                        </td>
-
-                        <td class="cart-product-quantity">
-                            <div class="quantity">
-                                <input type="button" value="-" class="minus">
-                                <input type="text" name="quantity" value="3" class="qty">
-                                <input type="button" value="+" class="plus">
-                            </div>
-                        </td>
-
-                        <td class="cart-product-subtotal">
-                            <span class="amount">$41.97</span>
-                        </td>
-                    </tr>
+                          </td>
+                    
+                  
+                          <!-- Tổng giá của sản phẩm (price * quantity) -->
+                          <td class="cart-product-subtotal">
+                            <span class="amount"></span>
+                          </td>
+                        </tr>
+                      <% }); %>
+                   
                     <tr class="cart_item">
                         <td colspan="6">
                             <div class="row justify-content-between align-items-center py-2 col-mb-30">
                                 <div class="col-lg-auto ps-lg-0">
                                     <div class="row align-items-center">
-                                        <div class="col-md-8">
-                                            <input type="text" value="" class="form-control text-center text-md-start" placeholder="Enter Coupon Code..">
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <a href="#" class="button button-small button-3d button-black m-0" style="--cnvs-btn-padding-y:7px;line-height:22px;">Apply Coupon</a>
-                                        </div>
+                                        <form action="/cart/update-discount" method="POST" class="d-flex">
+                                            <input
+                                              type="text"
+                                              name="discountCode"
+                                              class="form-control text-center text-md-start"
+                                              placeholder="Enter Coupon Code.."
+                                              required
+                                            />
+                                            <button
+                                              type="submit"
+                                              class="button button-small button-3d button-black m-0 ml-2"
+                                              style="--cnvs-btn-padding-y:7px;line-height:22px;"
+                                            >
+                                              Apply Coupon
+                                            </button>
+                                          </form>
                                     </div>
                                 </div>
                                 <div class="col-lg-auto pe-lg-0">
@@ -403,7 +371,7 @@
                                     </td>
 
                                     <td class="cart-product-name">
-                                        <span class="amount">$106.94</span>
+                                        <span class="amount"><%= cart.total_price_cart %></span>
                                     </td>
                                 </tr>
                                 <tr class="cart_item">
@@ -434,3 +402,53 @@
         </div>
     </div>
 </section><!-- #content end -->
+<script>
+    document.querySelectorAll('.plus').forEach(button => {
+      button.addEventListener('click', async function() {
+        const productId = this.getAttribute('data-id');
+        const quantityInput = this.closest('.quantity').querySelector('.qty');
+        let quantity = parseInt(quantityInput.value) || 1;
+  
+        quantity++; 
+        await updateCart(productId, quantity);
+      });
+    });
+  
+    document.querySelectorAll('.minus').forEach(button => {
+      button.addEventListener('click', async function() {
+        const productId = this.getAttribute('data-id');
+        const quantityInput = this.closest('.quantity').querySelector('.qty');
+        let quantity = parseInt(quantityInput.value) || 1;
+  
+        if (quantity > 1) {
+          quantity--; 
+          await updateCart(productId, quantity);
+        }
+      });
+    });
+  
+    async function updateCart(productId, quantity) {
+      try {
+        const response = await fetch(`/cart/update-cart/${productId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ quantity }),
+        });
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          document.querySelector(`.qty[data-id="${productId}"]`).value = quantity;
+          document.querySelector(`.amount[data-id="${productId}"]`).textContent = `$${result.itemTotal.toFixed(2)}`;
+          document.querySelector('.top-checkout-price').textContent = `$${result.totalPrice.toFixed(2)}`;
+        } else {
+          alert(result.message || 'Failed to update cart');
+        }
+      } catch (error) {
+        console.error('Error updating cart:', error);
+        alert('There was an error updating the cart.');
+      }
+    }
+  </script>
