@@ -2,10 +2,7 @@ var express = require("express");
 var router = express.Router();
 // const HomepageController = require("../../controllers/homepage_controllers");
 const CategoryService = require("../../services/category_service");
-const MenuService = require("../../services/menu_service");
 const ProductService = require("../../services/product_service");
-const SliderService = require("../../services/slider_service");
-const SettingsService = require("../../services/settings_service");
 const {slider, settings,  categories} = require("../../middleware/localMiddleware");
 router.use(slider);
 router.use(settings);
@@ -39,10 +36,9 @@ router.get("/:slug", async (req, res, next) => {
       category: categoriesWithSlug,
       products,
       layout: "frontend",
-      // menus,
     });
   }
-  // const productId = a
+  // const productId = await ProductService.
   const productWithSlug = await ProductService.findBySlug({ slug });
   if (productWithSlug) {
     return res.render("frontend/pages/detailproduct", {

@@ -108,8 +108,8 @@ class MainService {
             return { success: false, message: "Cart not found." };
         }
         cart.discount_id = discount._id;
-        await cart.save();
-        console.log("Success")
+        // await cart.save();
+        // console.log("Success")
         return {success: true, message: "Discount code applied successfully"}
     }
   updateProductQuantity = async (idCart, productId, quantity) => {

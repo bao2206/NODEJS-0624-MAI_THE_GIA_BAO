@@ -70,6 +70,7 @@ const categories = async(req, res, next) =>{
         console.log(error)
     }
 }
+
 const cart = async(req,res,next) =>{
     try {
     const cartId = "67111b160ac3cdcefc8694c0";

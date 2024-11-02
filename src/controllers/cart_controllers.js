@@ -99,13 +99,8 @@ class CartController {
     console.log(discountCode)
     const idCart = cartId;
     const result = await MainService.applyDiscountToCart(idCart, discountCode);
-    if(result.success){
-      req.flash("success", result.message);
-    } else {
-      req.flash("error", result.message);
-    }
-    res.redirect('back');
-    console.log("success")
+    res.json(result);
+    
   }
 }
 

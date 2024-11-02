@@ -35,20 +35,13 @@
               </div>
               <div class="top-cart-items">
                 <!-- Danh sách các sản phẩm trong giỏ hàng sẽ được cập nhật tại đây -->
-                <% cart.items.forEach(item => { %>
-                <div class="top-cart-item">
-                  <div class="top-cart-item-image">
-                    <a href="#"><img src="<%= item.productId.image %>" alt="<%= item.productId.name %>"></a>
+                
+               
+                  <div class="top-cart-item">
+                   
                   </div>
-                  <div class="top-cart-item-desc">
-                    <div class="top-cart-item-desc-title">
-                      <a href="#" class="fw-normal"><%= item.productId.name %></a>
-                      <span class="top-cart-item-price d-block"></span>
-                    </div>
-                    <div class="top-cart-item-quantity fw-semibold">x <%= item.quantity %></div>
-                  </div>
-                </div>
-                <% }) %>
+               
+                
               </div>
               <div class="top-cart-action">
                 <span class="top-checkout-price fw-semibold text-dark"></span>
