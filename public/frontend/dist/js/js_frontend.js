@@ -88,6 +88,7 @@ const showCart = () =>{
     });
     $('#body-cart').html(xHtmlCart);
 }
+
 const handleRemoveCartItem = (id) => {
   carts = carts.filter(item => item.productID !== id);
   localStorage.setItem("carts", JSON.stringify(carts));
@@ -113,6 +114,50 @@ const handleDecreaseQuantity = (id) => {
       updateCartTop();
       showCart();
   }
+};
+const handleIncreaseQuantityUI = (btn) => {
+  let input = $(btn).siblings(".qty");
+  let newValue = parseInt(input.val()) + 1;
+  input.val(newValue).trigger("change");
+};
+
+const handleDecreaseQuantityUI = (btn) => {
+  let input = $(btn).siblings(".qty");
+  let currentValue = parseInt(input.val());
+  if (currentValue > 1) {
+      let newValue = currentValue - 1;
+      input.val(newValue).trigger("change");
+  }
+};
+
+const handleQuantityChange = (input, id, price, name, image, slug) => {
+  let quantity = parseInt(input.value);
+  if (quantity < 1) {
+      toastr.error("Quantity cannot be less than 1.");
+      input.value = 1;
+      return;
+  }
+
+  let indexProduct = carts.findIndex(item => item.productID === id);
+
+  if (indexProduct >= 0) {
+      carts[indexProduct].quantity = quantity;
+  } else {
+      let productCart = {
+          "productID": id,
+          "price": price,
+          "name": name,
+          "quantity": quantity,
+          "image": image,
+          "slug": slug,
+      };
+      carts.push(productCart);
+  }
+
+  localStorage.setItem("carts", JSON.stringify(carts));
+  updateCartTop();
+  showCart();
+  toastr.success("Cart updated.");
 };
 const updateCartTotal = () => {
   let total = 0;

@@ -28,13 +28,13 @@ router.get("/:slug", async (req, res, next) => {
   const categoriesWithSlug = await CategoryService.findBySlug({ slug });
   // console.log(categoriesWithSlug);
   if (categoriesWithSlug) {
-    const products = await ProductService.findByParam({
+    const product = await ProductService.findByParam({
       category_id: categoriesWithSlug._id,
     });
-    products.sort((a, b) => a.ordering - b.ordering);
+    product.sort((a, b) => a.ordering - b.ordering);
     return res.render("frontend/pages/product", {
       category: categoriesWithSlug,
-      products,
+      product,
       layout: "frontend",
     });
   }
@@ -42,7 +42,7 @@ router.get("/:slug", async (req, res, next) => {
   const productWithSlug = await ProductService.findBySlug({ slug });
   if (productWithSlug) {
     return res.render("frontend/pages/detailproduct", {
-      products: productWithSlug,
+      product: productWithSlug,
       layout: "frontend",
       // menus,
     });

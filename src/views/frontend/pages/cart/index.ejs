@@ -24,21 +24,21 @@
                           <div class="col-lg-auto ps-lg-0">
                               <div class="row align-items-center">
                                 <form id="discountForm" action="/cart/update-discount" method="POST" class="d-flex">
-                                  <input
-                                      type="text"
-                                      name="discountCode"
-                                      class="form-control text-center text-md-start"
-                                      placeholder="Enter Coupon Code.."
-                                      required
-                                  />
-                                  <button
-                                      type="submit"
-                                      class="button button-small button-3d button-black m-0 ml-2"
-                                      style="--cnvs-btn-padding-y:7px;line-height:22px;"
-                                  >
-                                      Apply Coupon
-                                  </button>
-                              </form>
+                                    <input
+                                        type="text"
+                                        name="discountCode"
+                                        class="form-control text-center text-md-start"
+                                        placeholder="Enter Coupon Code.."
+                                        required
+                                    />
+                                    <button
+                                        type="submit"
+                                        class="button button-small button-3d button-black m-0 ml-2"
+                                        style="--cnvs-btn-padding-y:7px;line-height:22px;"
+                                    >
+                                        Apply Coupon
+                                    </button>
+                                </form>
                               
                               </div>
                           </div>
@@ -361,29 +361,25 @@
     </div>
 </section><!-- #content end -->
 <script>
-  $(document).ready(function () {
-    $(document).on('submit', 'form[action="/cart/update-discount"]', function(event) {
-      event.preventDefault();
-      const form = $(this);
-      const discountCode = form.find('input[name="discountCode"]').val();
-  
-      $.ajax({
-          url: '/cart/update-discount',
-          method: 'POST',
-          data: { discountCode },
-          success: function(response) {
-              if (response.success) {
-                  toastr.success(response.message);
-              } else {
-                  toastr.error(response.message);
-              }
-          },
-          error: function() {
-              toastr.error("An error occurred while applying the discount code.");
-          }
-      });
-  });
-  
-});
-
+    // Kiểm tra nếu có message được truyền từ server
+    <% if (typeof message !== "undefined") { %>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr["<%= message.type %>"]("<%= message.text %>");
+    <% } %>
 </script>
