@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
-const {menus, settings, cart, product} = require("../../middleware/localMiddleware");
+const {menus, settings, product} = require("../../middleware/localMiddleware");
 router.use(settings);
 router.use(menus);
-router.use(cart);
+// router.use(cart);
 // router.use(product);
 router.use("/cart", require("./cart_router"));
 router.use("/", require("./homepage_router"));

@@ -91,7 +91,7 @@ class MainService {
     //   };
       
     applyDiscountToCart = async(discountCode) =>{
-      const discountCode = req.body.discountCode.trim();
+    //   const discountCode = req.body.discountCode.trim();
       let message;
   
       try {
