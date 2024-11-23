@@ -179,8 +179,7 @@ class ProductController {
           discount = (price_discount / price) * 100;
         }
         var updatedData = { name, slug, ...formData, image, images, type_discount ,price_discount, discount };
-        // console.log(req.body.price_discount)
-        // console.log(updatedData);
+
         if (id) {
           var item = await MainService.updateItemById(id, updatedData);
           if (item) {

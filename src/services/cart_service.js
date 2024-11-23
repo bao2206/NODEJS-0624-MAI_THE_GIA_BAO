@@ -91,37 +91,10 @@ class MainService {
     //   };
       
     applyDiscountToCart = async(discountCode) =>{
-    //   const discountCode = req.body.discountCode.trim();
-      let message;
+        const checkDiscountCode = await DiscountService.checkCodeDiscount(discountCode);
+        if(!checkDiscountCode) return false;
+    return true;
   
-      try {
-          const [isDiscountValid, discount] = await Promise.all([
-              DiscountService.checkCodeDiscount(discountCode),
-              DiscountModel.findOne({ code: discountCode }),
-          ]);
-  
-          if (!isDiscountValid || !discount) {
-              message = { type: "error", text: "Discount code is invalid or does not exist." };
-              return res.render("cart", { message });
-          }
-  
-          // Gắn mã giảm giá vào giỏ hàng (ví dụ: `cart` từ session hoặc database)
-          const cart = req.session.cart;
-          if (!cart) {
-              message = { type: "error", text: "Cart not found." };
-              return res.render("cart", { message });
-          }
-  
-          cart.discount_id = discount._id; // Cập nhật giỏ hàng với mã giảm giá
-          req.session.cart = cart; // Lưu lại trong session
-          message = { type: "success", text: "Discount code applied successfully." };
-      } catch (err) {
-          console.error(err);
-          message = { type: "error", text: "An error occurred while applying the discount." };
-      }
-  
-      // Trả lại trang với thông báo
-      res.render("cart", { message });
     }
 //   updateProductQuantity = async (idCart, productId, quantity) => {
 //   const cart = await this.findCartById(idCart);

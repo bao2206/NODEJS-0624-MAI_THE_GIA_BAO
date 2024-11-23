@@ -35,7 +35,8 @@ class ItemService {
   };
   checkCodeDiscount = async(code) => {
     const discount = await MainModel.findOne({code: code.trim()});
-    return discount !== null;
+    if(!discount) return false;
+    return true;
   }
 }
 module.exports = new ItemService();
