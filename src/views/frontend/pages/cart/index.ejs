@@ -34,6 +34,7 @@
                                         type="submit"
                                         class="button button-small button-3d button-black m-0 ml-2"
                                         style="--cnvs-btn-padding-y:7px;line-height:22px;"
+                                    
                                     >
                                         Apply Coupon
                                     </button>
@@ -359,8 +360,10 @@
         </div>
     </div>
 </section><!-- #content end -->
+
 <script>
-    // Hàm hiển thị thông báo
+    console.log("haha")
+    // Hàm hiển thị thông báo phaỉ gọi qua ajax ko gọi trực tiếp được 
     function showToastMessage(type, text) {
         toastr.options = {
             closeButton: true,
@@ -383,7 +386,5 @@
     }
 
     // Kiểm tra nếu `message` được truyền từ server
-    <% if (typeof message !== "undefined") { %>
-        showToastMessage('<%= message.type %>', '<%= message.text %>');
-    <% } %>
+ 
 </script>

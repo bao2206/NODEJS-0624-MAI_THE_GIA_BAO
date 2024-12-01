@@ -12,7 +12,7 @@ const userSchema = new Schema(
     full_name: {type: String, required: [true, "Full name is required"]},
     phone:{type: Number, required:[true,"Phone is required"], unique: true},
     password: {type: String, required:[true,"Password is required"], min: 8},
-    date_of_birth: {type: date},
+    date_of_birth: {type: Date},
     address: {
       street: {type: String, required: true},
       city: {type: String, required: true},

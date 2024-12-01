@@ -10,6 +10,13 @@ const orderSchema = new Schema(
             ref: 'Users',
             required: true
         },
+        order_code: {
+            type: String,
+            required: true,
+            unique: true, 
+            index: true 
+        },
+
         items: [
             {
                 product:{
@@ -48,11 +55,11 @@ const orderSchema = new Schema(
             type: Number,
             required: true,
         },
-        payment_method: {
-            type: String,
-            enum: ['credit_card', 'paypal', 'cash_on_delivery', 'bank_transfer'],
-            required: true
-        },
+        // payment_method: {
+        //     type: String,
+        //     enum: ['credit_card', 'paypal', 'cash_on_delivery', 'bank_transfer'],
+        //     required: true
+        // },
         order_status: {
             type: String,
             enum: [
@@ -86,11 +93,11 @@ const orderSchema = new Schema(
             type: String,
             maxlength: 1000,
         },
-        payment_status:{
-            type: String,
-            enum: ['pending', 'completed', 'failed', 'refunded'],
-            default: 'pending'
-        },
+        // payment_status:{
+        //     type: String,
+        //     enum: ['pending', 'completed', 'failed', 'refunded'],
+        //     default: 'pending'
+        // },
         shipping_address:{
             full_name: {type: String, required: true},
             phone: {type: String, required: true},

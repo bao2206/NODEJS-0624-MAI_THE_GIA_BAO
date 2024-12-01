@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+router.use("/user",require("./user_router"));
 router.use("/discount",require("./discount_router"))
 router.use("/settings", require("./settings_router"));
 router.use("/subscribe", require("./subscriber_router"));

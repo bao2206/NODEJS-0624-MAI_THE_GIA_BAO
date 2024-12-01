@@ -46,6 +46,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Middleware to make flash messages available in all views
 
 ConnectDB.connection();
+
 app.use("/", indexRouter);
 // app.use("/users", usersRouter);
 // loc:3000/item/user/demo
