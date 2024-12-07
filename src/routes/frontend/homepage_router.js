@@ -4,9 +4,9 @@ var router = express.Router();
 const CategoryService = require("../../services/category_service");
 const ProductService = require("../../services/product_service");
 const {slider, settings, categories} = require("../../middleware/localMiddleware");
+
 router.use(slider);
 router.use(settings);
-
 router.use(categories);
 // router.use(user)
 
@@ -67,9 +67,8 @@ router.get("/:slug?", async (req, res, next) => {
         link = "frontend/pages/cart";
         break;
     }
+
     
-    // console.log("User in session:", req.session.user);
-    // console.log("User in res.locals:", res.locals.user);
     res.render(link, {
       layout: "frontend",
       products,

@@ -1,3 +1,28 @@
+<section
+    class="page-title page-title-parallax parallax scroll-detect dark page-title-center include-header bg-overlay-mask"
+    style="padding: 170px 0 100px;">
+    <img src="/frontend/dist/images/single/page-title.jpg" class="parallax-bg">
+    <div class="container">
+        <div class="page-title-row">
+            <div class="page-title-content">
+                <h1 class="text-uppercase">Rounded Watch</h1>
+                <span>Watches</span>
+            </div>
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Men</a></li>
+                    <li class="breadcrumb-item"><a href="#">Acessories</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Rounded Watch</li>
+                </ol>
+            </nav>
+
+        </div>
+    </div>
+</section><!-- .page-title end -->
+
+
 <section id="content">
     <div class="content-wrap">
         <div class="container">
@@ -14,41 +39,36 @@
                     </tr>
                 </thead>
                 <tbody id="body-cart">
-                    
-                   
+
+
                 </tbody>
                 <tr class="cart_item">
-                  <td colspan="6">
-                      <div class="row justify-content-between align-items-center py-2 col-mb-30">
-                          <div class="col-lg-auto ps-lg-0">
-                              <div class="row align-items-center">
-                                <form id="discountForm" action="/cart/update-discount" method="POST" class="d-flex">
-                                    <input
-                                        type="text"
-                                        name="discountCode"
-                                        class="form-control text-center text-md-start"
-                                        placeholder="Enter Coupon Code.."
-                                        required
-                                    />
-                                    <button
-                                        type="submit"
-                                        class="button button-small button-3d button-black m-0 ml-2"
-                                        style="--cnvs-btn-padding-y:7px;line-height:22px;"
-                                    
-                                    >
-                                        Apply Coupon
-                                    </button>
-                                </form>
-                              
-                              </div>
-                          </div>
-                          <div class="col-lg-auto pe-lg-0">
-                            <a href="#" class="button button-small button-3d m-0" onclick="updateCartTotal()">Update Cart</a>
-                            <a href="shop.html" class="button button-small button-3d mt-2 mt-sm-0 me-0 mb-0">Proceed to Checkout</a>
-                          </div>
-                      </div>
-                  </td>
-              </tr>
+                    <td colspan="6">
+                        <div class="row justify-content-between align-items-center py-2 col-mb-30">
+                            <div class="col-lg-auto ps-lg-0">
+                                <div class="row align-items-center">
+                                    <form id="discountForm" action="/cart/update-discount" method="POST" class="d-flex">
+                                        <input type="text" name="discountCode"
+                                            class="form-control text-center text-md-start"
+                                            placeholder="Enter Coupon Code.." required />
+                                        <button type="submit"
+                                            class="button button-small button-3d button-black m-0 ml-2"
+                                            style="--cnvs-btn-padding-y:7px;line-height:22px;">
+                                            Apply Coupon
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-auto pe-lg-0">
+                                <a href="#" class="button button-small button-3d m-0" onclick="updateCartTotal()">Update
+                                    Cart</a>
+                                <a href="shop.html" class="button button-small button-3d mt-2 mt-sm-0 me-0 mb-0">Proceed
+                                    to Checkout</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             </table>
 
             <div class="row col-mb-30">
@@ -386,5 +406,5 @@
     }
 
     // Kiểm tra nếu `message` được truyền từ server
- 
+
 </script>

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+
   // Lắng nghe sự kiện click vào link với id 'login-link'
   document.getElementById('login-link').addEventListener('click', function(event) {
     event.preventDefault(); // Ngừng hành động mặc định (không chuyển hướng)
@@ -48,6 +49,45 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('toggle-text').style.display = 'block';
     document.getElementById('toggle-login').style.display = 'none';
   }
+
+
+
+  $('#login-form').click(function (e) { 
+    e.preventDefault();
+    let username = $('#login-form-username').val();
+    let password = $('#login-form-password').val();
+    console.log(username)
+    console.log(password)
+
+    let link = '/account/signin'
+    $.ajax({
+      type: "post",
+      url: link,
+      data: {
+        emailOrUsername : username,
+        password
+      },
+      dataType: "json",
+      success: function (response) {
+        const { success , message } = response
+        // toastr.success(message)
+        if(!success) {
+        showToastMessage({
+            type : 'success',
+            text : message
+          })
+        }else {
+          window.location.href = '/'
+        }
+
+
+        
+      }
+    });
+
+    
+  });
+
 
 });
 

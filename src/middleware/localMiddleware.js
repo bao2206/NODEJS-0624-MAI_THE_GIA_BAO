@@ -72,12 +72,10 @@ const categories = async(req, res, next) =>{
 }
 
 const user = (req, res, next) => {
-    // console.log(req.cookies.user)
-    // console.log("In here",req.cookies.user);
+    console.log(123)
     if (req.cookies.user) {// Kiểm tra thông tin user từ cookies
         const user = JSON.parse(req.cookies.user); // Giải mã cookie
         res.locals.user = user.username; 
-        console.log(res.locals.user);
     } else {
       res.locals.user = null; // Nếu không có user trong session, gán null cho user
     }

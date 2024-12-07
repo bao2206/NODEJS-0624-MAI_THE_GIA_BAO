@@ -47,24 +47,21 @@ class ItemController {
     }
   }
   SignIn = async(req, res, next) => {
-  // console.log(req.body);
   const validator = new Validator(req.body);
   
   const isValid = validator.validateLogin();
-
-  // Kiểm tra xem email và mật khẩu có hợp lệ không
-  if (!isValid) {
-    return res.status(400).json({ success: false, message: "Please provide valid email or username and password." });
-  }
+ 
   try {
+    if (!isValid) {
+      return res.send({ success: false, message: "Please provide valid email or username and password." });
+    }
     // Tìm người dùng theo email hoặc username
     const { emailOrUsername, password } = req.body;
     const existingUser = await MainService.getUserByEmailOrUsername({ emailOrUsername });
 
-    // console.log(existingUser);
 
     if (!existingUser) {
-      return res.status(400).json({ success: false, message: "User not found." });
+      return res.send({ success: false, message: "User not found." });
     }
 
     // So sánh mật khẩu đã nhập với mật khẩu trong cơ sở dữ liệu
@@ -84,8 +81,8 @@ class ItemController {
       sameSite: 'strict' 
     });
    
-    // return res.status(200).json({ success: true, message: "Login successful.", user: existingUser });
-    return res.redirect("/");
+    return res.send({ success: true, message: "Login successful.", user: existingUser });
+    // return res.redirect("/");
   } catch (error) {
     console.error("Error during login:", error);
     if (!res.headersSent) {

@@ -1,4 +1,6 @@
-<section class="page-title page-title-parallax parallax scroll-detect dark page-title-center include-header bg-overlay-mask" style="padding: 170px 0 100px;">
+<section
+  class="page-title page-title-parallax parallax scroll-detect dark page-title-center include-header bg-overlay-mask"
+  style="padding: 170px 0 100px;">
   <img src="/frontend/dist/images/single/page-title.jpg" class="parallax-bg">
   <div class="container">
     <div class="page-title-row">
@@ -38,18 +40,18 @@
 
               <div class="masonry-thumbs grid-container row row-cols-2" data-lightbox="gallery">
                 <% if (product.image) { %>
-                <a class="grid-item" href="<%= product.image %>" data-lightbox="gallery-item">
-                  <img src="<%= product.image %>" alt="Product Image">
-                </a>
-                <% } %>
+                  <a class="grid-item" href="<%= product.image %>" data-lightbox="gallery-item">
+                    <img src="<%= product.image %>" alt="Product Image">
+                  </a>
+                  <% } %>
 
-                <% if (product.images && product.images.length > 0) { %>
-                <% product.images.forEach(function(image) { %>
-                <a class="grid-item" href="<%= image %>" data-lightbox="gallery-item">
-                  <img src="<%= image %>" alt="Product Additional Image">
-                </a>
-                <% }); %>
-                <% } %>
+                    <% if (product.images && product.images.length> 0) { %>
+                      <% product.images.forEach(function(image) { %>
+                        <a class="grid-item" href="<%= image %>" data-lightbox="gallery-item">
+                          <img src="<%= image %>" alt="Product Additional Image">
+                        </a>
+                        <% }); %>
+                          <% } %>
               </div>
 
             </div>
@@ -61,13 +63,13 @@
 
                 <!-- Product Single - Price -->
                 <div class="product-price">
-                  <% if (product.discount > 0) { %>
-                  <del>$<%= product.price.toFixed(2) %></del>
-                  <ins>$<%= (product.price * (1 - product.discount / 100)).toFixed(2) %></ins>
-                  <span class="text-warning">(<%= product.discount %>% OFF)</span>
-                  <% } else { %>
-                  <ins>$<%= product.price.toFixed(2) %></ins>
-                  <% } %>
+                  <% if (product.discount> 0) { %>
+                    <del>$<%= product.price.toFixed(2) %></del>
+                    <ins>$<%= (product.price * (1 - product.discount / 100)).toFixed(2) %></ins>
+                    <span class="text-warning">(<%= product.discount %>% OFF)</span>
+                    <% } else { %>
+                      <ins>$<%= product.price.toFixed(2) %></ins>
+                      <% } %>
                 </div><!-- Product Single - Price End -->
 
                 <!-- Product Single - Rating -->
@@ -85,21 +87,28 @@
 
               <!-- Product Single - Quantity & Cart Button -->
               <!-- <form class="cart mb-0 d-flex justify-content-between align-items-center" method="post" enctype='multipart/form-data'> -->
-                <div class="quantity">
-                  <input type="button" value="-" class="minus" onclick="handleDecreaseQuantityUI(this)">
-                  <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty" onchange="handleQuantityChange(this, '<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')">
-                  <input type="button" value="+" class="plus" onclick="handleIncreaseQuantity(this)">
-                </div>
-                <button onclick="handleAddCart('<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')", class="cart-btn button button-white button-light">
-                  <i class="uil uil-plus"></i> Add to Cart
-                </button>
+              <div class="quantity">
+                <input type="button" value="-" class="minus" onclick="handleDecreaseQuantityUI(this)">
+                <input type="number" step="1" min="1" name="quantity" value="1" title="Qty" class="qty"
+                  onchange="handleQuantityChange(this, '<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')">
+                <input type="button" value="+" class="plus" onclick="handleIncreaseQuantity(this)">
+              </div>
+              <button
+                onclick="handleAddCart('<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')"
+                , class="cart-btn button button-white button-light">
+                <i class="uil uil-plus"></i> Add to Cart
+              </button>
               <!-- </form>Product Single - Quantity & Cart Button End -->
 
               <div class="line line-sm"></div>
 
-              <div data-readmore="true" data-readmore-size="250px" data-readmore-trigger-open="Read More <i class='fa-solid fa-chevron-down'></i>" data-readmore-trigger-close="false">
+              <div data-readmore="true" data-readmore-size="250px"
+                data-readmore-trigger-open="Read More <i class='fa-solid fa-chevron-down'></i>"
+                data-readmore-trigger-close="false">
                 <h3>One Size</h3>
-                <p><%= product.short_description %></p>
+                <p>
+                  <%= product.short_description %>
+                </p>
 
                 <ul class="iconlist mb-0">
                   <li><i class="fa-solid fa-caret-right"></i> Dynamic Color Options</li>
@@ -113,8 +122,12 @@
               <!-- Product Single - Meta -->
               <div class="card product-meta mt-4 mb-5 rounded-0">
                 <div class="card-body">
-                  <span itemprop="productID" class="sku_wrapper">SKU: <span class="sku"><%= product._id %></span></span>
-                  <span class="posted_in">Category: <a href="#" rel="tag"><%= product.category_id.name %></a>.</span>
+                  <span itemprop="productID" class="sku_wrapper">SKU: <span class="sku">
+                      <%= product._id %>
+                    </span></span>
+                  <span class="posted_in">Category: <a href="#" rel="tag">
+                      <%= product.category_id.name %>
+                    </a>.</span>
                   <span class="tagged_as">Tags: <a href="#" rel="tag">Tag1</a>, <a href="#" rel="tag">Tag2</a>.</span>
                 </div>
               </div><!-- Product Single - Meta End -->
@@ -183,32 +196,39 @@
                   <div class="d-flex align-items-center justify-content-between">
                     <h6 class="fs-6 fw-semibold mb-0">Share:</h6>
                     <div class="d-flex">
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-facebook" title="Facebook">
+                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-facebook"
+                        title="Facebook">
                         <i class="fa-brands fa-facebook-f"></i>
                         <i class="fa-brands fa-facebook-f"></i>
                       </a>
 
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-x-twitter" title="Twitter">
+                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-x-twitter"
+                        title="Twitter">
                         <i class="fa-brands fa-x-twitter"></i>
                         <i class="fa-brands fa-x-twitter"></i>
                       </a>
 
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-pinterest" title="Pinterest">
+                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-pinterest"
+                        title="Pinterest">
                         <i class="fa-brands fa-pinterest-p"></i>
                         <i class="fa-brands fa-pinterest-p"></i>
                       </a>
 
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-whatsapp" title="Whatsapp">
+                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-whatsapp"
+                        title="Whatsapp">
                         <i class="fa-brands fa-whatsapp"></i>
                         <i class="fa-brands fa-whatsapp"></i>
                       </a>
 
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-rss" title="RSS">
+                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-rss"
+                        title="RSS">
                         <i class="fa-solid fa-rss"></i>
                         <i class="fa-solid fa-rss"></i>
                       </a>
 
-                      <a href="#" class="social-icon si-small text-white border-transparent rounded-circle bg-email3 me-0" title="Mail">
+                      <a href="#"
+                        class="social-icon si-small text-white border-transparent rounded-circle bg-email3 me-0"
+                        title="Mail">
                         <i class="fa-solid fa-envelope"></i>
                         <i class="fa-solid fa-envelope"></i>
                       </a>
@@ -244,15 +264,19 @@
                   <div class="flexslider">
                     <div class="slider-wrap">
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/1-1.jpg" alt="Black Shoe"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/1-1.jpg"
+                            alt="Black Shoe"></a>
                       </div>
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/1-2.jpg" alt="Black Shoe"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/1-2.jpg"
+                            alt="Black Shoe"></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <button onclick="handleAddCart('<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')", class="cart-btn button button-white button-light">
+                <button
+                  onclick="handleAddCart('<%= product._id %>', '<%= product.total_price_product %>', '<%= product.name %>', '<%= product.image %>', '<%= product.slug %>')"
+                  , class="cart-btn button button-white button-light">
                   <i class="uil uil-plus"></i> Add to Cart
                 </button>
               </div>
@@ -275,15 +299,18 @@
                   <div class="flexslider">
                     <div class="slider-wrap">
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/2-1.jpg" alt="Sports Shoe"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/2-1.jpg"
+                            alt="Sports Shoe"></a>
                       </div>
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/2-2.jpg" alt="Sports Shoe"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/2-2.jpg"
+                            alt="Sports Shoe"></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to
+                  Cart</a>
               </div>
               <div class="product-desc flex-column px-4">
                 <div class="product-title">
@@ -304,15 +331,18 @@
                   <div class="flexslider">
                     <div class="slider-wrap">
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/men/items/2.jpg" alt="T-Shirts"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/men/items/2.jpg"
+                            alt="T-Shirts"></a>
                       </div>
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/men/items/2-1.jpg" alt="T-Shirts"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/men/items/2-1.jpg"
+                            alt="T-Shirts"></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to
+                  Cart</a>
               </div>
               <div class="product-desc flex-column px-4">
                 <div class="product-title">
@@ -333,15 +363,18 @@
                   <div class="flexslider">
                     <div class="slider-wrap">
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/4-1.jpg" alt="T-shirt"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/4-1.jpg"
+                            alt="T-shirt"></a>
                       </div>
                       <div class="slide">
-                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/4-2.jpg" alt="T-shirt"></a>
+                        <a href="demo-store-product-single.html"><img src="/frontend/dist/images/product/4-2.jpg"
+                            alt="T-shirt"></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to Cart</a>
+                <a href="#" class="cart-btn button button-white button-light"><i class="uil uil-plus"></i>Add to
+                  Cart</a>
               </div>
               <div class="product-desc flex-column px-4">
                 <div class="product-title">
@@ -363,7 +396,8 @@
       <div class="container-fluid">
         <div class="row justify-content-center m-auto" style="max-width: 1000px;">
           <div class="col-md-7">
-            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated opportunities. Distinctively <a href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.</p>
+            <p class="h6 mb-0 text-muted">Conveniently network effective total linkage via intermandated opportunities.
+              Distinctively <a href="mailto:noreply@canvas.com"><u>noreply@canvas.com</u></a> premium products.</p>
           </div>
           <div class="col-md-5 mt-3 mt-md-0">
             <h2 class="h1 fw-bold ls--1 color"><a href="tel:09876543211">(+0) 9876 543210</a></h2>

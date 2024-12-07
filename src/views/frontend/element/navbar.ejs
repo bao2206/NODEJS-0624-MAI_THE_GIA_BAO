@@ -1,3 +1,5 @@
+
+
 <header id="header" class="dark transparent-header floating-header" data-sticky-shrink="false" data-sticky-class="not-dark">
   <div id="header-wrap">
     <div class="container-fluid">
@@ -18,8 +20,9 @@
 
           <!-- Top Login
           ============================================= -->
+         
           <div id="top-account" class="px-4">
-            <% if (user) { %>
+            <% if (locals.user) { %>
               <span>Welcome, <%= user %></span> <!-- Hiển thị tên người dùng -->
               <a href="/logout">Logout</a>
             <% } else { %>
