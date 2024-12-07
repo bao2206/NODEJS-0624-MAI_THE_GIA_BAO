@@ -1,0 +1,52 @@
+<!-- login-modal.ejs -->
+<div class="modal-register mfp-hide" id="modal-register">
+  <div class="card mx-auto" style="max-width: 540px;">
+    <div class="card-header py-3 bg-transparent text-center">
+      <h3 class="mb-0 fw-normal">Hello, Welcome Back</h3>
+    </div>
+    <div class="card-body mx-auto py-5" style="max-width: 70%;">
+      
+      <!-- Phần Đăng Nhập -->
+      <div id="login-section">
+        <form id="login-form" name="login-form" class="mb-0 row" action="/account/signin" method="post" enctype="application/x-www-form-urlencoded">
+          <div class="col-12">
+            <input type="text" id="login-form-username" name="emailOrUsername" class="form-control not-dark" placeholder="Username">
+          </div>
+          <div class="col-12 mt-4">
+            <input type="password" id="login-form-password" name="password" class="form-control not-dark" placeholder="Password">
+          </div>
+          <div class="col-12 text-end">
+            <a href="#" class="text-dark fw-light mt-2">Forgot Password?</a>
+          </div>
+          <div class="col-12 mt-4">
+            <button class="button w-100 m-0" id="login-form-submit" name="login-form-submit" value="login">Login</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Phần Đăng Ký -->
+      <div id="signup-section" style="display: none;">
+        <form id="signup-form" name="signup-form" class="mb-0 row" method="POST", action="/account/signup" enctype="application/x-www-form-urlencoded">
+          <div class="col-12">
+              <input type="text" id="signup-form-username" name="username" class="form-control not-dark" placeholder="Username">
+          </div>
+          <div class="col-12 mt-4">
+              <input type="email" id="signup-form-email" name="email" class="form-control not-dark" placeholder="Email">
+          </div>
+          <div class="col-12 mt-4">
+              <input type="password" id="signup-form-password" name="password" class="form-control not-dark" placeholder="Password">
+          </div>
+          <div class="col-12 mt-4">
+              <button type="submit" class="button w-100 m-0" id="signup-form-submit" name="signup-form-submit" value="signup">Sign Up</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+    <div class="card-footer py-4 text-center">
+      <p class="mb-0" id="toggle-text">Don't have an account? <a href="#" id="toggle-signup"><u>Sign up</u></a></p>
+      <p class="mb-0" id="toggle-login" style="display: none;">Already have an account? <a href="#" id="toggle-login-link"><u>Login</u></a></p>
+    </div>
+  </div>
+</div>
+<div id="result-message"></div>

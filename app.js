@@ -23,20 +23,13 @@ app.use(
     secret: "your-secret-key", // Chuỗi bí mật dùng để ký session ID cookie
     saveUninitialized: true, // Lưu session mới ngay cả khi nó chưa được khởi tạo
     resave: false,
+    cookie: { secure: false }
   })
 );
 app.use(flash());
 
 app.use(expressLayouts);
-// app.use((req, res, next) => {
-//   if (req.url.startsWith("/admin")) {
-//      app.set("layout", "admin");
-//   } else {
-//     app.set("layout", "frontend");
-//   }
-//   next();
-// });
-// app.use(logger('dev'));
+
 app.set("layout", "admin");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -56,7 +49,10 @@ app.use("/", indexRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
+// app.use((req, res, next) => {
+//   res.locals.user = req.cookies.user || null;
+//   next(); 
+// })
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

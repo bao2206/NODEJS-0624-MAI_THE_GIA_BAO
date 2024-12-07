@@ -17,7 +17,7 @@ const populateCategoriesForMenu = async(menus) =>{
         )
         return menus;
     } catch (error) {
-        
+      console.log(error);  
     }
 }
 
@@ -71,34 +71,24 @@ const categories = async(req, res, next) =>{
     }
 }
 
-// const cart = async(req,res,next) =>{
-//     try {
-//     const cartId = "67111b160ac3cdcefc8694c0";
-//     const cart = await CartService.findCartById(cartId);
-//     if (!cart) {
-//       throw new Error('Cart not found');
-//     }
-//     await cart.populate('items.productId', 'name image slug total_price_product');
-//     cart.items = cart.items.map((item) => {
-//       item.totalPrice = item.productId.total_price_product * item.quantity;
-//       return item;
-//     });
-//     // cart.totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-//     cart.totalPrice = cart.items.reduce((sum, item) => sum + item.totalPrice, 0);
-//     const totalQuantity = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-//     res.locals.cart = cart;
-//     res.locals.totalQuantity = totalQuantity;
-//     next();
-//   } catch (error) {
-//     console.error("Error in cart middleware:", error);
-//     next(error);
-//   }
-// }
+const user = (req, res, next) => {
+    // console.log(req.cookies.user)
+    // console.log("In here",req.cookies.user);
+    if (req.cookies.user) {// Kiểm tra thông tin user từ cookies
+        const user = JSON.parse(req.cookies.user); // Giải mã cookie
+        res.locals.user = user.username; 
+        console.log(res.locals.user);
+    } else {
+      res.locals.user = null; // Nếu không có user trong session, gán null cho user
+    }
+    next();
+  };
+  
 module.exports = {
     slider,
     settings,
     menus,
     categories,
- 
+    user,
     product,
 }

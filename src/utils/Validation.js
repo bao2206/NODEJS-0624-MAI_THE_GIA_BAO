@@ -1,57 +1,41 @@
-const { validationResult } = require('express-validator');
-
 class Validator {
   constructor(data) {
     this.data = data;
-    this.errors = [];
   }
 
-
-  isNotEmpty(field, fieldName) {
-    if (!this.data[field] || this.data[field].trim() === "") {
-      this.errors.push({ msg: `${fieldName} không được để trống.`, param: field });
-    }
+  // Kiểm tra trường không trống
+  isNotEmpty(field) {
+    return this.data[field] && this.data[field].trim() !== "";  // Trả về true nếu không trống, false nếu trống
   }
 
-
+  // Kiểm tra độ dài mật khẩu
   isPasswordLongEnough(field) {
-    if (this.data[field] && this.data[field].length < 8) {
-      this.errors.push({ msg: "Mật khẩu phải có ít nhất 8 ký tự.", param: field });
-    }
+    return this.data[field] && this.data[field].length >= 8; // Trả về true nếu mật khẩu dài đủ, false nếu không
   }
 
-
+  // Kiểm tra mật khẩu mạnh (có số và ký tự đặc biệt)
   isPasswordStrong(field) {
-    const hasNumber = /\d/; // Kiểm tra có chữ số
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/; // Kiểm tra ký tự đặc biệt
+    const hasNumber = /\d/;
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (this.data[field]) {
-      if (!hasNumber.test(this.data[field])) {
-        this.errors.push({ msg: "Mật khẩu phải chứa ít nhất một chữ số.", param: field });
-      }
-      if (!hasSpecialChar.test(this.data[field])) {
-        this.errors.push({ msg: "Mật khẩu phải chứa ít nhất một ký tự đặc biệt.", param: field });
-      }
+      const isStrong = hasNumber.test(this.data[field]) && hasSpecialChar.test(this.data[field]);
+      return isStrong;  // Trả về true nếu mật khẩu đủ mạnh, false nếu không
     }
+    return false; // Nếu không có mật khẩu, trả về false
   }
 
-  
+  // Kiểm tra dữ liệu đăng ký
   validateRegistration() {
-    this.isNotEmpty("username", "Tên người dùng");
-    this.isNotEmpty("email", "Email");
-    this.isNotEmpty("password", "Mật khẩu");
-    this.isPasswordLongEnough("password");
-    this.isPasswordStrong("password");
-
-    return validationResult(this.errors);
+    const isUsernameValid = this.isNotEmpty("username");
+    const isEmailValid = this.isNotEmpty("email");
+    const isPasswordValid = this.isNotEmpty("password") ;
+    return isUsernameValid && isEmailValid && isPasswordValid; // Trả về true nếu tất cả hợp lệ
   }
 
-  
+  // Kiểm tra dữ liệu đăng nhập
   validateLogin() {
-    this.isNotEmpty("email", "Email");
-    this.isNotEmpty("password", "Mật khẩu");
-
-    return validationResult(this.errors);
+    return this.isNotEmpty("emailOrUsername", "Email or Username") && this.isNotEmpty("password", "Password");  // Trả về true nếu hợp lệ, false nếu không
   }
 }
 

@@ -2,13 +2,12 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const ConnectionDocument = "Users";
 const ModelDocument = "user";
-const Account = require("./account_model");
 require('dotenv').config();
 const userSchema = new Schema(
   {
     account:{
       type: Schema.Types.ObjectId,
-      ref: "Account",
+      ref: "Accounts",
       required: true
     },
     full_name: {type: String, required: [true, "Full name is required"]},

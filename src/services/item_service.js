@@ -5,7 +5,7 @@ class ItemService {
     return await MainModel.findById(id);
   };
   saveItem = async (name, status, ordering, imageUrl) => {
-    console.log(name, status, ordering, imageUrl);
+    // console.log(name, status, ordering, imageUrl);
     await MainModel.create({
       name,
       ordering,

@@ -1,41 +1,39 @@
 var express = require("express");
 var router = express.Router();
-// const HomepageController = require("../../controllers/homepage_controllers");
+
 const CategoryService = require("../../services/category_service");
 const ProductService = require("../../services/product_service");
-const {slider, settings,  categories} = require("../../middleware/localMiddleware");
+const {slider, settings, categories} = require("../../middleware/localMiddleware");
 router.use(slider);
 router.use(settings);
 
 router.use(categories);
-// const populateCategoriesForMenu = async (menus) => {
-//   try {
-//     await Promise.all(
-//       menus.map(async (menu) => {
-//         menu.categories = await CategoryService.getCategoryByMenuId(menu._id);
-//       })
-//     );
-//     return menus;
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+// router.use(user)
+
 
 router.get("/:slug", async (req, res, next) => {
   const { slug } = req.params;
-  // const menus = await MenuService.getAllMenuOrdered();
-  // await populateCategoriesForMenu(menus);
+  const { min_price, max_price } = req.query;
   const categoriesWithSlug = await CategoryService.findBySlug({ slug });
-  // console.log(categoriesWithSlug);
   if (categoriesWithSlug) {
-    const product = await ProductService.findByParam({
+    let productQuery = {
       category_id: categoriesWithSlug._id,
-    });
+      status: "active",  // Sản phẩm phải có trạng thái "active"
+    };
+
+    // Nếu có giá trị min_price và max_price thì thêm vào query
+    if (min_price && max_price) {
+      productQuery.total_price_product = { $gte: parseFloat(min_price), $lte: parseFloat(max_price) };
+    }
+
+    const product = await ProductService.findByParam(productQuery);
     product.sort((a, b) => a.ordering - b.ordering);
     return res.render("frontend/pages/product", {
       category: categoriesWithSlug,
       product,
       layout: "frontend",
+      min_price,  // Truyền giá trị min_price và max_price về frontend nếu cần
+      max_price
     });
   }
   // const productId = await ProductService.
@@ -44,7 +42,6 @@ router.get("/:slug", async (req, res, next) => {
     return res.render("frontend/pages/detailproduct", {
       product: productWithSlug,
       layout: "frontend",
-      // menus,
     });
   }
   next();
@@ -53,13 +50,7 @@ router.get("/:slug?", async (req, res, next) => {
   try {
     const { slug } = req.params;
 
-    // const [menus, products, slider, setting] = await Promise.all([
-    //   MenuService.getAllMenuOrdered(),
-    //   ProductService.getProductIsSpecial(),
-    //   SliderService.getAllSliderOrdered(),
-    //   SettingsService.getAllSetting()
-    // ]);
-    // await populateCategoriesForMenu(menus);
+
     let link = "frontend/pages/homepage";
     const products = await ProductService.getProductIsSpecial();
     switch (slug) {
@@ -76,13 +67,18 @@ router.get("/:slug?", async (req, res, next) => {
         link = "frontend/pages/cart";
         break;
     }
-    // console.log(setting);
+    
+    // console.log("User in session:", req.session.user);
+    // console.log("User in res.locals:", res.locals.user);
     res.render(link, {
       layout: "frontend",
       products,
+      // user: res.locals.user
+      // user: res.locals.user
       // menus,
       // setting,
       // slider,
+
     });
   } catch (error) {
     console.log(error);

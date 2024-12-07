@@ -19,8 +19,13 @@
           <!-- Top Login
           ============================================= -->
           <div id="top-account" class="px-4">
-            <a href="#modal-register" data-lightbox="inline">Sign up/Login</a>
-          </div><!-- #top-search end -->
+            <% if (user) { %>
+              <span>Welcome, <%= user %></span> <!-- Hiển thị tên người dùng -->
+              <a href="/logout">Logout</a>
+            <% } else { %>
+              <a href="#modal-register" data-lightbox="inline" id="login-link">Sign up/Login</a>
+            <% } %>
+          </div>
 
           <!-- Top Cart
           ============================================= -->
