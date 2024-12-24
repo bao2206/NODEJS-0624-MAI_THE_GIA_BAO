@@ -32,17 +32,17 @@ styleSheet.innerText = css;
 // Thêm thẻ <style> vào phần <head> của tài liệu
 document.head.appendChild(styleSheet);
 
-document.getElementById("vol").addEventListener("input", function() {
-  const volValue = document.getElementById("vol-value"); // Phần tử chứa giá trị của thanh trượt
-  volValue.textContent = this.value;  // Cập nhật giá trị khi thanh trượt thay đổi
+// document.getElementById("vol").addEventListener("input", function() {
+//   const volValue = document.getElementById("vol-value"); // Phần tử chứa giá trị của thanh trượt
+//   volValue.textContent = this.value;  // Cập nhật giá trị khi thanh trượt thay đổi
 
-  // Cập nhật vị trí phần tử giá trị dựa trên vị trí thanh trượt
-  const range = this.getBoundingClientRect(); // Lấy vị trí của thanh trượt
-  const thumbWidth = 20; // Chiều rộng của thanh trượt (điều chỉnh nếu cần)
-  const valuePosition = (this.value / this.max) * range.width; // Tính toán vị trí
+//   // Cập nhật vị trí phần tử giá trị dựa trên vị trí thanh trượt
+//   const range = this.getBoundingClientRect(); // Lấy vị trí của thanh trượt
+//   const thumbWidth = 20; // Chiều rộng của thanh trượt (điều chỉnh nếu cần)
+//   const valuePosition = (this.value / this.max) * range.width; // Tính toán vị trí
 
-  volValue.style.left = (range.left + valuePosition - thumbWidth / 2) + "px"; // Di chuyển phần tử giá trị
-  volValue.style.top = range.top - 100 + "px"; // Điều chỉnh giá trị này để phần tử giá trị nằm ngay trên thanh trượt
-  volValue.style.visibility = 'visible';
+//   volValue.style.left = (range.left + valuePosition - thumbWidth / 2) + "px"; // Di chuyển phần tử giá trị
+//   volValue.style.top = range.top - 100 + "px"; // Điều chỉnh giá trị này để phần tử giá trị nằm ngay trên thanh trượt
+//   volValue.style.visibility = 'visible';
  
-});
+// });

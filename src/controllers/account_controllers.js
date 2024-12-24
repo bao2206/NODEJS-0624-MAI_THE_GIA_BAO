@@ -4,6 +4,20 @@ const path = require("path");
 const Validator = require("../utils/Validation");
 const nameRoute = "account";
 class ItemController {
+  Logout = async(req, res, next) =>{
+    console.log("Check")
+    //logout cookie 
+    try {
+      // Clear the cookie that stores the user's session
+      console.log("Try")
+      res.clearCookie("connect.sid");
+      return res.status(200).json({ success: true, message: "Logged out successfully." });
+    } catch (error) {
+      console.log("Catch")
+      console.error("Error during logout:", error);
+      return res.status(500).json({ success: false, message: "Error server, please try again." });
+    }
+  }
   SignUp = async(req, res, next) =>{
     // console.log("Before to try", req.body);
     const validator = new Validator(req.body);

@@ -3,11 +3,12 @@ var router = express.Router();
 
 const CategoryService = require("../../services/category_service");
 const ProductService = require("../../services/product_service");
-const {slider, settings, categories} = require("../../middleware/localMiddleware");
+const {settings, categories} = require("../../middleware/localMiddleware");
+const SliderService = require("../../services/slider_service");
 
-router.use(slider);
 router.use(settings);
 router.use(categories);
+// router.use(menus);
 // router.use(user)
 
 
@@ -52,7 +53,7 @@ router.get("/:slug?", async (req, res, next) => {
 
 
     let link = "frontend/pages/homepage";
-    const products = await ProductService.getProductIsSpecial();
+    const [slider, products] = await Promise.all([SliderService.getAllSliderOrdered(), ProductService.getProductIsSpecial()]);
     switch (slug) {
       case "contact":
         link = "frontend/pages/contact";
@@ -72,12 +73,8 @@ router.get("/:slug?", async (req, res, next) => {
     res.render(link, {
       layout: "frontend",
       products,
-      // user: res.locals.user
-      // user: res.locals.user
-      // menus,
-      // setting,
-      // slider,
-
+      slider,
+    
     });
   } catch (error) {
     console.log(error);

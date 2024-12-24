@@ -1,11 +1,8 @@
-    // var express = require('express');
-    // var router = express.Router();
+
 const SettingService = require("../services/settings_service");
 const CategoryService = require("../services/category_service");
-// const ProductService = require("../services/product_service");
-const SliderService = require("../services/slider_service");
+
 const MenuService = require("../services/menu_service");
-// const CartService = require("../services/cart_service");
 const ProductService = require("../services/product_service");
 
 const populateCategoriesForMenu = async(menus) =>{
@@ -17,19 +14,10 @@ const populateCategoriesForMenu = async(menus) =>{
         )
         return menus;
     } catch (error) {
-      console.log(error);  
+      next(error)  
     }
 }
 
-const slider = async(req, res, next) =>{
-    try{
-        const sliders =  await SliderService.getAllSliderOrdered();
-        res.locals.slider =  sliders;
-        next();
-    } catch(error){
-        console.log(error);
-    }
-}
 
 
 const settings = async(req, res, next) =>{
@@ -39,7 +27,7 @@ const settings = async(req, res, next) =>{
         res.locals.settings = stringParse;
         next();
     }catch(error){
-        console.log(error);
+        next(error)
     }
 }
 
@@ -50,7 +38,7 @@ const menus = async(req, res, next) =>{
         res.locals.menus = menu;
         next();
     } catch (error) {
-        console.log(error);
+        next(error)
     }
 }
 const product = async(req, res, next) =>{
@@ -58,7 +46,7 @@ const product = async(req, res, next) =>{
         const {slug} = req.params;
         res.locals.product = await ProductService.findBySlug({slug});
     } catch (error){
-        console.log(error);
+        next(error)
     }
 }
 const categories = async(req, res, next) =>{
@@ -67,14 +55,14 @@ const categories = async(req, res, next) =>{
         res.locals.categories = categories;
         next()
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 }
 
 const user = (req, res, next) => {
-    console.log(123)
     if (req.cookies.user) {// Kiểm tra thông tin user từ cookies
         const user = JSON.parse(req.cookies.user); // Giải mã cookie
+        console.log("test")
         res.locals.user = user.username; 
     } else {
       res.locals.user = null; // Nếu không có user trong session, gán null cho user
@@ -83,7 +71,6 @@ const user = (req, res, next) => {
   };
   
 module.exports = {
-    slider,
     settings,
     menus,
     categories,

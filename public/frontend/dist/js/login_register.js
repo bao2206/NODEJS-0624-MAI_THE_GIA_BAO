@@ -19,6 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
     showLoginSection();
   });
 
+  // Example usage of logout function
+  document.addEventListener('DOMContentLoaded', function () {
+    // Event delegation for dynamically added elements
+    document.body.addEventListener('click', function (event) {
+      if (event.target && event.target.id === 'logout-link') {
+        event.preventDefault(); // Ngừng hành động mặc định
+        logout(); // Gọi hàm logout
+      }
+    })}
+  )
+
   // Mở modal đăng nhập
   function openLoginModal() {
     if (typeof $.fn.magnificPopup !== 'undefined') {
@@ -50,83 +61,91 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('toggle-login').style.display = 'none';
   }
 
+  // Function to handle logout
+  function logout() {
+    $.ajax({
+      type: "post",
+      url: "/account/logout",
+      dataType: "json",
+      success: function (response) {
+        const { success, message } = response;
+        if (success) {
+          showToastMessage({
+            type: 'success',
+            text: message,
+          });
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1500);
+        } else {
+          showToastMessage({
+            type: 'error',
+            text: message,
+          });
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        showToastMessage({
+          type: 'error',
+          text: "An error occurred. Please try again later.",
+        });
+        console.error("AJAX Error:", textStatus, errorThrown);
+      },
+    });
+  }
 
 
-  $('#login-form').click(function (e) { 
+  $('#login-form').click(function (e) {
     e.preventDefault();
     let username = $('#login-form-username').val();
     let password = $('#login-form-password').val();
-    console.log(username)
-    console.log(password)
-
-    let link = '/account/signin'
+  
+    console.log(username);
+    console.log(password);
+  
+    let link = '/account/signin';
     $.ajax({
       type: "post",
       url: link,
       data: {
-        emailOrUsername : username,
+        emailOrUsername: username,
         password
       },
       dataType: "json",
       success: function (response) {
-        const { success , message } = response
-        // toastr.success(message)
-        if(!success) {
-        showToastMessage({
-            type : 'success',
-            text : message
-          })
-        }else {
-          window.location.href = '/'
+        const { success, message, user } = response;
+  
+        if (!success) {
+          // Thông báo lỗi nếu đăng nhập thất bại
+          showToastMessage({
+            type: 'error',
+            text: message
+          });
+        } else {
+          // Thông báo thành công nếu đăng nhập thành công
+          showToastMessage({
+            type: 'success',
+            text: `Welcome, ${user.username}!`
+          });
+  
+          // Chuyển hướng sau khi đăng nhập thành công
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1500); // Đợi 1.5s trước khi chuyển hướng
         }
-
-
-        
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // Xử lý khi xảy ra lỗi server hoặc lỗi kết nối
+        showToastMessage({
+          type: 'error',
+          text: "An error occurred. Please try again later."
+        });
+        console.error("AJAX Error:", textStatus, errorThrown);
       }
     });
-
-    
   });
+  
 
 
 });
 
-// document.getElementById('signup-form').addEventListener('submit', function(event) {
-//   event.preventDefault(); // Ngừng hành động mặc định của form (không gửi lại trang)
-
-//   const form = this;
-
-//   // Gửi form dữ liệu đi thông qua một yêu cầu Ajax
-//   const formData = new FormData(form); // Dữ liệu form
-//   console.log("Form Data:", formData);
-//   // Gửi yêu cầu Ajax để lấy thông báo từ server
-//   const xhr = new XMLHttpRequest();
-//   xhr.open('POST', form.action, true);
-//   xhr.onload = function() {
-//     if (xhr.status === 200) {
-//       // Xử lý kết quả trả về từ server
-//       const data = JSON.parse(xhr.responseText);
-      
-//       if (data.success) {
-//         document.getElementById('result-message').innerHTML = `<p style="color: green;">${data.message}</p>`;
-//       } else {
-//         document.getElementById('result-message').innerHTML = `<p style="color: red;">${data.message}</p>`;
-//       }
-//     } else {
-//       // Xử lý nếu lỗi khi gửi dữ liệu
-//       document.getElementById('result-message').innerHTML = `<p style="color: red;">An error occurred. Please try again.</p>`;
-//     }
-//   };
-
-//   xhr.send(formData); // Gửi dữ liệu form
-// });
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  const username = sessionStorage.getItem('username');  // Lấy tên người dùng từ sessionStorage
-  if (username) {
-    document.getElementById('top-account').innerHTML = `Welcome, ${username}!`;
-  } else {
-    document.getElementById('top-account').innerHTML = `<a href="#modal-register" data-lightbox="inline" id="login-link">Sign up/Login</a>`;
-  }
-});

@@ -21,14 +21,24 @@
           <!-- Top Login
           ============================================= -->
          
-          <div id="top-account" class="px-4">
+          <div id="top-account" class="px-4" style="display: flex; align-items: center; gap: 10px;">
             <% if (locals.user) { %>
-              <span>Welcome, <%= user %></span> <!-- Hiển thị tên người dùng -->
-              <a href="/logout">Logout</a>
+              <!-- Tên người dùng có đường dẫn xem thông tin người dùng -->
+              <a href="/profile" style="text-decoration: none; color: #333; font-weight: bold;">
+               <%= user %>
+              </a>
+              <!-- Nút đăng xuất cùng hàng -->
+              <a id="logout-link" href="/account/logout" style="color: #d9534f; font-weight: bold;">
+                Logout
+              </a>
             <% } else { %>
-              <a href="#modal-register" data-lightbox="inline" id="login-link">Sign up/Login</a>
+              <!-- Link đăng ký/đăng nhập -->
+              <a href="#modal-register" data-lightbox="inline" id="login-link" style="text-decoration: none; color: #007bff;">
+                Sign up/Login
+              </a>
             <% } %>
           </div>
+          
 
           <!-- Top Cart
           ============================================= -->
