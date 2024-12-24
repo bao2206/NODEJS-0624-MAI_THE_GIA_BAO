@@ -17,6 +17,29 @@ function showToastMessage(message) {
             showMethod: "fadeIn",
             hideMethod: "fadeOut",
         };
-        toastr[message.type](message.text);
+
+        // Thêm lớp CSS tùy chỉnh cho từng loại
+        const toast = toastr[message.type](message.text);
+        if (message.type === "success") {
+            $(".toast-success").css({
+                backgroundColor: "#28a745", // Màu nền
+                color: "#fff", // Màu chữ
+            });
+        } else if (message.type === "error") {
+            $(".toast-error").css({
+                backgroundColor: "#dc3545",
+                color: "#fff",
+            });
+        } else if (message.type === "warning") {
+            $(".toast-warning").css({
+                backgroundColor: "#ffc107",
+                color: "#212529",
+            });
+        } else if (message.type === "info") {
+            $(".toast-info").css({
+                backgroundColor: "#17a2b8",
+                color: "#fff",
+            });
+        }
     }
 }

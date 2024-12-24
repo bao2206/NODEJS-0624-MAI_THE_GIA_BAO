@@ -1,16 +1,16 @@
 const MainService = require("../services/account_service");
-const fs = require("fs");
-const path = require("path");
+const MailService = require("../services/subscriber_service");
+// const fs = require("fs");
+// const path = require("path");
 const Validator = require("../utils/Validation");
 const nameRoute = "account";
 class ItemController {
   Logout = async(req, res, next) =>{
-    console.log("Check")
+   
     //logout cookie 
     try {
       // Clear the cookie that stores the user's session
-      console.log("Try")
-      res.clearCookie("connect.sid");
+      removeCookie(res, "user");
       return res.status(200).json({ success: true, message: "Logged out successfully." });
     } catch (error) {
       console.log("Catch")
@@ -18,6 +18,7 @@ class ItemController {
       return res.status(500).json({ success: false, message: "Error server, please try again." });
     }
   }
+ 
   SignUp = async(req, res, next) =>{
     // console.log("Before to try", req.body);
     const validator = new Validator(req.body);
@@ -48,9 +49,10 @@ class ItemController {
       if(existingUsername) return res.status(400).json({ success: false, message: "Username already in use." });
 
       const newUser = await MainService.createAccount(username, email, password);
-
+      console.log("New user", newUser);
       // Trả về kết quả
       if (newUser) {
+        await MailService.sendWelcomeEmail(email, username);
         return res.status(201).json({ success: true, message: "Successful." });
       } else {
         return res.status(400).json({ success: false, message: "Have an error, please try again." });
@@ -105,5 +107,7 @@ class ItemController {
   }
   }
 }
-
+function removeCookie(res, cookieName) {
+  res.cookie(cookieName, "", { expires: new Date(0), path: '/' });
+}
 module.exports = new ItemController();
