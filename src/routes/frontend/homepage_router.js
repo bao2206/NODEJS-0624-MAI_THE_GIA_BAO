@@ -3,10 +3,10 @@ var router = express.Router();
 
 const CategoryService = require("../../services/category_service");
 const ProductService = require("../../services/product_service");
-const {settings, categories} = require("../../middleware/localMiddleware");
+const {categories} = require("../../middleware/localMiddleware");
 const SliderService = require("../../services/slider_service");
 
-router.use(settings);
+// router.use(settings);
 router.use(categories);
 // router.use(menus);
 // router.use(user)

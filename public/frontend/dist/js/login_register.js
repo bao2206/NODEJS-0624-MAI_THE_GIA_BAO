@@ -54,49 +54,42 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Function to handle logout
-  
 
-  $('#login-form').click(function (e) {
+
+  
+  $('#login-form').on('submit', function(e) {
     e.preventDefault();
-    let username = $('#login-form-username').val();
-    let password = $('#login-form-password').val();
-  
-    console.log(username);
-    console.log(password);
-  
-    let link = '/account/signin';
+    
+    const username = $('#login-form-username').val();
+    const password = $('#login-form-password').val();
+
     $.ajax({
-      type: "post",
-      url: link,
+      type: "POST",
+      url: '/account/signin',
       data: {
         emailOrUsername: username,
-        password
+        password: password
       },
       dataType: "json",
-      success: function (response) {
+      success: function(response) {
         const { success, message, user } = response;
-  
-        if (!success) {
-          // Thông báo lỗi nếu đăng nhập thất bại
-          showToastMessage({
-            type: 'error',
-            text: message
-          });
-        } else {
-          // Thông báo thành công nếu đăng nhập thành công
+        
+        if (success) {
           showToastMessage({
             type: 'success',
             text: `Welcome, ${user.username}!`
           });
-  
-          // Chuyển hướng sau khi đăng nhập thành công
           setTimeout(() => {
             window.location.href = '/';
-          }, 1500); // Đợi 1.5s trước khi chuyển hướng
+          }, 1500);
+        } else {
+          showToastMessage({
+            type: 'error',
+            text: message
+          });
         }
       },
-      error: function (jqXHR, textStatus, errorThrown) {
-        // Xử lý khi xảy ra lỗi server hoặc lỗi kết nối
+      error: function(jqXHR, textStatus, errorThrown) {
         showToastMessage({
           type: 'error',
           text: "An error occurred. Please try again later."

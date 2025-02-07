@@ -11,13 +11,12 @@ class CartController {
   
   updateDiscount = async(req, res, next) => {
     const discountCode = req.body.discountCode;
-    console.log(discountCode);
-    let message;
     const result = await MainService.applyDiscountToCart(discountCode);
-    console.log(result);
-    if(!result) message = { type: 'error', text: 'Invalid discount code.' };
-    message = { type: 'success', text: 'Discount applied successfully!' };
-    res.render(`frontend/pages/${nameRoute}/index`, { layout: "frontend", message})
+    if(result) {
+      return res.status(200).json({success: true, message: "Apply success"});
+    } else {
+      return res.status(200).json({success: false, message: "Discount code is invalid"});
+    }
   }
 }
 

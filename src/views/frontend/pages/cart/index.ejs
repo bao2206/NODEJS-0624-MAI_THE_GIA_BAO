@@ -48,7 +48,7 @@
                             <div class="col-lg-auto ps-lg-0">
                                 <div class="row align-items-center">
                                     <form id="discountForm" action="/cart/update-discount" method="POST" class="d-flex">
-                                        <input type="text" name="discountCode"
+                                        <input id="applyCoupon" type="text" name="discountCode"
                                             class="form-control text-center text-md-start"
                                             placeholder="Enter Coupon Code.." required />
                                         <button type="submit"
@@ -381,30 +381,3 @@
     </div>
 </section><!-- #content end -->
 
-<script>
-    console.log("haha")
-    // Hàm hiển thị thông báo phaỉ gọi qua ajax ko gọi trực tiếp được 
-    function showToastMessage(type, text) {
-        toastr.options = {
-            closeButton: true,
-            debug: false,
-            newestOnTop: true,
-            progressBar: true,
-            positionClass: "toast-top-right",
-            preventDuplicates: true,
-            onclick: null,
-            showDuration: "300",
-            hideDuration: "1000",
-            timeOut: "5000",
-            extendedTimeOut: "1000",
-            showEasing: "swing",
-            hideEasing: "linear",
-            showMethod: "fadeIn",
-            hideMethod: "fadeOut",
-        };
-        toastr[type](text);
-    }
-
-    // Kiểm tra nếu `message` được truyền từ server
-
-</script>
