@@ -69,7 +69,7 @@ class ItemController {
  
   try {
     if (!isValid) {
-      return res.send({ success: false, message: "Please provide valid email or username and password." });
+      return res.status(400).json({ success: false, message: "Please provide valid email or username and password." });
     }
     // Tìm người dùng theo email hoặc username
     const { emailOrUsername, password } = req.body;
@@ -77,7 +77,7 @@ class ItemController {
 
 
     if (!existingUser) {
-      return res.send({ success: false, message: "User not found." });
+      return res.status(400).json({ success: false, message: "User not found." });
     }
 
     // So sánh mật khẩu đã nhập với mật khẩu trong cơ sở dữ liệu
@@ -86,10 +86,14 @@ class ItemController {
     if (!isPasswordMatch) {
       return res.status(400).json({ success: false, message: "Incorrect password." });
     }
+    const roleOfUser = MainService.getRoleOfUser(existingUser);
+   
+    console.log(roleOfUser);
     // 
     res.cookie('user', JSON.stringify({
       username: existingUser.username,
-      email: existingUser.email
+      email: existingUser.email,
+      role: roleOfUser
     }), {
       httpOnly: true,  
       secure: false,   
@@ -97,7 +101,7 @@ class ItemController {
       sameSite: 'strict' 
     });
    
-    return res.send({ success: true, message: "Login successful.", user: existingUser });
+    return res.status(201).json({ success: true, message: "Login successful.", user: existingUser });
     // return res.redirect("/");
   } catch (error) {
     console.error("Error during login:", error);

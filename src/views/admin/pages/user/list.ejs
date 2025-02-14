@@ -168,11 +168,12 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
                 <label for="check-all" class="custom-control-label"></label>
               </div>
             </th>
-            <th class="text-center">#</th>
-            <th class="text-center">Name</th>
-            <th class="text-center">Status</th>
-            <th class="text-center">Ordering</th>
-            <th class="text-center">Image</th>
+            <th class="text-center">avatar</th>
+            <th class="text-center">username</th>
+            <th class="text-center">email</th>
+            <th class="text-center">status</th>
+            <th class="text-center">phone</th>
+            <th class="text-center">role</th>
             <th class="text-center">Action</th>
           </tr>
         </thead>
@@ -192,10 +193,21 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
                 <label for="check1" class="custom-control-label"></label>
               </div>
             </td>
-            <td class="text-center">
+            <!-- <td class="text-center">
               <%= (currentPage - 1) * 10 + index + 1 %>
+            </td> -->
+            <td class="text-center">
+              <% if (item.avatar) { %>
+              <img
+                src="<%= item.avatar %>"
+                alt="Item Image"
+                class="item-image"
+                style="max-width: 80px; max-height: 50px"
+              />
+              <% } %>
             </td>
-            <td class="text-center"><span><%= item.name %></span></td>
+            <td class="text-center"><span><%= item.username %></span></td>
+            <td class="text-center"><span><%= item.email   %></span></td>
             <td class="text-center position-relative">
               <a
                 href="#"
@@ -210,25 +222,20 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
             </td>
             <td class="text-center position-relative">
               <input
-                type="number"
-                name="items-ordering"
-                value="<%= item.ordering %>"
+                type="tel"
+                name="items-phone"
+                value="<%= item.phone %>"
                 class="text-center ordering"
-                min="1"
-                max="100"
                 data-id="<%= item._id %>"
               />
             </td>
-
-            <td class="text-center">
-              <% if (item.imageUrl) { %>
-              <img
-                src="<%= item.imageUrl %>"
-                alt="Item Image"
-                class="item-image"
-                style="max-width: 80px; max-height: 50px"
-              />
-              <% } %>
+            <td class="text-center position-relative">
+              <select name="items-role" data-id="<%= item._id %>">
+                <%for (let i = 0; i < item.role; i++) { %>
+                <option value="<%= item.role %>" >
+                  <span><%= item.role %> </span> 
+                <% } %>
+              </select>
             </td>
             <td class="text-center">
               <a
@@ -348,7 +355,7 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
         .getElementById("confirmDeleteBtn")
         .addEventListener("click", function () {
           if (itemIdToDelete) {
-            window.location.href = `/admin/item/delete/${itemIdToDelete}`;
+            window.location.href = `/admin/user/delete/${itemIdToDelete}`;
           }
         });
     });
@@ -385,11 +392,11 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
     });
   });
   let debounceTimer;
-  document.querySelectorAll("input[name='items-ordering']").forEach((input) => {
+  document.querySelectorAll("input[name='items-phone']").forEach((input) => {
     input.addEventListener("input", function () {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        updateOrdering(this);
+        updatePhone(this);
       }, 300);
     });
 
@@ -397,18 +404,18 @@ formAction = `/${linkPrefix}/${entityName}/form`; %> <% const listAction =
       if (event.key === "Enter") {
         event.preventDefault();
         clearTimeout(debounceTimer);
-        updateOrdering(this);
+        updatePhone(this);
       }
     });
   });
 
-  function updateOrdering(inputElement) {
+  function updatePhone(inputElement) {
     inputElement.disabled = true;
 
     const itemId = inputElement.getAttribute("data-id");
     const newOrdering = inputElement.value;
 
-    handleFetch(`/admin/item/update-ordering/${itemId}`, {
+    handleFetch(`/admin/user/update-phone/${itemId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

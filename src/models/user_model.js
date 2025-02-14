@@ -20,7 +20,7 @@ const userSchema = new Schema(
       country: {type: String, required: true},
       postal_code: {type: String, required: true}
     },
-    avatar: {type: String,}, 
+    avatar: {type: String}, 
   
   },
   { collection: ConnectionDocument, timestamps: true }

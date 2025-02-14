@@ -1,8 +1,11 @@
 var express = require("express");
 var router = express.Router();
-const {user} = require("../middleware/localMiddleware");
+const { user } = require("../middleware/localMiddleware");
+const { authPermission } = require("../middleware/authPermission");
 router.use(user);
-
+// console.log(user);
+// console.log(authPermission);
+// router.use("/admin", authPermission("admin"), require("./admin"));
 router.use("/admin", require("./admin"));
 router.use("/", require("./frontend"));
 module.exports = router;

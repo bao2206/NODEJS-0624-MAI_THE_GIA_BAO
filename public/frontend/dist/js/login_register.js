@@ -90,11 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
+        let message = "An error occurred. Please try again later.";
+
+        if (jqXHR.status === 400) {
+          message = jqXHR.responseJSON?.message || "Invalid data. Please check your input.";
+        } else if (jqXHR.status === 500) {
+          message = "Internal server error. Please try again later.";
+        }
+  
         showToastMessage({
           type: 'error',
-          text: "An error occurred. Please try again later."
+          text: message
         });
-        console.error("AJAX Error:", textStatus, errorThrown);
       }
     });
   });

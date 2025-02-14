@@ -111,6 +111,7 @@ class ItemController {
               "/uploads/default-image/default-image.jpg",
         };
         const categories = await CategoryService.getAllCategories();
+        console.log("Trong error");
         // req.flash("errorMessage", "Please correct the errors below.");
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,
@@ -140,16 +141,19 @@ class ItemController {
           };
           const item = await MainService.updateItemById(id, updatedData);
           if (item) {
+            console.log("Trong if update");
             return res.redirect(
               `/admin/${nameRoute}?successMessage=Item updated successfully`
             );
           } else {
+            console.log("Trong else update");
             return res.redirect(
               `/admin/${nameRoute}/form?errorMessage=Cannot find item with the provided ID`
             );
           }
         } else {
           // console.log(name, ordering, status, category_id, imageUrl);
+          console.log("Trong else success");
           await MainService.saveItem(
             name,
             ordering,

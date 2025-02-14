@@ -1,8 +1,11 @@
-const MainService = require("../services/user_service");
+const MainService = require("../services/account_service");
 const fs = require("fs");
+const MainModel = require("../models/account_model");
 const path = require("path");
 const Validator = require("../utils/Validation");
 const nameRoute = "user";
+
+// lấy account service mới lấy được thông tin user 
 class ItemController {
   getAll = async (req, res, next) => {
     try {
@@ -14,14 +17,17 @@ class ItemController {
       let items = searchTerm
         ? await MainService.findItem(searchTerm, filter)
         : await MainService.getAllItems(filter);
-
+      let populatedItems = await MainModel.populate(items, {
+        path: "account",
+      });
+      console.log(populatedItems);
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
       const totalItems = items.length;
       const totalPages = Math.ceil(totalItems / itemsPerPage);
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-      const paginatedItems = items.slice(startIndex, endIndex);
+      const paginatedItems = populatedItems.slice(startIndex, endIndex);
       
       let countStatus = [
         {
@@ -45,6 +51,7 @@ class ItemController {
       ];
       let successMessage = req.query.successMessage || "";
       let errorMessage = req.query.errorMessage || "";
+      console.log(paginatedItems);
       res.render(`admin/pages/${nameRoute}/list`, {
         items: paginatedItems,
         countStatus,
