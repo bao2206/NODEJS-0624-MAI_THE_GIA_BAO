@@ -73,10 +73,11 @@ class ItemController {
     try {
       const { id } = req.params;
       let item = {};
+      const roles = MainService.getAllRoles();
       if (id) {
         item = await MainService.getEleById(id);
       }
-      res.render(`admin/pages/${nameRoute}/form`, { item, errors: [] });
+      res.render(`admin/pages/${nameRoute}/form`, { item, roles, errors: [] });
     } catch (err) {
       res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
     }

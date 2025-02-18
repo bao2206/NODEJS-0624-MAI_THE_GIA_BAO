@@ -37,5 +37,8 @@ class ModelService {
   getRoleOfUser = (user) => {
     return user.role;
   };
+  getAllRoles = () => {
+    return MainModel.schema.path("role").enumValues;
+  };
 }
 module.exports = new ModelService();
