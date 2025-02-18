@@ -3,11 +3,14 @@ var router = express.Router();
 
 const CategoryService = require("../../services/category_service");
 const ProductService = require("../../services/product_service");
-const {categories} = require("../../middleware/localMiddleware");
+const {categories,blog} = require("../../middleware/localMiddleware");
 const SliderService = require("../../services/slider_service");
-
+// const BlogService = require("../../services/blog_service");
+const BlogFrontendController = require("../../controllers/frontend/blog_controllers");
+const blogrouter = require("./blog_router");
 // router.use(settings);
 router.use(categories);
+router.use(blog);
 // router.use(menus);
 // router.use(user)
 
@@ -19,7 +22,7 @@ router.get("/:slug", async (req, res, next) => {
   if (categoriesWithSlug) {
     let productQuery = {
       category_id: categoriesWithSlug._id,
-      status: "active",  // Sản phẩm phải có trạng thái "active"
+      status: "active", 
     };
 
     // Nếu có giá trị min_price và max_price thì thêm vào query
@@ -38,6 +41,7 @@ router.get("/:slug", async (req, res, next) => {
     });
   }
   // const productId = await ProductService.
+  // lấy trang danh sách sản phẩm theo danh mục sản phẩm
   const productWithSlug = await ProductService.findBySlug({ slug });
   if (productWithSlug) {
     return res.render("frontend/pages/detailproduct", {
@@ -45,37 +49,45 @@ router.get("/:slug", async (req, res, next) => {
       layout: "frontend",
     });
   }
+ 
   next();
 });
+
 router.get("/:slug?", async (req, res, next) => {
   try {
-    const { slug } = req.params;
+   const { slug } = req.params;
 
+let link = "frontend/pages/homepage";
+let data = { layout: "frontend" }; // Chỉ chứa dữ liệu cần thiết
 
-    let link = "frontend/pages/homepage";
-    const [slider, products] = await Promise.all([SliderService.getAllSliderOrdered(), ProductService.getProductIsSpecial()]);
-    switch (slug) {
-      case "contact":
-        link = "frontend/pages/contact";
-        break;
-      case "about-us":
-        link = "frontend/pages/about";
-        break;
-      case "blog":
-        link = "frontend/pages/blog";
-        break;
-      case "cart":
-        link = "frontend/pages/cart";
-        break;
-    }
-
-    
-    res.render(link, {
-      layout: "frontend",
-      products,
-      slider,
-    
-    });
+switch (slug) {
+  case "contact":
+    link = "frontend/pages/contact";
+    break;
+  case "about-us":
+    link = "frontend/pages/about";
+    break;
+  case "blog":
+    link = "frontend/pages/blog";
+    const blog = await BlogFrontendController.getAll();
+    data.blog = blog;
+    break;
+  case "cart":
+    link = "frontend/pages/cart";
+    break;
+  default:
+    // Chỉ lấy products & slider nếu ở trang homepage
+    const [slider, products] = await Promise.all([
+      SliderService.getAllSliderOrdered(),
+      ProductService.getProductIsSpecial(),
+    ]);
+    data.products = products;
+    data.slider = slider;
+    break;
+}
+router.use("/blog" , blogrouter);
+// Render trang với dữ liệu tối ưu
+res.render(link, data);
   } catch (error) {
     console.log(error);
     res.redirect("/error");

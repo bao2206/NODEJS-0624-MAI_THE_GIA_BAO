@@ -25,6 +25,14 @@ class Validator {
     return false; // Nếu không có mật khẩu, trả về false
   }
 
+  isEmailValid(field) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return this.data[field] && emailRegex.test(this.data[field]);
+  }
+  isPhoneValid(field){
+    const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+    return this.data[field] && phoneRegex.test(this.data[field]);
+  }
   // Kiểm tra dữ liệu đăng ký
   validateRegistration() {
     const isUsernameValid = this.isNotEmpty("username");

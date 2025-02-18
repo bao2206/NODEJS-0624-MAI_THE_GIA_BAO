@@ -1,5 +1,5 @@
 const MainService = require("../services/menu_service");
-const CategoryService = require("../services/category_service");
+// const CategoryService = require("../services/category_service");
 const fs = require("fs");
 const { uploadImage } = require("../middleware/upload");
 const { body, validationResult } = require("express-validator");
@@ -102,7 +102,7 @@ class MainController {
           ordering,
           // category_id: category_id || null, // Ensure category_id is either a valid ID or null
         };
-        const categories = await CategoryService.getAllCategories();
+        // const categories = await CategoryService.getAllCategories();
         // If there are validation errors, re-render the form with the errors and current data
         return res.render(`admin/pages/${nameRoute}/form`, {
           item,

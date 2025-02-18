@@ -2,8 +2,10 @@ const MainService = require("../services/account_service");
 const fs = require("fs");
 const MainModel = require("../models/account_model");
 const path = require("path");
-const Validator = require("../utils/Validation");
+const { body, validationResult } = require("express-validator");
+const { uploadImage } = require("../middleware/upload");
 const nameRoute = "user";
+const Validator = require("../utils/Validation");
 
 // lấy account service mới lấy được thông tin user 
 class ItemController {
@@ -67,20 +69,20 @@ class ItemController {
     }
   };
 
-  // getForm = async (req, res, next) => {
-  //   try {
-  //     const { id } = req.params;
-  //     let item = {};
-  //     if (id) {
-  //       item = await MainService.getEleById(id);
-  //     }
-  //     res.render(`admin/pages/${nameRoute}/form`, { item, errors: [] });
-  //   } catch (err) {
-  //     res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
-  //   }
-  // };
+  getForm = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      let item = {};
+      if (id) {
+        item = await MainService.getEleById(id);
+      }
+      res.render(`admin/pages/${nameRoute}/form`, { item, errors: [] });
+    } catch (err) {
+      res.redirect(`/admin/${nameRoute}?errorMessage=Error loading form`);
+    }
+  };
   // saveForm = [
-  //   uploadImage("item"),
+  //   uploadImage("user"),
   //   body("name")
   //     .isLength({ min: 3 })
   //     .withMessage("Name must be at least 3 characters long"),
@@ -149,6 +151,24 @@ class ItemController {
   //   },
   // ];
 
+  saveForm = async(req, res, next) => {
+    const validator = new Validator(req.body);
+    if (!validationResult) {
+      return res.status(400).json({success: false, message: "Invalid data. Please check the fields again"});
+    }
+    if (!validator.isPasswordLongEnough("password")) {
+      return res.status(400).json({ success: false, message: "Password must be at least 8 characters long." });
+    }
+  
+    if (!validator.isPasswordStrong("password")) {
+      return res.status(400).json({ success: false, message: "Password must contain at least one number and one special character." });
+    }
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
   // deleteItem = async (req, res, next) => {
   //   try {
   //     const { id } = req.params;

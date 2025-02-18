@@ -1,9 +1,10 @@
 
 const SettingService = require("../services/settings_service");
 const CategoryService = require("../services/category_service");
-
+const BlogService = require("../services/blog_service");
 const MenuService = require("../services/menu_service");
 const ProductService = require("../services/product_service");
+
 
 const populateCategoriesForMenu = async(menus) =>{
     try {
@@ -18,7 +19,18 @@ const populateCategoriesForMenu = async(menus) =>{
     }
 }
 
-
+const populateBlogForMenu = async(menus) =>{
+    try {
+        await Promise.all(
+            menus.map(async(menu) =>{
+                menu.blog = await BlogService.getBlogByMenuId(menu._id)
+            })
+        )
+        return menus;
+    } catch (error) {
+      next(error)  
+    }
+}
 
 const settings = async(req, res, next) =>{
     try{
@@ -35,6 +47,7 @@ const menus = async(req, res, next) =>{
     try {
         const menu = await MenuService.getAllMenuOrdered();
         await populateCategoriesForMenu(menu);
+        await populateBlogForMenu(menu);
         res.locals.menus = menu;
         next();
     } catch (error) {
@@ -53,6 +66,17 @@ const categories = async(req, res, next) =>{
     try {
         const categories = await CategoryService.getAllCategories();
         res.locals.categories = categories;
+        // console.log(categories);
+        next()
+    } catch (error) {
+        next(error)
+    }
+}
+const blog = async(req, res, next) =>{
+    try {
+        const blog = await BlogService.getAllBlog();
+        res.locals.blog = blog;
+        // console.log(blog);
         next()
     } catch (error) {
         next(error)
@@ -77,4 +101,5 @@ module.exports = {
     categories,
     user,
     product,
+    blog
 }

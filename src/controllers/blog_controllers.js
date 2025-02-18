@@ -1,12 +1,12 @@
-const MainService = require("../services/category_service");
+const MainService = require("../services/blog_service");
 const MenuService = require("../services/menu_service");
-const MainModel = require("../models/category_model");
+const MainModel = require("../models/blog_model");
 const fs = require("fs");
 const { uploadImage } = require("../middleware/upload");
 const path = require("path");
 const { body, validationResult } = require("express-validator");
 const slugify = require("slugify");
-const nameRoute = "category";
+const nameRoute = "blog";
 class MainController {
   // Method to handle GET request to list all categories
   getAll = async (req, res, next) => {
@@ -53,16 +53,7 @@ class MainController {
       ];
       let successMessage = req.query.successMessage || "";
       let errorMessage = req.query.errorMessage || "";
-      // console.log(
-      //   paginatedItems,
-      //   countStatus,
-      //   // currentPage,
-      //   totalPages,
-      //   searchTerm,
-      //   status,
-      //   successMessage,
-      //   errorMessage
-      // );
+      console.log(paginatedItems);
       res.render(`admin/pages/${nameRoute}/list`, {
         items: paginatedItems,
         countStatus,
@@ -117,16 +108,20 @@ class MainController {
       .optional() // Menu ID is optional
       .isString()
       .withMessage("Menu ID must be a valid string"),
+    body("link")
+    .isString()
+    .withMessage("Link must be a valid string"),
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        const { id, name, ordering, status, menu_id } = req.body;
+        const { id, name, ordering, status, menu_id, link } = req.body;
         const item = {
           _id: id,
           name,
           ordering,
           status,
           menu_id,
+          link
         };
         console.log("Tach item", item);
         const menus = await MenuService.getAllMenu();
@@ -142,22 +137,23 @@ class MainController {
     },
     async (req, res, next) => {
       try {
-        const { id, name, status, ordering, menu_id } = req.body;
+        const { id, name, status, ordering, menu_id, link } = req.body;
 
         // Ensure the name is treated as a string
         const validName = String(name);
 
         // Generate slug
         const slug = slugify(validName, { lower: true, strict: true });
-        const newMenu = menu_id || null;
+        // const newMenu = menu_id || null;
         const updatedData = {
           name: validName,
           slug,
           status,
           ordering,
           menu_id: menu_id || null, // Ensure menu_id is either a valid string or null
+          link
         };
-        console.log("Updated data", updatedData);
+        // console.log("Updated data", updatedData);
         if (id) {
           // Update existing item
           const item = await MainService.updateItemById(id, updatedData);

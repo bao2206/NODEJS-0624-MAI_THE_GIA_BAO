@@ -8,8 +8,8 @@ const MainController = require("../../controllers/user_controllers");
 // // router.post("/update-password", MainController.updatePassword);
 // router.post("/update-roles", MainController.updateRoles);
 // // create user and update user
-// router.post("/form ", MainController.saveForm);
-// router.get("/form/:id?", MainController.getForm);
+router.post("/form ", MainController.saveForm);
+router.get("/form/:id?", MainController.getForm);
 // // delete user
 // router.get("/delete/:id", MainController.deleteItem);
 // get all
