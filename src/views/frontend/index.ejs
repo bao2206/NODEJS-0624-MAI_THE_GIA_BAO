@@ -1,51 +1,66 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
+  <%- include('./element/head.ejs') %>
 
-<%- include('./element/head.ejs') %>
-
-<body class="stretched">
-
-
-  <!-- Document Wrapper=============================================-->
-  <div id="wrapper">
-
-
-
-    <!-- Header
+  <body class="stretched">
+    <!-- Document Wrapper=============================================-->
+    <div id="wrapper">
+      <!-- Header
 		============================================= -->
-    <%-include('./element/navbar.ejs') %>
-  
-    <!-- Slider
+      <%-include('./element/navbar.ejs') %>
+
+      <!-- Slider
 		============================================= -->
-    <%- body %>
-    <!-- Footer
+      <%- body %>
+      <!-- Footer
     <%- include('./element/modal-login.ejs') %>
 		============================================= -->
-    <%- include('./element/footer.ejs') %>
+      <%- include('./element/footer.ejs') %>
+    </div>
+    <!-- #wrapper end -->
 
-  </div><!-- #wrapper end -->
-
-  <!-- Go To Top
+    <!-- Go To Top
 	============================================= -->
-  <div id="gotoTop" class="uil uil-angle-up"></div>
+    <div id="gotoTop" class="uil uil-angle-up"></div>
 
-  <!-- JavaScripts
+    <!-- JavaScripts
 	============================================= -->
-  <script src="/admin/plugins/jquery/jquery.min.js"></script>
-  <script src="/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="/frontend/dist/js/plugins.min.js"></script>
-  <script src="/frontend/dist/js/functions.bundle.js"></script>
-  
-  <script src="/frontend/dist/js/notification.js"></script>
-  <script src="/frontend/dist/js/js_frontend.js"></script>
-  <script src="/frontend/dist/js/login_register.js"></script>
-  <script src="/frontend/dist/js/logout_account.js"></script>
-  <script src="/frontend/dist/js/signup_account.js"></script>
-  <script src="/frontend/dist/js/notification_discount.js"></script>
-  <script src="/frontend/dist/js/checkout_cart.js"></script>
-  <script src="/javascripts/my.js"></script>
-</body>
+    <!-- ✅ 1. Load jQuery trước -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Nếu cần jQuery local -->
 
+    <!-- ✅ 2. Load jQuery UI nếu cần -->
+    <script src="/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- ✅ 3. Load thư viện bên ngoài (phụ thuộc vào jQuery) -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+    <!-- ✅ 4. Load CSS của Magnific Popup -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+    />
+
+    <!-- ✅ 5. Load các script quan trọng của frontend -->
+    <script src="/frontend/dist/js/plugins.min.js"></script>
+    <script src="/frontend/dist/js/functions.bundle.js"></script>
+
+    <!-- ✅ 6. Load các script của bạn -->
+    <script src="/frontend/dist/js/notification.js"></script>
+    <script src="/frontend/dist/js/js_frontend.js"></script>
+    <script src="/frontend/dist/js/login_register.js"></script>
+    <script src="/frontend/dist/js/logout_account.js"></script>
+    <script src="/frontend/dist/js/signup_account.js"></script>
+    <script src="/frontend/dist/js/notification_discount.js"></script>
+    <script src="/frontend/dist/js/checkout_cart.js"></script>
+    <script src="/frontend/dist/js/forgot_password.js"></script>
+
+    <!-- ✅ 7. Cuối cùng, load script tùy chỉnh -->
+    <script src="/javascripts/my.js"></script>
+  </body>
 </html>

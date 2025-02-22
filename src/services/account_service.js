@@ -40,5 +40,9 @@ class ModelService {
   getAllRoles = () => {
     return MainModel.schema.path("role").enumValues;
   };
+  getEleById = async (id) =>{
+    const user_id = await MainModel.findById(id);
+    return user_id;
+  }
 }
 module.exports = new ModelService();

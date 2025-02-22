@@ -22,7 +22,7 @@ class ItemController {
       let populatedItems = await MainModel.populate(items, {
         path: "account",
       });
-      console.log(populatedItems);
+      // console.log(populatedItems);
       let page = parseInt(req.query.page) || 1;
       const itemsPerPage = 10;
       const totalItems = items.length;
@@ -153,19 +153,17 @@ class ItemController {
   // ];
 
   saveForm = async(req, res, next) => {
-    const validator = new Validator(req.body);
-    if (!validationResult) {
-      return res.status(400).json({success: false, message: "Invalid data. Please check the fields again"});
-    }
-    if (!validator.isPasswordLongEnough("password")) {
-      return res.status(400).json({ success: false, message: "Password must be at least 8 characters long." });
-    }
-  
-    if (!validator.isPasswordStrong("password")) {
-      return res.status(400).json({ success: false, message: "Password must contain at least one number and one special character." });
-    }
     try {
-      
+      const {_id, username, ...userData} = req.body;
+      if(_id){
+        const existingUser = MainService.getEleById(_id);
+        if(!existingUser){
+          return res.status(404).json({ success: false, message: "User not found" });
+        }
+        if(password){
+          
+        }
+      }
     } catch (error) {
       
     }
@@ -173,7 +171,7 @@ class ItemController {
   // deleteItem = async (req, res, next) => {
   //   try {
   //     const { id } = req.params;
-  //     const item = await MainService.getEleById(id);
+  //     const item = await MainService.getEleById(id); 
 
   //     if (item && item.imageUrl) {
   //       const imagePath = path.join(
